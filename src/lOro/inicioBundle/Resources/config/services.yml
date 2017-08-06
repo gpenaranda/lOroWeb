@@ -1,0 +1,7 @@
+parameters:
+#    l_oroinicio.example.class: lOro\inicioBundle\Example
+
+services:
+#    l_oroinicio.example:
+#        class: %l_oroinicio.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,70 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Asociación de Chatarra a Piezas<small>Listado</small></h1>
+</div>
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+      <a style="float:right;" class="btn btn-lg btn-success" href="{{ path('asociacion_chatarra_piezas_new') }}">
+        Nueva Asociación de Piezas
+      </a>
+    </div>
+
+
+    {% if entities %}
+
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-entregas-minoristas" class="display">
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha de entrega</th>
+                <th style="text-align:center;">Peso bruto de la entrega</th>
+                <th style="text-align:center;">Pagado Bs x Grms</th>
+                <th style="text-align:center;">Total Pagado</th>
+                <th style="text-align:center;">Entrega realizada por</th>
+                <th style="text-align:center;">Asociado a la Pieza</th>
+            </tr>
+        </thead>
+        <tbody class="data-entregas">
+        {% for entity in entities %}
+            <tr>
+                <td style="text-align:center;">{{ entity.id }}</td>
+                <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
+                <td style="text-align:center;">{{ entity.pesoBrutoEntrega | number_format('2',',','.') }} Grs.</td>
+                <td style="text-align:center;">{{ entity.montoBsPorGramo | number_format('2',',','.') }} Grs.</td>
+                <td style="text-align:center;">{{ entity.totalMontoBs | number_format('2',',','.') }} Bs.</td>
+                <td style="text-align:center;">
+                  {% if entity.minorista.id != 0 %}
+                    {% if entity.minorista.id != 9999 %}
+                      {{ entity.minorista.nbProveedor }}
+                    {% endif %}
+                  {% else %} N/A {% endif %}
+                </td>
+                <td style="text-align:center;">{{ (entity.pieza ? entity.pieza.codPieza : 'No Asociada') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    
+    <div class="row alerta-busqueda" style="margin: 220px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se encontraron registros
+      </div>
+    </div>  
+    {% endif %}
+    {% endblock %}
+{% block javascripts %}
+<script>
+var _globales = {
+      titulosNoFiltrados: [0,1,2,3,4,6,7],
+      idListado: 'listado-entregas-minoristas'
+};
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregasMinoristas.js') }}"></script>
+{% endblock %}    

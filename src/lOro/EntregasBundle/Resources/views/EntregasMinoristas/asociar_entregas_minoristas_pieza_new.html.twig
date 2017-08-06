@@ -1,0 +1,103 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas de Minoristas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Asociar Chatarra a Piezas <small>Nuevo</small></h1>
+</div>
+
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+
+<div class="col-lg-12">
+<div class="col-lg-4 col-lg-offset-3">
+  {{ form_start(form) }}
+     <div>
+    {{ form_label(form.piezas) }}
+    {{ form_widget(form.piezas) }}
+    {{ form_errors(form.piezas) }}
+    </div>
+</div>      
+<div id="piezas-para-relacionar" class="col-lg-12" style="margin-top:20px;">
+    <table  class="table table-condensed table-bordered table-hover tablasListados">
+      <caption>Piezas para relacionar</caption>
+      <thead>    
+        <tr>
+          <td>ID</td>
+          <td>Fecha de Entrega</td>
+          <td>Minorista</td>
+          <td>Peso Bruto Entrega</td>
+          <td>Ley</td>
+          <td>Peso Puro Entrega</td>
+          <td>Monto Bs Por Gramo</td>
+          <td>Total Monto Bs</td>
+          <td>Seleccionar</td>
+        </tr>
+        </thead>
+        <tbody id="body-listado-entregas-minoristas">
+          {% for row in entregasMinoristas %}
+            <tr>
+              <td>{{ row.id }}</td>
+              <td>{{ row.feEntrega | date('d-m-Y') }}</td>
+              <td>                  {% if row.minorista.id != 0 %}
+                    {% if row.minorista.id != 9999 %}
+                      {{ row.minorista.nbProveedor }}
+                    {% endif %}
+                  {% else %} N/A {% endif %}</td>
+              <td>{{ row.pesoBrutoEntrega | number_format(2,',','.') }}</td>
+              <td>{{ row.ley | number_format(2,',','.')}}</td>
+              <td>{{ row.pesoPuroEntrega | number_format(2,',','.') }}</td>
+              <td>{{ row.montoBsPorGramo | number_format(2,',','.') }}</td>
+              <td>{{ row.totalMontoBs | number_format(2,',','.') }}</td>
+              <td><input type='checkbox' class="entrega-chatarra" name='entregaChatarra[]' value='{{ row.id }}'></td>
+            </tr>          
+          {% endfor %}
+        </tbody>
+    </table>      
+        
+    <div class="col-lg-offset-9" style="margin-top: 14px; margin-bottom: 14px;">
+        <input type="button" class="btn btn-bg btn-success" id="asociar-chatarra-btn" name="asociar-chatarra-btn" value="Asociar a Pieza" />
+    </div>
+  {{ form_end(form) }}   
+</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+var _globales = {
+      piezasId: $('#loro_seleccionar_proveedores_form_piezas'),
+      chatarraSeleccionada: new Array(),
+      urlAsociarChatarraAPiezas: '{{ path('_asociar_chatarra_a_piezas') }}',
+      urlAsociacionChatarraPiezasNew: '{{ path('asociacion_chatarra_piezas_new') }}'
+};
+
+$('#piezas-para-relacionar').hide();
+$('#loro_seleccionar_proveedores_form_piezas').change(function() {
+  $('#piezas-para-relacionar').show();
+});
+
+$('#asociar-chatarra-btn').click(function(e){
+  $('#piezas-para-relacionar').show();
+  
+
+  _globales.chatarraSeleccionada = new Array();
+  $("input[name='entregaChatarra[]']:checked").each(function(i) {
+    _globales.chatarraSeleccionada.push($(this).val());
+  });  
+  
+  $.ajax({
+    type: 'post',
+    url: _globales.urlAsociarChatarraAPiezas,
+    data: {
+      piezaId: _globales.piezasId.val(),
+      chatarraSeleccionada: _globales.chatarraSeleccionada
+    },
+    minoristaId: _globales.piezasId,
+    success: function(entregasMinoristas) {
+      location.href = _globales.urlAsociacionChatarraPiezasNew;   
+    }
+   });    
+   
+   e.preventDefault();
+});
+</script>
+{% endblock %}

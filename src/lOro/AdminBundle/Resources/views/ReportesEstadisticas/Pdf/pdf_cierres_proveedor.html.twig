@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            * {
+              font-size: 12pt;
+              font-family: "Arial",serif;
+            }
+            
+            .tablasListados {
+                width:100%;
+                border-collapse: collapse;
+            }
+            
+            .tablasListados tr td,
+            .tablasListados tr th
+            {
+              border: 1px solid black;
+              text-align: center;
+            }
+            
+            #datosPRoveedor {
+              width: 100%;
+              margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="datosPRoveedor">
+            Proveedor: {{ proveedor.nbProveedor }}
+        </div>
+        <table class="table table-hover table-condensed tablasListados">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">ID del Cierre</th>
+                    <th style="text-align:center;">Fecha del Cierre</th>
+                    <th style="text-align:center;">Cantidad Cierre Grs.</th>
+                    <th style="text-align:center;">Valor Onza</th>
+                    <th style="text-align:center;">Monto Total Cierre (Dolares)</th>
+                    <th style="text-align:center;">Monto Total Cierre (Bolivares)</th>
+                    <th style="text-align:center;">Dolar de Referencia</th>
+                    <th style="text-align:center;">Bolivares por Cierre</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for cierre in viewCierresProveedores %}
+                <tr>
+                  <td>{{ cierre.id_cierre }}</td>
+                  <td>{{ cierre.fe_venta | date('d-m-Y') }}</td>
+                  <td>{{ cierre.cantidad_total_venta | number_format('2',',','.') }} Grs.</td>
+                  <td>{{ cierre.valor_onza | number_format('2',',','.') }} $</td>
+                  <td>{{ cierre.monto_total_dolar | number_format('2',',','.') }} $</td>
+                  <td>{{ cierre.monto_bs_cierre | number_format('2',',','.') }} Bs.</td>
+                  <td>{{ cierre.dolar_referencia | number_format('2',',','.') }} Bs x $</td>
+                  <td>{{ cierre.monto_bs_cierre_por_gramo | number_format('2',',','.') }} Bs. x Gr</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+    </table>
+        
+    </body>
+</html>
+

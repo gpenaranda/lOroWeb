@@ -1,0 +1,48 @@
+<html>
+    <head>
+    </head>
+    <body>
+<div>
+    {{ texto }}
+</div>
+
+<div class="page-header">
+  <h1>Reporte de Entregas por Fechas y Proveedor - {{ nombreProveedor }}</h1>
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if arregloEntity != null %}
+  {% if arregloEntity == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen pagos generados
+      </div>
+    </div> 
+  {% else %}
+    <table border="1" style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Fecha del Pago</th>
+          <th style="text-align:center;">Pagado a</th>
+          <th style="text-align:center;">Tipo de Transacci&oacute;n</th>
+          <th style="text-align:center;">Monto (Bs.)</th>
+          <th style="text-align:center;">Nro Referencia</th>
+          <th style="text-align:center;">Pagado Por</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for entrega in arregloEntity %}
+                <tr>
+                  <td align="center" valign="middle">{{ entrega.fePago | date('d-m-Y') }}</td>
+                  <td align="center" valign="middle">{{ entrega.nombreEmpresa }}</td>
+                  <td align="center" valign="middle">{{ entrega.tipoTransaccion }}</td>
+                  <td align="center" valign="middle">{{ entrega.montoPagado | number_format('2',',','.')  }}</td>
+                  <td align="center" valign="middle">{{ entrega.nroReferencia }}</td>
+                  <td align="center" valign="middle">{{ entrega.nombreEmpresaCasa }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+</body>
+</html>

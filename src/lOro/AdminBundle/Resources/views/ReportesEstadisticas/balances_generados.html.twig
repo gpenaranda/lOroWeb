@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Balances Generados</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4">
+    <div class="list-group">
+      {% if balancesGenerados %}
+      {% for row in balancesGenerados %}
+      <a class="list-group-item" href="{{ path('ver_balance',{'balanceId':row.id}) }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Balance N° {{ row.id }} - Fecha: {{ row.feBalance | date('d-m-Y') }}
+      </a>        
+      {% endfor %}
+      {% endif %}
+    </div>
+</div>
+{% endblock %}

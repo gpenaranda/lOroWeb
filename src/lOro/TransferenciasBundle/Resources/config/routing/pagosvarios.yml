@@ -1,0 +1,34 @@
+pagos-varios:
+    pattern:  /
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:index" }
+
+pagos-varios_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:show" }
+
+pagos-varios_new:
+    pattern:  /new
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:new" }
+
+pagos-varios_create:
+    pattern:  /create
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:create" }
+    requirements: { methods: post }
+
+pagos-varios_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:edit" }
+
+pagos-varios_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:update" }
+    requirements: { methods: post|put }
+
+pagos-varios_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:delete" }
+#    requirements: { _method: post|delete }
+
+_buscador_pagos_varios:
+    pattern:  /buscador-pagos-varios
+    defaults: { _controller: "lOroTransferenciasBundle:PagosVarios:buscarPagosVarios" }  

@@ -1,0 +1,109 @@
+{% extends('::base.html.twig') %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block body %}
+<div class="page-header">
+  <h1 style="font-size: 40pt;">Inicio</h1>
+  <h4>Proveedor: {{ app.user.proveedor.nbProveedor }}</h4>
+</div>
+
+
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+
+<div class="row">
+    <div class="col-lg-offset-2 col-lg-8">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-offset-1 col-lg-10 text-center">
+                            <div>Material en Deuda</div>
+                            <div class="huge">{{ balanceProveedor.balance_mat | number_format(2,',','.') }} Grs</div>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    
+        <div class="col-lg-6 pull-right">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-offset-1 col-lg-10 text-center">
+                            <div>Dolares Restantes</div>
+                            <div class="huge">{{ balanceProveedor.balance_dol | number_format(2,',','.') }} $</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="col-lg-offset-2 col-lg-8">
+        <div class="col-lg-6">
+            <div class="panel panel-brown">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-offset-1 col-lg-10 text-center">
+                            <div>Bolivares Restantes</div>
+                            <div class="huge">{{ balanceProveedor.balance_bs | number_format(2,',','.') }} Bs</div>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    
+        <div class="col-lg-6 pull-right">
+            <div class="panel panel-purple">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-offset-1 col-lg-10 text-center">
+                            <div>Euros Restantes</div>
+                            <div class="huge">{{ balanceProveedor.balance_eu | number_format(2,',','.') }} €</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+                <div class="col-lg-offset-2 col-lg-8">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> 
+                            <span style="color:black;">INFORMACI&Oacute;N GENERAL</span>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-comment fa-fw"></i> 
+                                    <span class="text-muted" style="font-size:1em;">Ultimo Cierre Realizado</span>
+                                    <span style="font-size:1.5em;">{{ ultimoCierreProveedor.feVenta | date ('d/m/Y')}} - {{ ultimoCierreProveedor.cantidadTotalVenta | number_format(2,',','.') }} Grs@{{ ultimoCierreProveedor.montoBsCierrePorGramo | number_format(2,',','.') }} {{ ultimoCierreProveedor.tipoMonedaCierre.simboloMoneda }}
+                                    </span>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-twitter fa-fw"></i>
+                                    <span class="text-muted" style="font-size:1em;">Ultima Entrega Realizada</span>
+                                    <span style="font-size:1.5em;">{{ ultimaEntregaProveedor.feEntrega | date('d/m/Y') }} - (Puro) {{ ultimaEntregaProveedor.pesoPuroEntrega }} Grs - {{ ultimaEntregaProveedor.piezasEntregadas | length }} Pieza(s)
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+</div>
+
+
+        
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

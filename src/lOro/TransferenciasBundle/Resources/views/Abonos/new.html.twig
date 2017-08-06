@@ -1,0 +1,116 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Abonos{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Abonos <small>Registrar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(form) }}
+    
+    {{ form_label(form.feAbono) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.feAbono) }}
+    </div>
+    {{ form_errors(form.feAbono) }}
+        
+    {{ form_label(form.tipoTransaccion) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.tipoTransaccion) }}
+    </div>
+    {{ form_errors(form.tipoTransaccion) }}
+    
+    {{ form_label(form.tipoPago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.tipoPago) }}
+    </div>
+    {{ form_errors(form.tipoPago) }}    
+
+    <div class="campos-ocultos">
+        {{ form_label(form.nroReferencia) }}
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon">N°</span>
+          {{ form_widget(form.nroReferencia) }}
+        </div>
+        {{ form_errors(form.nroReferencia) }}
+    </div> 
+        
+        
+    {{ form_label(form.monto) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon" id="tipo-moneda"></span>
+      {{ form_widget(form.monto) }}
+    </div>
+    {{ form_errors(form.monto) }}
+    
+    {{ form_label(form.descripcion) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.descripcion) }}
+    </div>
+    {{ form_errors(form.descripcion) }}
+   
+<div style='margin-top:12px;'>
+    {{ form_widget(form.submit) }}
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('abonos') }}">Volver</a>  
+</div>
+
+    {{ form_end(form)}}
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = {
+    formName: 'loro_transferenciasbundle_abonos_',
+    montoPagado: $('#loro_transferenciasbundle_abonos_monto')
+  }        
+</script>    
+<script>
+        $(function(){
+            
+  $('.campos-ocultos').hide(); 
+  
+  var campoTipoTransaccion = $('#'+_globales.formName+'tipoTransaccion');
+  
+  campoTipoTransaccion.change(function(){
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else {
+      $('#'+_globales.formName+'nroReferencia').val('');
+      $('.campos-ocultos').hide();
+    }  
+  });
+  
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( '#'+_globales.formName+'feAbono').datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+   
+   _globales.montoPagado.number(true,2,',','.');
+  
+   $("#form-abonos").submit(function(e) {
+                 var nuevoValorMontoPagado = $.number(_globales.montoPagado.val(), 2,'.','' );
+                 _globales.montoPagado.number(true,2,'.','');
+                 _globales.montoPagado.val(nuevoValorMontoPagado);
+            });          
+        });
+        
+     $('#'+_globales.formName+'tipoPago').change(function(){
+         if($(this).val() == 'B') {
+            $('#tipo-moneda').html('Bs.'); 
+         } else if($(this).val() == 'V') {
+            $('#tipo-moneda').html('$'); 
+         } else {
+            $('#tipo-moneda').html(''); 
+         }
+         
+     });
+    </script>
+{% endblock %}

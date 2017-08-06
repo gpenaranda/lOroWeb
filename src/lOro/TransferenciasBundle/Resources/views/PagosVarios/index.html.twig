@@ -1,0 +1,206 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Pagos Varios{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Pagos Varios <small>Listado</small>
+  </h1>
+</div>
+{% if not entities %}
+    <div class="row" style="margin:0px 10% 0 10%;"> 
+      <div class="alert alert-danger">
+        No se poseen pagos varios registrados actualmente
+      </div>
+    </div>   
+  {% endif %}
+
+  
+  
+  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+    <a  href="{{ path('pagos-varios_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Pago</a>
+  </div>
+  
+  {% if entities %}
+
+  <!-- Select y Text Input para el Buscador -->
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="display" >
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha</th>
+                <th style="text-align:center;">Monto del Pago</th>
+                <th style="text-align:center;">Pagado en</th>
+                <th style="text-align:center;">Pagado Por</th>
+                <th style="text-align:center;">Tipo de Pago</th>
+                <th style="text-align:center;">Descripción del Pago</th>   
+                <th style="text-align:center;">Acciones</th>  
+            </tr>
+        </thead>
+        <tbody class="data-entregas">
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td width="160">{% if entity.fePago %}{{ entity.fePago | date('Y-m-d') }}{% endif %}</td>
+                <td width="170">{{ entity.montoPago | number_format('2',',','.')}}  {{ entity.tipoPago == 'B' ? 'Bs.' : '€' }}</td>
+                <td>{{ entity.tipoPago == 'B' ? 'Bolivares' : 'Verdes' }}</td>
+                <td>{{ entity.empresaCasa.nombreEmpresa }}</td>
+                <td>{{ entity.tipoPagoVario.descripcion }}</td>    
+                <td>{{ entity.descripcionPago }}</td>     
+                <td>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('pagos-varios_show', { 'id': entity.id }) }}">
+                    {% image 'assets/self/images/ver.png' %}
+                      <img src="{{ asset_url }}" alt="Ver" />
+                    {% endimage %}
+                  </a>
+                  <a title="Editar" style="text-decoration: none;" href="{{ path('pagos-varios_edit', { 'id': entity.id }) }}">
+                    {% image 'assets/self/images/editar.png' %}
+                      <img src="{{ asset_url }}" alt="Editar" />
+                    {% endimage %}
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+    {% endif %}
+    {% endblock %}
+  {% block javascripts %}
+<script>
+var _globales = {
+      titulosNoFiltrados: '[0,1,2,6,7]',
+      idListado: 'listado-cierres'
+};
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>
+
+  <script>
+  $('.alerta-busqueda').hide();
+  
+  $(function() {
+
+    $( "#fechaInicio" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 1,
+      dateFormat: 'dd-mm-yy',
+      onSelect: function() {
+        generarBusquedaEntregas();
+      },        
+      onClose: function( selectedDate ) {
+        $( "#fechaFinal" ).datepicker( "option", "minDate", selectedDate );
+      }
+    },$.datepicker.regional[ "es" ]);
+    $( "#fechaFinal" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 1,
+      dateFormat: 'dd-mm-yy',
+      onSelect: function() {
+        generarBusquedaEntregas();
+      },      
+      onClose: function( selectedDate ) {
+        $( "#fechaInicio" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    },$.datepicker.regional[ "es" ]);
+  });
+  
+  function generarBusquedaEntregas() {
+         $.post("{{ path('_buscador_pagos_varios') }}",{
+          valorBusqueda: $('#buscador').val(),
+          tipoBusqueda: $('#tipo-busqueda').val(),
+          fechaInicio: $('#fechaInicio').val(),
+          fechaFinal: $('#fechaFinal').val(),
+          idEmpresaCasa: $('#select-empresa-casa').val()
+          },function(data){
+            
+          if(data != 'vacio') {
+            $('.tablasListados').show();
+            $('.alerta-busqueda').hide();
+            
+            var entregasSeleccionadas = jQuery.parseJSON(data);
+            var dataTablaEntregas = '';            
+            for (var i=0;i<entregasSeleccionadas.length;i++)
+            {   
+              var rutaVer = '{{ path("pagos-varios_show", {'id': 'ver_id'}) }}'; 
+              rutaVer = rutaVer.replace("ver_id", entregasSeleccionadas[i].id);
+              
+              var rutaImgVer = '{{ asset('bundles/lOroBundle/images/ver.png') }}';
+              
+              var rutaEditar = '{{ path("pagos-varios_edit", {'id': 'editar_id'}) }}'; 
+              rutaEditar = rutaEditar.replace("editar_id", entregasSeleccionadas[i].id);
+              
+              var rutaImgEditar = '{{ asset('bundles/lOroBundle/images/editar.png') }}';              
+              
+              dataTablaEntregas += '<tr>';
+              dataTablaEntregas += '<td>'+entregasSeleccionadas[i].id+'</td>';
+              dataTablaEntregas += '<td>'+entregasSeleccionadas[i].fecha+'</td>';
+              dataTablaEntregas += '<td>'+entregasSeleccionadas[i].montoPago+' Bs.</td>';
+              dataTablaEntregas += '<td>'+entregasSeleccionadas[i].pagadoPor+'</td>';
+              dataTablaEntregas += '<td>'+entregasSeleccionadas[i].descripcionPago+'</td>';
+              dataTablaEntregas += '<td>';
+              dataTablaEntregas += '<a title="Ver" style="text-decoration: none;" href="'+rutaVer+'">';
+              dataTablaEntregas += '<img src="'+rutaImgVer+'" />';
+              dataTablaEntregas += '</a>';
+              dataTablaEntregas += '<a title="Editar" style="text-decoration: none;" href="'+rutaEditar+'">';
+              dataTablaEntregas += '<img src="'+rutaImgEditar+'" />';
+              dataTablaEntregas += '</a>';              
+              dataTablaEntregas += '</td>';
+              dataTablaEntregas += '</tr>';
+            }
+            
+            
+            
+            $('.data-entregas').html(dataTablaEntregas);  
+          } else if(data == 'vacio') {
+            $('.tablasListados').hide();
+            $('.alerta-busqueda').show();
+          }
+        });  
+  }
+  </script>    
+<script>
+  var selectTipoBusqueda = $('#tipo-busqueda');
+  $('.contenedor-buscador-fechas').hide();
+  $('#buscador').hide();
+  $('#select-empresa-casa').hide();
+  
+  selectTipoBusqueda.change(function(){
+    if(selectTipoBusqueda.val() == 'id'){
+      $('.contenedor-buscador-fechas').hide();
+      $('#buscador').show();
+      $('#select-empresa-casa').hide();
+    } else if(selectTipoBusqueda.val() == 'fecha') {
+      $('.contenedor-buscador-fechas').show();
+      $('#buscador').hide();
+      $('#select-empresa-casa').hide();
+    }  else if(selectTipoBusqueda.val() == 'proveedor') {
+       $('#buscador').hide();
+       $('.contenedor-buscador-fechas').hide();
+       $('#select-empresa-casa').show();
+    } else {
+       $('#buscador').hide(); 
+       $('.contenedor-buscador-fechas').hide();
+       $('#select-empresa-casa').hide();
+       generarBusquedaEntregas();     
+    }     
+  });
+  
+ 
+  $('#buscador').keypress(function(e){
+    
+    if(e.which == 13){//Enter key pressed
+      generarBusquedaEntregas();    
+    }
+  }); 
+  
+ 
+  $('#select-empresa-casa').change(function(){
+    generarBusquedaEntregas();    
+  });   
+</script>
+  {% endblock %}
+

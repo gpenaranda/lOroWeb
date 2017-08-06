@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            * {
+              font-size: 12pt;
+              font-family: "Arial",serif;
+            }
+            
+            .tablasListados {
+                width:100%;
+                border-collapse: collapse;
+            }
+            
+            .tablasListados tr td,
+            .tablasListados tr th
+            {
+              border: 1px solid black;
+              text-align: center;
+            }
+            
+            #datosPRoveedor {
+              width: 100%;
+              margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="datosPRoveedor">
+            Proveedor: {{ proveedor.nbProveedor }}
+        </div>
+        <table class="table table-hover table-condensed tablasListados">
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID del Pago Realizado</th>
+                <th style="text-align:center;">Nombre de la Empresa</th>
+                <th style="text-align:center;">Monto Pagado (Bs.)</th>
+                <th style="text-align:center;">Fecha de Pago</th>
+                <th style="text-align:center;">Numero de Referencia</th>
+                <th style="text-align:center;">Tipo de Transacci&oacute;n</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pagoProveedor in viewPagosProveedores %}
+            <tr>
+              <td>{{ pagoProveedor.id_pago_proveedor }}</td>
+              <td>{{ pagoProveedor.nombre_empresa }}</td>
+              <td>{{ pagoProveedor.monto_pagado | number_format('2',',','.') }} Bs.</td>
+              <td>{{ pagoProveedor.fe_pago | date('d-m-Y') }}</td>
+              <td>{{ pagoProveedor.nro_referencia }}</td>
+              <td>{{ pagoProveedor.nb_transaccion }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    </body>
+</html>
+

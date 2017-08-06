@@ -1,0 +1,30 @@
+parametros:
+    path:  /
+    defaults: { _controller: "lOroAdminBundle:Parametros:index" }
+
+parametros_show:
+    path:  /{id}/show
+    defaults: { _controller: "lOroAdminBundle:Parametros:show" }
+
+parametros_new:
+    path:  /new
+    defaults: { _controller: "lOroAdminBundle:Parametros:new" }
+
+parametros_create:
+    path:  /create
+    defaults: { _controller: "lOroAdminBundle:Parametros:create" }
+    requirements: { methods: post }
+
+parametros_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "lOroAdminBundle:Parametros:edit" }
+
+parametros_update:
+    path:  /{id}/update
+    defaults: { _controller: "lOroAdminBundle:Parametros:update" }
+    requirements: { methods: post|put }
+
+parametros_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "lOroAdminBundle:Parametros:delete" }
+    requirements: { methods: post|delete }

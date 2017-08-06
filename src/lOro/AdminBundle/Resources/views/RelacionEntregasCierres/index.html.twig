@@ -1,0 +1,134 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Proveedores{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Relacionar Entregas / Cierres</h1>
+</div>
+
+<div class="modal fade" id="modalRelacionarEntregasCierresHc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Relacionar Entregas con Cierres HC / Aupanas</h4>
+      </div>
+      <div class="modal-body">
+          <div >
+          <h4><b style="color:red;">NOTA:</b> Realizar esta acción puede tomar unos minutos, por favor sea paciente al momento de hacer click en el boton "Realizar"</h4>
+          <div style="position:relative; left:65%; margin-left: -25%; margin-top:30px;" id="gif-cargando">
+            <img src="{{ asset('bundles/lOroBundle/images/cargando-azul.gif') }}" />
+          </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default cerrar-modal-entregas-hc" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary relacionar-entregas-hc">Realizar</button>
+      </div>        
+  </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="modalRelacionarEntregasCierresProveedores" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Relacionar Entregas con Cierres de Proveedores</h4>
+      </div>
+      <div class="modal-body">
+          <div >
+          <h4><b style="color:red;">NOTA:</b> Realizar esta acción puede tomar unos minutos, por favor sea paciente al momento de hacer click en el boton "Realizar"</h4>
+          <div style="position:relative; left:65%; margin-left: -25%; margin-top:30px;" id="gif-cargando-proveedor">
+            <img src="{{ asset('bundles/lOroBundle/images/cargando-azul.gif') }}" />
+          </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default cerrar-modal-entregas-proveedores" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary relacionar-entregas-proveedores">Realizar</button>
+      </div>        
+  </div>
+</div>
+</div>
+
+    
+<div class="col-lg-9 col-lg-offset-3" style="margin-top:60px;">
+  <a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-id="1"  data-target="#modalRelacionarEntregasCierresHc"  style="margin-right: 35px;">Entregas con Cierres Aupanas / HC</a>
+  <a href="#" class="btn btn-lg btn-success" data-toggle="modal" data-id="1"  data-target="#modalRelacionarEntregasCierresProveedores" >Entregas con Cierres de Proveedores</a>
+</div>
+   
+
+{% endblock %}
+{% block javascripts %}   
+<script>
+  var _globales = {
+      urlRealizarRelacionEntregasCierresHc: '{{ path('relacionar-entregas-cierres-aupanas-hc') }}',
+      urlRealizarRelacionEntregasCierresProveedores: '{{ path('relacionar-entregas-cierres-proveedores') }}'
+  };
+</script>
+<script>
+  $('#gif-cargando').hide();
+  $('#gif-cargando-proveedor').hide();
+
+  $(document).on("click", ".relacionar-entregas-hc", function () {
+     
+     $('#gif-cargando').show();
+     $('.relacionar-entregas-hc').bind('click', false);
+     $('.cerrar-modal-entregas-hc').bind('click', false);
+     
+     
+     $.ajax({
+        type: 'get',
+        url: _globales.urlRealizarRelacionEntregasCierresHc,
+        success: function(resultado) {
+          
+          if(resultado == 'exito') {
+            $('#modalRelacionarEntregasCierresHc').modal('hide');
+          } else if (resultado == 'error') 
+            {
+              $('#modalRelacionarEntregasCierresHc').modal('hide');
+              alert('No se han podido relacionar ya que no existen entregas');
+            } else {
+              $('#modalRelacionarEntregasCierresHc').modal('hide');
+              alert('No se ha realizado ninguna acción');
+            }
+           
+          $('.cerrar-modal-entregas-hc').unbind('click', false);
+          $('.relacionar-entregas-hc').unbind('click', false);
+          $('#gif-cargando').hide();
+        }
+      });
+  });
+  
+  $(document).on("click", ".relacionar-entregas-proveedores", function () {
+     
+     $('#gif-cargando-proveedor').show();
+     $('.relacionar-entregas-proveedores').bind('click', false);
+     $('.cerrar-modal-entregas-proveedores').bind('click', false);
+     
+     
+     $.ajax({
+        type: 'get',
+        url: _globales.urlRealizarRelacionEntregasCierresProveedores,
+        success: function(resultado) {
+          
+          if(resultado == 'exito') {
+            $('#modalRelacionarEntregasCierresProveedores').modal('hide');
+          } else if (resultado == 'error') 
+            {
+              $('#modalRelacionarEntregasCierresProveedores').modal('hide');
+              alert('No se han podido relacionar ya que no existen entregas');
+            } else {
+              $('#modalRelacionarEntregasCierresProveedores').modal('hide');
+              alert('No se ha realizado ninguna acción');
+            }
+           
+          $('.relacionar-entregas-proveedores').unbind('click', false);
+          $('.cerrar-modal-entregas-proveedores').unbind('click', false);
+          $('#gif-cargando-proveedor').hide();
+        }
+      });
+  });  
+</script>
+{% endblock %}

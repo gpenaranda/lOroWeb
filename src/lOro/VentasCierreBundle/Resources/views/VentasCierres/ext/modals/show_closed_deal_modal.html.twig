@@ -1,0 +1,64 @@
+<div class="modal fade" id="showClosedDealModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body" id="body-modal-ver-cierres-dia">
+
+        <table class="table table-bordered table-striped" id="table-show-closed-deals">
+          <colgroup>
+            <col class="col-xs-offset-2">
+            <col class="col-xs-10">
+          </colgroup>
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td class="text-right">ID</td>
+              <td id="closed-deal-id"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Fecha del Cierre</td>
+              <td id="closed-deal-date"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Total Cerrado (Gramos)</td>
+              <td id="closed-deal-grams"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Valor de la Onza</td>
+              <td id="closed-deal-oz"></td>
+            </tr>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <tr>
+              <td class="text-right">Dolar de Referencia del Dia</td>
+              <td id="closed-deal-fcurrency-daily-ref"></td>
+            </tr>
+            {% endif %}
+            <tr>
+              <td class="text-right">Divisa del Cierre</td>
+              <td id="closed-deal-fcurrency-hc">7</td>
+            </tr>            
+            <tr>
+              <td class="text-right">Monto Total en Divisa</td>
+              <td id="closed-calc-fcurrency-total">7</td>
+            </tr>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <tr>
+              <td class="text-right">Monto Bolivares Pagados</td>
+              <td id="closed-closed-deal-bs-payed"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Proveedor</td>
+              <td id="closed-supplier"></td>
+            </tr>
+            {% endif %}          
+          </tbody>
+        </table>
+        
+        {% include '::loading_square.html.twig' with {'location': 'closed-deals-show'} %}
+      </div>
+    </div> 
+  </div>
+</div>

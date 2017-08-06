@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+{% block title %}Ventas de Dolares{% endblock %}
+
+{% block body -%}
+<div id="custom-header" class="page-header">
+  <h1 style="font-size: 40pt;">Ventas de Divisas 
+    <small style="margin-left:10px; font-size: 26pt;">Ver</small>
+  </h1>
+</div>
+<div class="col-lg-6 col-lg-offset-3 ">
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Venta de Divisas N° {{ entity.id }}</div>
+            <div class="panel-body">
+                <table width="100%" class="table-hover table-condensed table-bordered">
+                    <tr>
+                        <td style="text-align: right;">Fecha de la Venta</td>
+                        <td style="text-align: center;">{{ entity.fechaVenta | date('d-m-Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Comprador</td>
+                        <td style="text-align: center;">{{ entity.comprador ? entity.comprador.nbProveedor : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Empresa</td>
+                        <td style="text-align: center;">{{ entity.empresa ? entity.empresa : 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Tipo Moneda</td>
+                        <td style="text-align: center;">{{ entity.tipoMoneda.nbMoneda }}</td>
+                    </tr>
+                    {% if entity.tipoMoneda.id == 2 %}
+                    <tr>
+                        <td style="text-align: right;">Cotización de Referencia</td>
+                        <td style="text-align: center;">{{ entity.cotizacionReferencia | number_format('4',',','.') }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Cantidad Comprada (En Euros segun Cotizacion)</td>
+                        <td style="text-align: center;">{{ ( entity.cantidadDolaresComprados * entity.cotizacionReferencia ) | number_format('2',',','.') }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Euro de Referencia</td>
+                        <td style="text-align: center;">{{ (entity.dolarReferencia / entity.cotizacionReferencia )  | number_format('2',',','.') }} Bs x €</td>
+                    </tr>
+                    {% endif %}
+                    
+                    
+                    <tr>
+                        <td style="text-align: right;">Cantidad Comprada</td>
+                        <td style="text-align: center;">{{ entity.cantidadDolaresComprados | number_format('2',',','.') }} {{ entity.tipoMoneda.simboloMoneda }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="text-align: right;">Cambio de Referencia</td>
+                        <td style="text-align: center;">{{ entity.dolarReferencia | number_format('2',',','.') }} Bs x {{ entity.tipoMoneda.simboloMoneda }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="text-align: right;">Monto de la Venta en Bolivares</td>
+                        <td style="text-align: center;">{{ entity.montoVentaBolivares | number_format('2',',','.') }} Bs.</td>
+                    </tr>
+                    
+                </table>
+            </div>
+            <div class="panel-footer">
+              <a  href="{{ path('ventas-dolares_delete',{ 'id' : entity.id}) }}" class="btn btn-lg btn-danger" >Eliminar</a>
+              <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('ventas-dolares') }}">Volver</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

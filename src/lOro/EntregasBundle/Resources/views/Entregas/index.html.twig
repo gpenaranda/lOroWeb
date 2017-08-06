@@ -1,0 +1,329 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas{% endblock %}
+{% block stylesheets %}
+  <style type="text/css">
+    #initial-delivery-form .form-control-feedback {
+    right: 17px;
+  }
+  </style>
+{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Entregas <small>Listado</small></h1>
+</div>
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="col-md-11 col-xs-10" style="padding:0 0 3em 0; margin-left: -5px;">
+      <button style="float:right;" class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="modal" data-target="#modalAgregarEntregas">
+      </button>
+    </div>
+
+    
+    <!-- LLamado del twig con el modal de Nueva Entrega Inicial -->
+    {% include 'lOroEntregasBundle:Entregas/extensiones:modal_nueva_entrega_inicial.html.twig' %}
+
+    <!-- LLamado del twig con el modal de Ver Entrega -->
+    {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' %}
+
+    
+    <div class="col-xs-10 col-md-offset-1 col-md-10">
+    <table id="listado-entregas" class="display responsive nowrap" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha de entrega</th>
+                <th style="text-align:center;">Peso total de la entrega</th>
+                <th style="text-align:center;">Entrega realizada por</th>
+                <th style="text-align:center;">Piezas Entregadas</th>
+                <th style="text-align:center;">Entrega para Acreditar</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="data-entregas">
+        {% for entity in entities %}
+            <tr>
+                <td style="text-align:center;">{{ entity.idMensual }}</td>
+                <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
+                <td style="text-align:center;">{{ entity.pesoPuroEntrega | number_format('3',',','.') }} Grs.</td>
+                <td style="text-align:center;">{{ entity.nbProveedor }}</td>
+                <td style="text-align:center;">{{ entity.piezasEntregadas }}</td>
+                <td style="text-align:center;">{{ entity.nbMoneda }}</td>
+                <td style="text-align:center;">
+                  <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" data-target="#modalVerEntrega"  class="open-ver-entrega" style="text-decoration: none;" href="#">
+                    {% image 'assets/self/images/ver.png' %}
+                      <img src="{{ asset_url }}" alt="Ver" />
+                    {% endimage %}
+                  </a>
+                  <a title="Editar" style="text-decoration: none;" href="{{ path('entregas_edit', { 'id': entity.id }) }}">
+                  {% image 'assets/self/images/editar.png' %}
+                    <img src="{{ asset_url }}" alt="Editar" />
+                  {% endimage %}
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+      
+{% endblock %}
+
+{% block javascripts %}
+<script>
+var _globales = {
+      idEntrega: '',
+      urlVerEntrega: '{{ path('entregas_show', { 'id': ':idEntrega' }) }}',
+      urlEliminarEntrega: '{{ path('entregas_delete', { 'id': ':idEntrega' }) }}',
+      urlEliminarPieza: '{{ path('piezas_delete', { 'id': ':idPieza' }) }}',
+      titulosNoFiltrados: [0,1,2,4,5],
+      idListado: 'listado-entregas',
+      formId: 'initial-delivery-form',
+      urlDatatableLang: '{{ asset('lang.txt') }}'
+};
+</script>
+<!--script src="{#{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }#}"></script-->
+
+
+<script>
+$(document).ready( function () {
+
+    
+    var table = $('#'+_globales.idListado).DataTable(
+    {
+      responsive: true,
+      "order": [[ 1, "desc" ]],
+      "oLanguage": {
+        "sUrl": _globales.urlDatatableLang
+      } , 
+   
+        initComplete: function () {
+            var api = this.api();
+            
+     
+            
+            api.columns().indexes().flatten().each( function ( i ) {
+                
+                if(_globales.titulosNoFiltrados.indexOf(i) === -1) {
+
+               
+                
+                var column = api.column( i );
+                var select = $('<select class="form-control"><option value="">'+$(column.header()).html()+'</option></select>')
+                    .appendTo( $(column.header()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' );
+                } );
+                
+          }
+                  
+          });
+        }
+     }
+   );
+});
+</script>
+
+{% javascripts  'assets/self/js/deliveries/initial_delivery_validation.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+  <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+<script>
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+
+                            
+   $( "#loro_entrega_inicial_feEntrega" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+</script>
+
+
+<!-- NUEVO -->
+<script>
+
+$('#loro_entrega_inicial_submit').click(function (e) {
+  e.preventDefault();
+  
+   $('#'+_globales.formId).formValidation('validate');
+
+  
+  if($('#'+_globales.formId).data('formValidation').isValid() == true ) {
+    
+    $('#piecesTemplate').remove();
+    $('#loro_entrega_inicial_submit').attr('disabled',true);
+    
+    $.ajax({
+      type: 'post',
+      url: '{{ path("_ajax_agregar_entrega_inicial") }}',
+      data: $('#initial-delivery-form').serialize(),
+      success: function(entrega) {
+        $('#loro_entrega_inicial_submit').attr('disabled',false);
+        window.location.href = '{{ path('entregas') }}';
+      }  
+    });
+   }
+}); 
+
+</script>
+<!-- NUEVO -->
+
+
+
+<!-- JavaScript y Jquery para el Modal de Ver Entregas -->
+<script>
+$(document).on("click", ".open-ver-entrega", function () {
+     _globales.idEntrega = $(this).data('id');
+     $("#modalVerEntrega .id-entrega").text( _globales.idEntrega );
+     
+     /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+     var url = _globales.urlVerEntrega;
+     url = url.replace(':idEntrega',_globales.idEntrega);
+      
+      
+      $.ajax({
+        type: 'get',
+        url: url,
+        id: _globales.idEntrega,
+        success: function(entrega) {
+            
+          /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+          var urlEliminarEntrega = _globales.urlEliminarEntrega;
+          urlEliminarEntrega = urlEliminarEntrega.replace(':idEntrega',_globales.idEntrega);
+     
+          var htmlEntrega = '<tr>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.id+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.feEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoBrutoEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.promLeyEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoPuroEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.proveedorEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.cantPiezasEntregadas+'</td>';
+              htmlEntrega += '<td style="text-align:center;"><a class="btn btn-danger" href="'+urlEliminarEntrega+'">Eliminar Entrega</a></td>';
+              htmlEntrega += '</tr>';
+           
+          var piezas = entrega.piezasEntregadas;
+         
+          if(piezas != 'vacio') {
+            $('#tabla-datos-piezas').show(); 
+            $('#alerta-piezas').hide();
+            
+            var htmlPiezas = '';
+            for(var row in piezas) {
+                htmlPiezas += '<tr id="'+piezas[row].id+'">';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].codPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoBrutoPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].leyPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoPuroPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\',\''+entrega.id+'\');" class="btn btn-danger">Eliminar Pieza</a></td>';
+                htmlPiezas += '</tr>';                
+            }
+          } else {
+            $('#tabla-datos-piezas').hide(); 
+            $('#alerta-piezas').show();    
+          }
+          
+          $('.data-entrega').html(htmlEntrega);
+          $('.data-piezas').html(htmlPiezas);
+        }
+      });
+});     
+ 
+
+
+    
+function eliminarPieza(idPieza,idEntrega) {
+  /* Reemplaza la el :idPieza de la URL por el ID que se trae del modal */
+  var urlEliminarPieza = _globales.urlEliminarPieza;
+  urlEliminarPieza = urlEliminarPieza.replace(':idPieza',idPieza);
+  
+  
+    
+  $.ajax({
+    type: 'get',
+    url: urlEliminarPieza,
+    id: idPieza,
+    success: function(accion) {
+      $('#mensaje-accion').html(accion);
+      
+      
+     /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+     var url = _globales.urlVerEntrega;
+     url = url.replace(':idEntrega',_globales.idEntrega);
+     
+       $('.modal-body').hide();
+       $('#cargando-reg').show();
+ // load the url and show modal on success
+    $("#modalVerEntrega .modal-body").load(url, function(data, textStatus, XMLHttpRequest) { 
+        $('.modal-body').show();
+       $('#cargando-reg').hide();
+        if (textStatus == "success") {
+        var entrega = jQuery.parseJSON(data);
+        $("#modalVerEntrega .modal-body").html('<div class="modal-body"><div id="mensaje-accion"></div><h4>Datos Generales de la Entrega</h4><hr style="border-color: black;"><table class="table table-condensed"><thead><tr><th style="text-align:center;">ID</th><th style="text-align:center;">Fecha de entrega</th><th style="text-align:center;">Peso bruto de la entrega</th><th style="text-align:center;">Promedio de la ley</th><th style="text-align:center;">Peso puro de la entrega</th><th style="text-align:center;">Entrega realizada por</th><th style="text-align:center;">Piezas Entregadas</th></tr></thead><tbody class="data-entrega"></tbody></table><h4>Datos de las Piezas</h4><hr style="border-color: black;"><table class="table table-condensed" id="tabla-datos-piezas"><thead><tr><th style="text-align:center;">ID</th><th style="text-align:center;">Peso bruto de la pieza</th><th style="text-align:center;">Ley de la pieza</th><th style="text-align:center;">Peso puro de la pieza</th></tr></thead><tbody class="data-piezas"></tbody></table><div class="alert alert-danger" id="alerta-piezas">No se poseen piezas asociadas a esta entrega</div></div>'); 
+   
+/* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+          var urlEliminarEntrega = _globales.urlEliminarEntrega;
+          urlEliminarEntrega = urlEliminarEntrega.replace(':idEntrega',_globales.idEntrega);
+     
+          var htmlEntrega = '<tr>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.id+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.feEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoBrutoEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.promLeyEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoPuroEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.proveedorEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.cantPiezasEntregadas+'</td>';
+              htmlEntrega += '<td style="text-align:center;"><a class="btn btn-danger" href="'+urlEliminarEntrega+'">Eliminar Entrega</a></td>';
+              htmlEntrega += '</tr>';
+           
+          var piezas = entrega.piezasEntregadas;
+         
+          if(piezas != 'vacio') {
+            $('#tabla-datos-piezas').show(); 
+            $('#alerta-piezas').hide();
+            
+            var htmlPiezas = '';
+            for(var row in piezas) {
+                htmlPiezas += '<tr id="'+piezas[row].id+'">';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].codPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoBrutoPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].leyPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoPuroPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\');" class="btn btn-danger">Eliminar Pieza</a></td>';
+                htmlPiezas += '</tr>';                
+            }
+          } else {
+            $('#tabla-datos-piezas').hide(); 
+            $('#alerta-piezas').show();    
+          }
+          
+          $('.data-entrega').html(htmlEntrega);
+          $('.data-piezas').html(htmlPiezas);   
+      }
+    },'success'); /* << Load */        
+    
+
+          
+      //$('#'+idPieza).hide();
+    }
+  });  
+} 
+
+</script>
+<!-- JavaScript y Jquery para el Modal de Ver Entregas -->
+
+<script>
+$('#cargando-reg').hide();
+</script>  
+
+{% endblock %}

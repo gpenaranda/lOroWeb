@@ -1,0 +1,37 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Empresas por Proveedores{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Empresas por Proveedores
+      <small>Agregar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form(form) }}
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+$('#loro_entitybundle_empresasproveedores_nombreEmpresa').keypress(function (e) {
+    var regex = new RegExp("^[a-zA-Z0-9]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+        return true;
+    }
+
+    e.preventDefault();
+    return false;
+});
+
+$('#loro_entitybundle_empresasproveedores_aliasEmpresa').keypress(function (e) {
+    var regex = new RegExp("^[a-zA-Z0-9]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+        return true;
+    }
+
+    e.preventDefault();
+    return false;
+});
+</script>	
+{% endblock %}

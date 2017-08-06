@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+{% block title %}Admin Margenes de Ganancia{% endblock %}
+{% block body %}
+    <h1>MargenesGanancias list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nbmargenganancia</th>
+                <th>Tipomargen</th>
+                <th>Estatus</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('margenes_ganancia_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td id='prueba'>{{ entity.nbMargenGanancia }}</td>
+                <td>{{ entity.tipoMargen }}</td>
+                <td>{{ entity.estatus }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('margenes_ganancia_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('margenes_ganancia_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('margenes_ganancia_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+<script language="javascript" type="text/javascript">    
+$(function(){
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{
+  "name": "lOroE",
+  "homepage": "https://github.com/gpenaranda/lOroE",
+  "description": "Librerias para el Sistema lOro",
+  "main": "",
+  "moduleType": [],
+  "authors": [
+    "Gabriel E. Peñaranda G."
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.0",
+    "jquery.maskedinput": "jquery-maskedinput#^1.4.1",
+    "jquery.steps": "latest",
+    "font-awesome": "^4.5.0",
+    "bootstrap": "^3.3.6",
+    "blockui": "latest",
+    "bootstrap-combobox": "^1.1.8"
+  }
+}

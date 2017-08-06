@@ -1,0 +1,69 @@
+reporte_tiempo_cierres_entregas_proveedor:
+    path:  /reporte-tiempo-cierres-entregas-proveedor
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:indexTiempoCierresEntregasProveedor" }
+
+reporte_balance_general_por_meses:
+    path:  /reporte-balance-general-por-meses
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:balanceGeneralPorMeses" }
+    
+reporte_cierres_por_fecha_proveedor:
+    path:  /reporte-cierres-por-proveedores
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:cierresPorFechaProveedor" }
+    
+ganancias_por_cierre_proveedor:
+    path:  /ganancias-por-cierre-proveedor
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:gananciasPorCierreProveedor" }    
+    
+reporte_balances_generados:
+    path:  /balances-generados
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:balancesGenerados" }
+    
+ver_balance:
+    path:  /ver-balance/{balanceId}
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:verBalance" }    
+    
+reporte_pagos_varios_por_mes_anio:
+    path:  /pagos-varios-por-mes-anio
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:pagosVariosPorMesAnio" }
+    
+reporte_entregas_por_fecha_proveedor:
+    path:  /entregas-por-fecha-proveedor
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:entregasPorFechaProveedor" }
+    
+reporte_pagos_proveedores_por_fecha:
+    path:  /pagos-proveedores-por-fecha-proveedor
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:pagosProveedorPorFecha" }    
+    
+reportes_estadisticas:
+    path:  /
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:index" }
+    
+reporte_pagos_proveedores_empresas:
+    path:  /pagos-proveedores-por-empresa
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:pagosProveedoresPorEmpresa" }
+
+
+
+venta_dolares_comprador:
+    path:  /venta-dolares-comprador
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:ventaDolaresPorComprador" }    
+
+_generar_pdf_pagos_proveedores:
+    path:  /pdf-pagos-proveedores-por-empresa/{id}/{tipoReporte}
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:generarPdf"}
+    
+_ajax_enviar_correo_entregas:    
+    path:  /enviar-correo-entregas-por-proveedor-y-fechas
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:enviarCorreoEntregasProveedor"}
+    
+_ajax_enviar_correo_pagos_proveedor_por_fecha:    
+    path:  /enviar-correo-pagos-proveedor-por-fecha
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:crearCorreoPagosProveedorPorFecha"}
+    
+_ajax_enviar_correo_cierres_proveedor_por_fecha:    
+    path:  /enviar-correo-cierres-proveedor-por-fecha
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:crearCorreoCierresProveedorPorFecha"}    
+    
+_excel_pagos_proveedor_por_fecha:    
+    path:  /generar-excel-pagos-proveedor-por-fecha/{proveedorId}/{feDesde}/{feHasta}
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:excelPagosProveedorPorFechas"}    

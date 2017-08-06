@@ -1,0 +1,70 @@
+empresas-proveedores:
+    path:  /
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:index" }
+
+empresas-proveedores_show:
+    path:  /{id}/show
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:show" }
+
+empresas-proveedores_new:
+    path:  /new
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:new" }
+
+empresas-proveedores_create:
+    path:  /create
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:create" }
+    requirements: { methods: post }
+
+empresas-proveedores_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:edit" }
+
+empresas-proveedores_update:
+    path:  /{id}/update
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:update" }
+    requirements: { methods: post|put }
+
+empresas-proveedores_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:delete" }
+#    requirements: { methods: post|delete }
+
+_ajax_agregar_nro_cuenta_empresa:
+    path:  /ajax-agregar-nro-cuenta-empresa
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:agregarNroCuentaEmpresa" } 
+    
+_ajax_eliminar_nro_cuenta_empresa:
+    path:  /ajax-eliminar-nro-cuenta-empresa
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:eliminarNroCuentaEmpresa" }     
+
+empresas-casa:
+    path:  /empresas-casa
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:index" }  
+    
+empresas-casa_create:
+    path:  /empresas-casa-create
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:create" }
+    requirements: { methods: post }
+    
+empresas-casa_new:
+    path:  /empresas-casa-new
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:new" }    
+    
+empresas-casa_edit:
+    path:  /{id}/empresas-casa-edit
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:edit" } 
+    
+empresas-casa_update:
+    path:  /{id}/empresas-casa-update
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:update" }
+    requirements: { methods: post|put }
+    
+    
+empresas-casa_show:
+    path:  /{id}/empresas-casa-show
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:show" }   
+    
+empresas-casa_delete:
+    path:  /{id}/empresas-casa-delete
+    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:delete" }
+#    requirements: { methods: post|delete }    

@@ -1,0 +1,125 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Pagos Varios{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Pagos Varios<small>Registrar</small>
+  </h1>
+</div>
+<div class="col-xs-11 col-md-offset-2 col-md-10">
+    {{ form_start(form) }}
+    
+    <div class="form-group">
+      <div class="col-xs-9">
+        {{ form_label(form.fePago) }}
+        {{ form_widget(form.fePago) }}
+        {{ form_errors(form.fePago) }}
+      </div>
+  
+      <div class="col-xs-9">
+      {{ form_label(form.tipoPagoVario) }}
+      {{ form_widget(form.tipoPagoVario) }}
+      {{ form_errors(form.tipoPagoVario) }}
+      </div>
+
+      <div class="col-xs-9">      
+      {{ form_label(form.tipoTransaccion) }}
+      {{ form_widget(form.tipoTransaccion) }}
+      {{ form_errors(form.tipoTransaccion) }}
+      </div>
+
+      <div class="col-xs-9"> 
+      {{ form_label(form.tipoPago) }}
+      {{ form_widget(form.tipoPago) }}
+      {{ form_errors(form.tipoPago) }}    
+      </div>
+
+      <div class="campos-ocultos">
+        <div class="col-xs-9"> 
+        {{ form_label(form.nroReferencia) }}
+        {{ form_widget(form.nroReferencia) }}
+        {{ form_errors(form.nroReferencia) }}
+        </div>
+      </div> 
+
+
+        <div class="col-xs-9">
+          {{ form_label(form.empresaCasa) }}
+          {{ form_widget(form.empresaCasa) }}
+          {{ form_errors(form.empresaCasa) }}
+        </div>
+
+        <div class="col-xs-9">
+          {{ form_label(form.montoPago) }}
+          {{ form_widget(form.montoPago) }}
+          {{ form_errors(form.montoPago) }}
+        </div>
+
+        <div class="col-xs-9">
+          {{ form_label(form.descripcionPago) }}
+          {{ form_widget(form.descripcionPago) }}
+          {{ form_errors(form.descripcionPago) }}
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <div class='col-md-offset-7 col-md-4'>
+          {{ form_widget(form.submit) }}  
+        </div>
+      </div>
+    </div>
+    {{ form_end(form)}}
+</div>
+
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(function(){
+            
+  $('.campos-ocultos').hide(); 
+  
+  var campoTipoTransaccion = $('#loro_transferenciasbundle_pagosvarios_tipoTransaccion');
+  
+  campoTipoTransaccion.change(function(){
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else {
+      $('#loro_transferenciasbundle_pagosvarios_nroReferencia').val('');
+      $('.campos-ocultos').hide();
+    }  
+  });
+  
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_transferenciasbundle_pagosvarios_fePago" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+   var montoPagado = $('#loro_transferenciasbundle_pagosvarios_montoPago');
+   montoPagado.number(true,2,',','.');
+  
+   $("#form-pagos-varios").submit(function(e) {
+
+                 var montoPagado = $('#loro_transferenciasbundle_pagosvarios_montoPago');
+                 var nuevoValorMontoPagado = $.number(montoPagado.val(), 2,'.','' );
+                 montoPagado.number(true,2,'.','');
+                 montoPagado.val(nuevoValorMontoPagado);
+            });          
+        });
+        
+     $('#loro_transferenciasbundle_pagosvarios_tipoPago').change(function(){
+         if($(this).val() == 'B') {
+            $('#tipo-moneda').html('Bs.'); 
+         } else if($(this).val() == 'E') {
+            $('#tipo-moneda').html('€'); 
+         } else {
+            $('#tipo-moneda').html(''); 
+         }
+         
+     });
+    </script>
+{% endblock %}

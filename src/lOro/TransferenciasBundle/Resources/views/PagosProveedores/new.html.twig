@@ -1,0 +1,536 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Pagos Proveedores{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Pago de Proveedor<small>Registrar</small>
+  </h1>
+</div>
+<div class="col-lg-12">
+    
+        <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+    
+    <div class="col-lg-6 panel-group panel-success">
+      <div class="panel panel-success">
+       <div class="panel-heading">
+         <h4 class="panel-title">
+           {% if pdf %}
+             {% for pos,text in pdf %}
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ pos }}">
+                            {{ nbArchivo }} - Pagina # {{ (pos + 1) }}
+                        </a>
+                        {% endfor %}
+                      {% else %}
+                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse">
+                            Archivo PDF - Pagina #
+                        </a>
+                      {% endif %}
+                    </h4>
+                </div>
+      {% if pdf %}
+        {% for pos,text in pdf %}
+             <div id="collapse{{ pos }}" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <pre>
+                            {{ text }}
+                        </pre>
+                    </div>
+                </div>
+            
+        {% endfor %}
+      {% else %}
+<div id="collapse" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <pre>
+                            Seleccione un archivo PDF para mostrar
+                        </pre>
+                    </div>
+                </div>          
+      {% endif %}
+      </div>
+    </div>
+    
+<div class="col-lg-6">
+    <div>
+    {{ form_start(formUpload) }}
+    
+				 <!--div class="input-group input-group-lg">
+					<input type="file" class="form-control" id="inputFile" name="inputFile" placeholder="File">
+				</div-->
+ 
+                               
+<div class="col-lg-11 col-lg-offset-1">    
+<div class="col-lg-7" style="margin-left:20px;">
+      {{ form_widget(formUpload.inputFile) }}
+    {{ form_errors(formUpload.inputFile) }}
+</div>
+
+<div class="col-lg-2">
+    {{ form_widget(formUpload.submit) }}
+</div>
+
+    {{ form_end(formUpload)}}
+</div>
+
+
+    
+    {{ form_start(form) }}
+   
+    
+    {{ form_label(form.fePago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.fePago) }}
+    </div>
+    {{ form_errors(form.fePago) }}
+        
+    {{ form_label(form.tipoTransaccion) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.tipoTransaccion) }}
+    </div>
+    {{ form_errors(form.tipoTransaccion) }}
+
+    {{ form_label(form.tipoPago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.tipoPago) }}
+    </div>
+    {{ form_errors(form.tipoPago) }}     
+
+    <div class="campos-ocultos">   
+    {{ form_label(form.banco) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.banco) }}
+    </div>
+    {{ form_errors(form.banco) }}
+    </div>
+    
+    <div class="campos-ocultos">   
+    {{ form_label(form.nroReferencia) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">N°</span>
+      {{ form_widget(form.nroReferencia) }}
+    </div>
+    {{ form_errors(form.nroReferencia) }}
+    </div>
+        
+    {{ form_label(form.empresaCasa) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.empresaCasa) }}
+    </div>
+    {{ form_errors(form.empresaCasa) }}
+        
+    {{ form_label(form.montoPagado) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon" id="tipo-moneda"></span>
+      {{ form_widget(form.montoPagado) }}
+    </div>
+    {{ form_errors(form.montoPagado) }}
+    
+    {{ form_label(form.proveedor) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.proveedor) }}
+    </div>
+    {{ form_errors(form.proveedor) }}
+    
+    <div id="inputEmpresasPago">
+    {{ form_label(form.empresaPago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.empresaPago) }}
+    </div>
+    {{ form_errors(form.empresaPago) }}
+    </div>
+    <div id="alertaProveedor"  style="margin-top:15px;" class="alert alert-danger mensajes-info">
+        El proveedor seleccionado no posee ninguna empresa asociada, por favor registre una <a href="{{ path('empresas-proveedores_new') }}">Aquí</a>
+    </div>
+    
+    <div id="alertaPagoProveedorCargada"  style="margin-top:15px;" class="alert alert-danger mensajes-info">
+     El pago a proveedor con ese numero de referencia ya ha sido registrado
+    </div>    
+
+<div style='margin-top:12px;'>
+    {{ form_widget(form.submit) }}
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('pagos_proveedores') }}">Volver</a>  
+</div>
+
+    {{ form_end(form)}}
+</div>
+</div>
+
+<!-- LLamado del twig con el modal de Agregar Otra Empresa -->
+{% include 'lOroTransferenciasBundle:PagosProveedores/extensiones:modal_agregar_empresa.html.twig' %}
+
+
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = {
+    urlVerificarNroReferencia: '{{ path('_ajax_verificar_nro_referencia') }}'
+  };
+  
+  (function( $ ) {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox form-control" )
+          .insertAfter( this.element );
+ 
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+ 
+      _createAutocomplete: function() {
+        var selected = this.element.children( ":selected" ),
+          value = selected.val() ? selected.text() : "";
+ 
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .addClass( "col-lg-10 auto-complete-empresas" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: $.proxy( this, "_source" )
+          })
+          .tooltip({
+            tooltipClass: "ui-state-highlight"
+          });
+ 
+        this._on( this.input, {
+          autocompleteselect: function( event, ui ) {
+            ui.item.option.selected = true;
+            this._trigger( "select", event, {
+              item: ui.item.option
+            });
+          },
+ 
+          autocompletechange: "_removeIfInvalid"
+        });
+      },
+ 
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+ 
+        $( "<a>" )
+          .attr( "tabIndex", 10 )
+          .attr( "title", "Mostrar Todas las Empresas" )
+          .tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right glyphicon glyphicon-chevron-down" )
+          .mousedown(function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .click(function() {
+            input.focus();
+ 
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+ 
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+ 
+      _source: function( request, response ) {
+        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+        response( this.element.children( "option" ).map(function() {
+          var text = $( this ).text();
+          if ( this.value && ( !request.term || matcher.test(text) ) )
+            return {
+              label: text,
+              value: text,
+              option: this
+            };
+        }) );
+      },
+ 
+      _removeIfInvalid: function( event, ui ) {
+ 
+        // Selected an item, nothing to do
+        if ( ui.item ) {
+          return;
+        }
+ 
+        // Search for a match (case-insensitive)
+        var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+        this.element.children( "option" ).each(function() {
+          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+            this.selected = valid = true;
+            return false;
+          }
+        });
+ 
+        // Found a match, nothing to do
+        if ( valid ) {
+          return;
+        }
+ 
+        // Remove invalid value
+        this.input
+          .val( "" )
+          .attr( "title", value + " didn't match any item" )
+          .tooltip( "open" );
+        this.element.val( "" );
+        this._delay(function() {
+          this.input.tooltip( "close" ).attr( "title", "" );
+        }, 2500 );
+        this.input.autocomplete( "instance" ).term = "";
+      },
+ 
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+  })( jQuery );
+ 
+  $(function() {
+    $( "#loro_entitybundle_pagos_proveedores_empresaPago" ).combobox();
+  });
+  </script>
+    
+    <script>
+
+        
+        $(function(){
+
+          
+      var montoPagado = $('#loro_entitybundle_pagos_proveedores_montoPagado');
+  montoPagado.val($.number(montoPagado.val(),2,',','.'));
+  montoPagado.number(true,2,',','.');    
+  
+  
+            
+   $('.campos-ocultos').hide(); 
+  
+  var campoTipoTransaccion = $('#loro_entitybundle_pagos_proveedores_tipoTransaccion');
+  
+  if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+  } else { 
+      $('#loro_entitybundle_pagos_proveedores_nroReferencia').val(' ');
+      $('.campos-ocultos').hide();
+  }  
+    
+  campoTipoTransaccion.change(function(){
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else { 
+      $('#loro_entitybundle_pagos_proveedores_nroReferencia').val(' ');
+      $('.campos-ocultos').hide();
+    }  
+  });
+  
+   $('#alertaPagoProveedorCargada').hide(); 
+   
+  $('#loro_entitybundle_pagos_proveedores_nroReferencia').on("keyup",function(){
+     $.post(_globales.urlVerificarNroReferencia,
+     {
+       nroReferencia: $(this).val()
+     },function(encontrado)
+       {
+         if(encontrado == 'si') {
+           $('#loro_entitybundle_pagos_proveedores_submit').attr('disabled','disabled');
+           $('#alertaPagoProveedorCargada').show();
+         } else {
+            $('#loro_entitybundle_pagos_proveedores_submit').prop("disabled", false);
+            $('#alertaPagoProveedorCargada').hide();  
+           }
+       }
+     );
+  });
+  
+            
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_pagos_proveedores_fePago" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+   var montoPagado = $('#loro_entitybundle_pagos_proveedores_montoPagado');
+   montoPagado.number(true,2,',','.');
+  
+          var proveedor = $('#loro_entitybundle_pagos_proveedores_proveedor');
+          var empresasProveedor = $('#loro_entitybundle_pagos_proveedores_empresaPago');
+          var urlBuscarEmpresasPorProveedor = "{{ path('_buscar_empresas_por_proveedor') }}";
+          var urlAgregarEmpresaPorProveedor = "{{ path('_agregar_empresa_por_proveedor') }}";
+          
+          
+          
+          $('#alertaProveedor').hide();
+          
+          if(proveedor.val() != '')
+          {
+            $('#inputEmpresasPago').show();  
+            
+$.post(urlBuscarEmpresasPorProveedor,
+                {
+                  idProveedor: proveedor.val()
+                },function(data)
+                  {
+                    if(data != 'vacio')
+                    {
+                      var empresas = jQuery.parseJSON(data);
+                      $('#alertaProveedor').hide();
+                      $('#inputEmpresasPago').show();
+                      
+                      var html = '<option value="">Seleccione una Opción</option>';
+                      
+                      for(var row in empresas)
+                      {
+                        html += '<option value="'+empresas[row].id+'">'+empresas[row].nbEmpresa+'</option>'; 
+                      }
+                      
+                      html += '<option value="9999">Otra Empresa</option>';  
+                      
+                      empresasProveedor.html(html);    
+                    } else
+                      {
+                      
+                      var html = '<option value="">Seleccione una Opción</option>';
+                      
+                        html += '<option value="9999">Otra Empresa</option>';  
+                      
+                        empresasProveedor.html(html);  
+                      }
+                });
+                
+          } else {
+            $('#inputEmpresasPago').hide();  
+          }
+          
+          proveedor.change(function(){
+
+              
+                $.post(urlBuscarEmpresasPorProveedor,
+                {
+                  idProveedor: proveedor.val()
+                },function(data)
+                  {
+                    if(data != 'vacio')
+                    {
+                      var empresas = jQuery.parseJSON(data);
+                      $('#alertaProveedor').hide();
+                      $('#inputEmpresasPago').show();
+                      
+                      var html = '<option value="">Seleccione una Opción</option>';
+                      
+                      for(var row in empresas)
+                      {
+                        html += '<option value="'+empresas[row].id+'">'+empresas[row].nbEmpresa+'</option>'; 
+                      }
+                      
+                      html += '<option value="9999">Otra Empresa</option>';  
+                      
+                      empresasProveedor.html(html);    
+                    } else
+                      {
+                      
+                      var html = '<option value="">Seleccione una Opción</option>';
+                      
+                        html += '<option value="9999">Otra Empresa</option>';  
+                      
+                        empresasProveedor.html(html);  
+                      }
+                });
+          });
+          
+          
+         
+         $('.auto-complete-empresas').on('keydown',function(){
+           if(empresasProveedor.val() == 9999) {
+             $('#proveedor-id').val(proveedor.val());
+             $('#modalAgregarEmpresa').modal('show');
+           }           
+         });
+         
+        $('.auto-complete-empresas').on('keyup',function(){
+           if(empresasProveedor.val() == 9999) {
+             $('#proveedor-id').val(proveedor.val());
+             $('#modalAgregarEmpresa').modal('show');
+           }           
+         });         
+
+
+         $('#submit-agregar-empresa').click(function(e) {
+             
+                 $.ajax({
+        type: "POST",
+        url: urlAgregarEmpresaPorProveedor,
+        data: $('#form-agregar-empresa').serialize(),
+        success: function(data) {
+        
+        var html = '<option value="'+data.empresaId+'">'+data.nombreEmpresa+'</option>';  
+                      
+          var nuevaOpt = new Option(data.nombreEmpresa,data.empresaId);
+          $('.auto-complete-empresas').append(nuevaOpt); 
+          
+          $('.auto-complete-empresas').val(data.nombreEmpresa); 
+          
+          empresasProveedor.append(nuevaOpt); 
+          $('#proveedor-id').val('');
+          $('#nombre-empresa').val('');
+          $('#modalAgregarEmpresa').modal('hide');
+          nuevaOpt.setAttribute("selected","selected");
+        }
+    });           
+     e.preventDefault();
+         });  
+             
+              
+              $("#loro_entitybundle_pagos_proveedores_submit").click(function(e) {
+     
+     var montoPagado = $('#loro_entitybundle_pagos_proveedores_montoPagado');
+     
+     var nuevoValorMontoPagado = $.number(montoPagado.val(), 2,'.','' );
+     montoPagado.number(true,2,'.','');
+     montoPagado.val(nuevoValorMontoPagado);
+     
+    
+}); 
+/*
+            $("#form-pagos-proveedores").submit(function(e) {
+
+                 var montoPagado = $('#loro_entitybundle_pagos_proveedores_montoPagado');
+                 var nuevoValorMontoPagado = $.number(montoPagado.val(), 2,'.','' );
+                 montoPagado.number(true,2,'.','');
+                 montoPagado.val(nuevoValorMontoPagado);
+            });  
+     */        
+        });
+        
+     $('#loro_entitybundle_pagos_proveedores_tipoPago').change(function(){
+         if($(this).val() == 'B') {
+            $('#tipo-moneda').html('Bs.'); 
+         } else if($(this).val() == 'E') {
+            $('#tipo-moneda').html('€'); 
+         } else {
+            $('#tipo-moneda').html(''); 
+         }
+         
+     });     
+     
+     
+    </script>
+{% endblock %}

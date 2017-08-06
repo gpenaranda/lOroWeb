@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Pagos a proveedores por empresa</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+    {{ form(form) }}
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if poseePagos != 'vacio' %}
+    {% if poseePagos == false %}
+        <div class="row" style="margin:0px 10% 0 10%;">
+          <div class="alert alert-danger">
+            No se poseen pagos generados
+          </div>
+        </div> 
+    {% elseif poseePagos == true %}
+        <div class="col-lg-offset-10" style="margin-bottom:10px;">
+          <a href="{{ path('_generar_pdf_pagos_proveedores',{ 'id': idProveedor, 'tipoReporte': 'pagoProveedor' }) }}">
+            <img style="width:52px; height:52px;"src="{{ asset('bundles/lOroBundle/images/pdf-icon.png') }}">
+          </a>
+        </div>
+       <table class="table table-hover table-condensed tablasListados">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">ID del Pago Realizado</th>
+                    <th style="text-align:center;">Nombre de la Empresa</th>
+                    <th style="text-align:center;">Monto Pagado (Bs.)</th>
+                    <th style="text-align:center;">Fecha de Pago</th>
+                    <th style="text-align:center;">Numero de Referencia</th>
+                    <th style="text-align:center;">Tipo de Transacci&oacute;n</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for pagoProveedor in viewPagosProveedores %}
+                <tr>
+                  <td>{{ pagoProveedor.id_pago_proveedor }}</td>
+                  <td>{{ pagoProveedor.nombre_empresa }}</td>
+                  <td>{{ pagoProveedor.monto_pagado | number_format('2',',','.') }} Bs.</td>
+                  <td>{{ pagoProveedor.fe_pago | date('d-m-Y') }}</td>
+                  <td>{{ pagoProveedor.nro_referencia }}</td>
+                  <td>{{ pagoProveedor.nb_transaccion }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+{% endif %}
+{% endblock %}

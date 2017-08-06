@@ -1,0 +1,277 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Empresas Proveedor{% endblock %}
+
+
+{% block body -%}
+
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+ 
+<div class="row">
+    <div class="col-md-8  col-md-offset-2">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h1 style="font-size: 40pt; text-align: center;">Empresa ID N° {{ entity.id }}</h1>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <h2>Nombre</h2>
+                    <p>{{ entity.nombreEmpresa }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h2>Documento de Identificaci&oacute;n</h2>
+                    <p>{{ entity.rif }}</p>
+                </div>
+                <br>
+                <div class="col-md-12">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th>Banco</th>
+                            <th>Nro de Cuenta</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tbody id="body-nros-cuenta-registrados">
+                        {% for cuenta in cuentasEmpresa %}
+                        <tr id="empresaBanco_{{ cuenta.banco.id }}_{{ entity.id }}_{{ cuenta.nroCuenta}}">
+                            <td>{{ cuenta.banco.nbBanco }}</td>
+                            <td class="nros-cuentas-registrados">{{ cuenta.nroCuenta }}</td>
+                            <td>
+                                <a href="#" onClick="event.preventDefault(); eliminarNroCuentaEmpresa('{{ cuenta.banco.id }}','{{ entity.id }}','{{ cuenta.nroCuenta}}');">Eliminar Cuenta</a>
+                            </td>
+                        </tr>    
+                        {% endfor %}
+                        </tbody>
+                    </table>   
+                </div>
+                <hr>
+                <div class="col-md-3 col-md-offset-8">
+                    <a class="btn btn-md btn-success" id="agregar-nro-cuenta" href="#">Agregar N° de cuenta</a>
+                </div>
+                <hr>
+                <div class="col-md-12" id="panel-form-nro-cuenta" style="display: none;">
+                    <form name="cuenta-por-empresa" method="post" action="#">
+                            <div class='ui-widget'>
+                                <label for="banco" class="required">Banco</label>
+                                <select id="banco" name="banco" required="required" class="form-control">
+                                    <option value="" selected="selected">Seleccione una Opción</option>
+                                    {% for banco in bancos %}
+                                      <option value="{{ banco.id }}" >{{ banco.nbBanco }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="nro-cuenta" class="required">N° de Cuenta</label>
+                                <input type="text" id="nro-cuenta" name="nro-cuenta" required="required" class="form-control">
+                            </div>
+                        <div>
+                            <button type="submit" id="cuenta-por-empresa-submit" name="cuenta-por-empresa-submit" class="btn btn-success" style="margin-top: 10px;">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <a  href="{{ path('empresas-proveedores_delete',{ 'id' : entity.id}) }}" class="btn btn-lg btn-danger" >Eliminar</a>
+                <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('empresas-proveedores') }}">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+var _globales = {
+    idEmpresa: '{{ entity.id }}'
+};
+
+$('#nro-cuenta').mask('9999-9999-9999-9999-9999');
+    
+$('#agregar-nro-cuenta').click(function(e){
+    e.preventDefault();
+    
+    $('#panel-form-nro-cuenta').show();
+});    
+
+$('#cuenta-por-empresa-submit').click(function(e){
+    e.preventDefault();
+    
+    $.ajax({
+        type: "POST",
+        url: "{{ url('_ajax_agregar_nro_cuenta_empresa') }}",
+        data: {
+          idEmpresa: _globales.idEmpresa,
+          banco: $('#banco').val(),
+          nroCuenta: $('#nro-cuenta').val()
+        },
+        success: function(data) {
+        
+          if(data == 'registrado') {
+            alert('El Nro de Cuenta ya se encuentra asociado a la Empresa');
+          } else {
+              
+              var nroCuentaRegistrado = "<tr id='empresaBanco_"+data.idBanco+"_"+data.idEmpresa+"_"+data.nroCuenta+"'>";
+                  nroCuentaRegistrado += "<td>"+data.banco+"</td>";
+                  nroCuentaRegistrado += "<td>"+data.nroCuenta+"</td>";
+                  nroCuentaRegistrado += '<td><a href="#" onClick="event.preventDefault(); eliminarNroCuentaEmpresa(\''+data.idBanco+'\',{{ entity.id }},\''+data.nroCuenta+'\');">Eliminar Cuenta</a></td>';
+                  nroCuentaRegistrado += "</tr>";
+                  
+              $('#body-nros-cuenta-registrados').append(nroCuentaRegistrado);
+              $('#banco').val('');
+              $('#nro-cuenta').val('');
+             
+          }
+            
+        }
+    });
+});
+
+function eliminarNroCuentaEmpresa(idBanco,idEmpresa,nroCuenta) {
+       
+  $.ajax({
+        type: "POST",
+        url: "{{ url('_ajax_eliminar_nro_cuenta_empresa') }}",
+        data: {
+          idEmpresa:idEmpresa,
+          idBanco:idBanco,
+          nroCuenta:nroCuenta
+        },
+        success: function(data) {
+         $('#empresaBanco_'+idBanco+'_'+idEmpresa+'_'+nroCuenta).remove();     
+        }
+    });
+    
+}
+</script>
+<script>
+  (function( $ ) {
+    $.widget( "custom.combobox", {
+      _create: function() {
+        this.wrapper = $( "<span>" )
+          .addClass( "custom-combobox" )
+          .insertAfter( this.element );
+ 
+        this.element.hide();
+        this._createAutocomplete();
+        this._createShowAllButton();
+      },
+ 
+      _createAutocomplete: function() {
+        var selected = this.element.children( ":selected" ),
+          value = selected.val() ? selected.text() : "";
+ 
+        this.input = $( "<input>" )
+          .appendTo( this.wrapper )
+          .val( value )
+          .attr( "title", "" )
+          .addClass( "form-control" )
+          .autocomplete({
+            delay: 0,
+            minLength: 0,
+            source: $.proxy( this, "_source" )
+          })
+          .tooltip({
+            tooltipClass: "ui-state-highlight"
+          });
+ 
+        this._on( this.input, {
+          autocompleteselect: function( event, ui ) {
+            ui.item.option.selected = true;
+            this._trigger( "select", event, {
+              item: ui.item.option
+            });
+          },
+ 
+          autocompletechange: "_removeIfInvalid"
+        });
+      },
+ 
+      _createShowAllButton: function() {
+        var input = this.input,
+          wasOpen = false;
+ 
+        $( "<a>" )
+          .attr( "tabIndex", -1 )
+          .attr( "title", "Show All Items" )
+          .tooltip()
+          .appendTo( this.wrapper )
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })
+          .removeClass( "ui-corner-all" )
+          .addClass( "custom-combobox-toggle ui-corner-right" )
+          .mousedown(function() {
+            wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+          })
+          .click(function() {
+            input.focus();
+ 
+            // Close if already visible
+            if ( wasOpen ) {
+              return;
+            }
+ 
+            // Pass empty string as value to search for, displaying all results
+            input.autocomplete( "search", "" );
+          });
+      },
+ 
+      _source: function( request, response ) {
+        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+        response( this.element.children( "option" ).map(function() {
+          var text = $( this ).text();
+          if ( this.value && ( !request.term || matcher.test(text) ) )
+            return {
+              label: text,
+              value: text,
+              option: this
+            };
+        }) );
+      },
+ 
+      _removeIfInvalid: function( event, ui ) {
+ 
+        // Selected an item, nothing to do
+        if ( ui.item ) {
+          return;
+        }
+ 
+        // Search for a match (case-insensitive)
+        var value = this.input.val(),
+          valueLowerCase = value.toLowerCase(),
+          valid = false;
+        this.element.children( "option" ).each(function() {
+          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+            this.selected = valid = true;
+            return false;
+          }
+        });
+ 
+        // Found a match, nothing to do
+        if ( valid ) {
+          return;
+        }
+ 
+        // Remove invalid value
+        this.input
+          .val( "" )
+          .attr( "title", value + " didn't match any item" )
+          .tooltip( "open" );
+        this.element.val( "" );
+        this._delay(function() {
+          this.input.tooltip( "close" ).attr( "title", "" );
+        }, 2500 );
+        this.input.autocomplete( "instance" ).term = "";
+      },
+ 
+      _destroy: function() {
+        this.wrapper.remove();
+        this.element.show();
+      }
+    });
+  })( jQuery );
+ 
+  $(function() {
+    $( "#banco" ).combobox();
+  });
+  </script>
+{% endblock javascripts %}

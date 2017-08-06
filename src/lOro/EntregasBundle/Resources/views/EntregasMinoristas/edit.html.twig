@@ -1,0 +1,171 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Entregas
+      <small>Editar</small>
+  </h1>
+</div>
+<div class="col-md-11">
+  {{ form_start(form_edit) }}
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+      {{ form_label(form_edit.feEntrega) }}
+      {{ form_widget(form_edit.feEntrega) }}
+      {{ form_errors(form_edit.feEntrega) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">        
+        {{ form_label(form_edit.dolarReferenciaDia) }}
+        {{ form_widget(form_edit.dolarReferenciaDia) }}
+        {{ form_errors(form_edit.dolarReferenciaDia) }}   
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.valorOnza) }}
+        {{ form_widget(form_edit.valorOnza) }}
+        {{ form_errors(form_edit.valorOnza) }}   
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.pesoBrutoEntrega) }}
+        {{ form_widget(form_edit.pesoBrutoEntrega) }}
+        {{ form_errors(form_edit.pesoBrutoEntrega) }}          
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.ley) }}
+        {{ form_widget(form_edit.ley) }}
+        {{ form_errors(form_edit.ley) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.pesoPuroEntrega) }}
+        {{ form_widget(form_edit.pesoPuroEntrega) }}
+        {{ form_errors(form_edit.pesoPuroEntrega) }}        
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.montoBsPorGramo) }}
+        {{ form_widget(form_edit.montoBsPorGramo) }}
+        {{ form_errors(form_edit.montoBsPorGramo) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.totalMontoBs) }}
+        {{ form_widget(form_edit.totalMontoBs) }}
+        {{ form_errors(form_edit.totalMontoBs) }}    
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form_edit.minorista) }}
+        {{ form_widget(form_edit.minorista) }}
+        {{ form_errors(form_edit.minorista) }}  
+      </div>
+    </div>        
+
+    <div class="form-group">
+      <div class="col-xs-4 col-md-offset-8 col-md-3">
+        {{ form_widget(form_edit.submit) }}
+      </div>
+    </div>
+    
+  {{ form_end(form_edit) }} 
+</div>     
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = { feEntrega: $( "#loro_entitybundle_entregas_minoristas_feEntrega" ),
+                    arregloOpcionesDP: { changeMonth: false,
+                                         changeYear: false,
+                                         buttonImageOnly: false,
+                                         dateFormat: 'dd-mm-yy' },
+                    pesoBrutoEntrega: $('#loro_entitybundle_entregas_minoristas_pesoBrutoEntrega'),
+                    valorOnza: $('#loro_entitybundle_entregas_minoristas_valorOnza'),
+                    dolarReferenciaDia: $('#loro_entitybundle_entregas_minoristas_dolarReferenciaDia'),
+                    ley: $('#loro_entitybundle_entregas_minoristas_ley'),
+                    pesoPuroEntrega: $('#loro_entitybundle_entregas_minoristas_pesoPuroEntrega'),
+                    montoBsPorGramo: $('#loro_entitybundle_entregas_minoristas_montoBsPorGramo'),
+                    totalMontoBs: $('#loro_entitybundle_entregas_minoristas_totalMontoBs'),
+                    formId: 'entregas-form',
+                    formBaseName: 'loro_entitybundle_entregas_minoristas_'
+  };
+
+  _globales.montoBsPorGramo.val($.number(_globales.montoBsPorGramo.val(), 2,',','.' ));
+  _globales.montoBsPorGramo.number( true, 2,',','.' );
+  
+  _globales.valorOnza.val($.number(_globales.valorOnza.val(), 2,',','.' ));
+  _globales.valorOnza.number( true, 2,',','.' );  
+  
+  _globales.dolarReferenciaDia.val($.number(_globales.dolarReferenciaDia.val(), 2,',','.' ));
+  _globales.dolarReferenciaDia.number( true, 2,',','.' );
+  
+  _globales.totalMontoBs.val($.number(_globales.totalMontoBs.val(), 2,',','.' ));
+  _globales.totalMontoBs.number( true, 2,',','.' );    
+  
+  _globales.montoBsPorGramo.keyup(function(){
+    var totalMontoBs = _globales.montoBsPorGramo.val() * _globales.pesoBrutoEntrega.val();
+    
+ 
+    
+    _globales.totalMontoBs.val(totalMontoBs);     
+  });    
+
+  _globales.pesoBrutoEntrega.val($.number(_globales.pesoBrutoEntrega.val(), 2,',','.' ));
+  _globales.pesoBrutoEntrega.number( true, 2,',','.' );
+  
+  _globales.ley.val($.number(_globales.ley.val(), 2,',','.' ));
+  _globales.ley.number( true, 2,',','.' );
+  
+  _globales.pesoPuroEntrega.val($.number(_globales.pesoPuroEntrega.val(), 2,',','.' ));
+  _globales.pesoPuroEntrega.number( true, 2,',','.' );
+  
+  
+  _globales.ley.number( true, 2,',','.' );
+  _globales.pesoBrutoEntrega.number( true, 2,',','.' );
+  
+  _globales.ley.keyup(function(){
+    var pesoBrutoXLey = _globales.pesoBrutoEntrega.val() * _globales.ley.val();
+    
+    var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+    _globales.pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));     
+  });  
+  
+  _globales.pesoBrutoEntrega.keyup(function(){
+    var pesoBrutoXLey = _globales.pesoBrutoEntrega.val() * _globales.ley.val();
+    
+    var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+    _globales.pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));     
+  });  
+
+
+  _globales.feEntrega.datepicker(_globales.arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+</script>
+
+  {% javascripts  'assets/self/js/retailSuppliers/new_validation.js'  filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+  <script>
+    $("#"+_globales.formBaseName+"minorista").combobox();
+  </script>
+{% endblock %}

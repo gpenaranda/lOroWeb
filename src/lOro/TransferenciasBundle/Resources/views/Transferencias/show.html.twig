@@ -1,0 +1,69 @@
+{% extends '::base.html.twig' %}
+{% block title %}Transferencias Aupanas/HC{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1 style="font-size: 40pt;">Transferencias Aupanas/HC
+      <small style="margin-left:10px; font-size: 26pt;">Ver</small>
+  </h1>
+</div>
+<div class="col-lg-6 col-lg-offset-3 ">
+        <div class="panel panel-info">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Transferencia N° {{ entity.id }}</div>
+            <div class="panel-body">
+                <table width="100%" class="table-hover table-condensed table-bordered">
+                    <tr>
+                        <td style="text-align: right;">Fecha de la Transferencia</td>
+                        <td style="text-align: center;">{{ entity.feTransferencia | date('d-m-Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Monto de la Transferencia</td>
+                        <td style="text-align: center;">{{ entity.montoTransferencia | number_format('2',',','.') }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Tipo de Transacci&oacute;n</td>
+                        <td style="text-align: center;">{{ entity.tipoTransaccion.nbTransaccion }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Estatus de la Transacci&oacute;n</td>
+                        <td style="text-align: center;">{% if entity.estatus == 'C' %}
+                                                          Confirmada
+                                                        {% elseif entity.estatus == 'D' %}
+                                                          Devuelta
+                                                        {% else %}
+                                                          Pendiente
+                                                        {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Nro de Referencia</td>
+                        <td style="text-align: center;">{{ entity.nroReferencia }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Nombre del Beneficiario</td>
+                        <td style="text-align: center;">{{ entity.beneficiario.nbProveedor  }}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;">Nombre Tercero del Beneficiario</td>
+                        <td style="text-align: center;">{{ entity.empresa }}</td>
+                    </tr>
+                      {% if entity.estatus == 'D' %}
+                    <tr>
+                        <td style="text-align: right;">Concepto de la Devolución</td>
+                        <td style="text-align: center;">{{ entity.observacionDevolucion }}</td>
+                    </tr>
+                    {% endif %}
+                    
+                </table>
+            </div>
+            <div class="panel-footer">
+    <a  href="{{ path('transferencias_delete',{ 'id' : entity.id}) }}" class="btn btn-lg btn-danger" >Eliminar</a>
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('transferencias_list') }}">Volver</a> 
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+

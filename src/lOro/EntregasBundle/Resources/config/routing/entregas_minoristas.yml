@@ -1,0 +1,32 @@
+entregas_minoristas:
+    pattern:  /
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:index" }
+    
+entregas_minoristas_new:
+    pattern:  /entregas-minoristas-new
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:new" }
+    
+entregas_minoristas_edit:
+    pattern:  /entregas-minoristas-edit/{id}
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:edit" }
+    
+    
+asociar_entregas_minoristas_pieza:
+    pattern:  /asociar-entregas-minoristas-pieza
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:asociarEntregasMinoristasPieza" }
+    
+asociacion_chatarra_piezas_new:
+    pattern:  /asociar-entrega-piezas-minorista-new
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:asociarEntregasMinoristasPiezaNew" }
+    
+_asociar_chatarra_a_piezas:
+    pattern:  /_asociar-chatarra-a-piezas
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:asociarChatarraAPiezas" }
+    
+_ajax_buscar_ubicacion_fisica_actual:
+    pattern:  /_ajax_buscar_ubicacion_fisica_actual
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:buscarUbicacionFisicaActual" }
+    
+_ajax_cambiar_ubicacion_fisica_entrega:
+    pattern:  /_ajax_cambiar_ubicacion_fisica_entrega
+    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:cambiarUbicacionFisicaEntrega" }

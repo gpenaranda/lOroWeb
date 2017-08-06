@@ -1,0 +1,94 @@
+{% extends '::base.html.twig' %}
+{% block title %}Conciliaci&oacute;n de Caja{% endblock %}
+{% block body %}
+<div>
+  <h1>Conciliaci&oacute;n  de Caja</h1>
+  
+  
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+      
+  {% if vConciliacionCajaBolivares %}
+  <div class="col-lg-11">
+    <table class="table table-bordered table-condensed">
+        <thead>
+            <tr>
+                <td style="text-align:center; font-size:14pt;">Tipo de Transacci&oacute;n</td>
+                <td style="text-align:center; font-size:14pt;">Fecha</td>
+                <td style="text-align:center; font-size:14pt;">Descripcion</td>
+                <td style="text-align:center; font-size:14pt;">Credito</td>
+                <td style="text-align:center; font-size:14pt;">Debito</td>
+                <td style="text-align:center; font-size:14pt;">Total</td>
+                <td style="text-align:center; font-size:14pt;">Seleccionar</td>
+            </tr>
+            {% set totalAcumulado = 0 %}
+            {% for key,row in vConciliacionCajaBolivares %}
+              {% if row.credito > 0 or row.debito > 0 %}
+            <tr id="columna_{{ key }}">
+                <td style="text-align:center; width:10%;">{% if row.tipo_transaccion  == 'ventas_dolares' %}Venta de Divisa{% elseif row.tipo_transaccion  == 'pagos_varios'%}Pago Vario{% elseif row.tipo_transaccion  == 'pagos_proveedores'%}Pago Proveedor{% elseif row.tipo_transaccion  == 'abonos'%}Abonos Varios{% elseif row.tipo_transaccion  == 'debitos'%}Debitos Varios{% endif %}</td>
+                <td style="text-align:center;">{{ row.fecha | date('d-m-Y') }}</td>
+                <td style="text-align:center;">{{ row.descripcion | upper }}</td>
+                <td style="text-align:center;">{{ row.credito | number_format(2,',','.') }} Bs.</td>
+                <td style="text-align:center;">{{ row.debito | number_format(2,',','.') }} Bs.</td>
+                <td style="text-align:center;">{% set llaveAnterior =  key - 1 %}
+                    {% if llaveAnterior < 0 %}
+                      {% set totalAcumulado = (row.credito - row.debito) %}
+                    {% else %}    
+                      {% set totalAcumulado = ((row.credito - row.debito) + totalAcumulado) %}
+                    {% endif %}
+                    {{ totalAcumulado | number_format(2,',','.') }} Bs.</td>
+                <td style="text-align:center;">
+                  <input type="checkbox" id="trans_{{ key }}" class="checkboxConciliacion" name="transaccion_concialiada" value="{{ row.tipo_transaccion }}|{{ row.id_transaccion }}" />
+                </td>
+            </tr>      
+            {% endif %}
+            {% endfor %}
+        </thead>      
+    </table>
+        <div style="margin-bottom:40px;" class="col-lg-offset-10"><button id="conciliar-caja-button" value="conciliar-caja" class="btn btn-bg btn-success">Conciliar Caja</button></div>
+  </div>
+  {% else %}
+    <div class="row alerta-busqueda" style="margin: 220px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se encontraron registros para conciliar
+      </div>
+    </div>      
+  {% endif %}
+</div>  
+{% endblock %}
+{% block javascripts %}
+<script> 
+  var _globales = {
+    urlConciliarCaja: '{{ path('_ajax_conciliar_caja') }}'    
+  };
+  
+  {% for key,row in vConciliacionCajaBolivares %}
+  $('#trans_{{ key }}').change(function() {
+      if($('#trans_{{ key }}').is(':checked')){
+         $('#columna_{{ key }}').css("background-color", "lightgreen"); 
+      } else {
+      $('#columna_{{ key }}').css("background-color", "white");  
+     }
+      
+  });
+  {% endfor %}
+</script>
+<script>
+  $('#conciliar-caja-button').click(function(){
+      
+  var checkboxSeleccionados = { 'transacciones[]' : []};
+    $(":checked").each(function() {
+      checkboxSeleccionados['transacciones[]'].push($(this).val());
+  });
+  
+    $.ajax({
+            type: "POST",
+            url: _globales.urlConciliarCaja,
+            data: checkboxSeleccionados,
+            success: function(data){
+              location.href = '{{ url('conciliacion-caja') }}';
+            },
+    });
+  });
+</script>
+{% endblock %}

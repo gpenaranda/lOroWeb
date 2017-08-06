@@ -1,0 +1,176 @@
+{% extends '::base.html.twig' %}
+{% block title %}Transferencias Aupanas/HC{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Transferencias Aupanas/HC<small>Listado</small>
+  </h1>
+</div>
+  {% if not transferenciasHc %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen transferencias de Aupanas / HC registradas actualmente
+      </div>
+    </div>   
+  {% endif %}
+  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+    <a style="float:right;" href="{{ path('transferencias_new') }}" class="btn btn-lg btn-success">Agregar Nueva Transferencia</a>
+  </div>
+  {% if transferenciasHc %}
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="display" >
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha</th>
+                <th style="text-align:center;">Beneficiario</th>
+                <th style="text-align:center;">Empresa Beneficiaria</th>                
+                <th style="text-align:center;">Monto de la Transferencia</th>
+                <th style="text-align:center;">Estatus</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities if entity.id != 9999 %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{% if entity.feTransferencia %}{{ entity.feTransferencia | date('Y-m-d') }}{% endif %}</td>
+                <td>{% if entity.beneficiario %}{{ entity.beneficiario.nbProveedor }}{% endif %}</td>
+                <td>{% if entity.empresa %}{{ entity.empresa }}{% endif %}</td>                
+                <td>{{ entity.montoTransferencia | number_format('2',',','.')}}  {% if entity.tipoMonedaTransf %} {{ entity.tipoMonedaTransf.simboloMoneda }} {% endif %}</td>
+                <td id="estatus-{{ entity.id }}">{% if entity.estatus == 'P' %}Pendiente{% elseif entity.estatus == 'D' %}Devuelta{% elseif entity.estatus == 'N' %}No enviada a HC{% else %}Confirmada{% endif %}
+                </td> 
+                <td>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('transferencias_show', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  </a>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('transferencias_edit', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  </a>
+                 {% if entity.estatus != 'C'  and entity.estatus != 'D'%}
+                  <a title="Confirmar Transferencia" data-toggle="modal" data-id="{{ entity.id }}" id="confirmar-{{ entity.id }}" class="open-confirm-transferencia" data-target="#modalConfirmarTransferencia" style="text-decoration: none;" href="#">
+                    <img src="{{ asset('bundles/lOroBundle/images/validar.png') }}" />
+                  </a>
+                 {% endif %}                  
+                 {% if entity.estatus != 'D' %}
+                  <a title="Devolver Transferencia" data-toggle="modal" data-id="{{ entity.id }}" id="devolver-{{ entity.id }}" class="open-devolver-transferencia" data-target="#modalDevolverTransferencia" style="text-decoration: none;" href="#">
+                    <img src="{{ asset('bundles/lOroBundle/images/eliminar.png') }}" />
+                  </a>
+                 {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <!-- LLamado del twig con el modal de Nueva Entrega -->
+    {% include 'lOroTransferenciasBundle:Transferencias/Extensiones:modal_confirmar_transferencia.html.twig' %}
+    
+  
+    
+    
+    <!-- LLamado del twig con el modal de Devolver Transferencia -->
+    {% include 'lOroTransferenciasBundle:Transferencias/Extensiones:modal_devolver_transferencia.html.twig' %}  
+    
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = {
+      idTransferencia: '',
+      urlBuscarDatosTransferencia: '{{ path('_datos_transferencia', { 'id': ':idTransferencia' }) }}',
+      urlConfirmarTransferencia: '{{ path('_confirmar_transferencia', { 'id': ':idTransferencia' }) }}',
+      urlDevolverTransferencia: '{{ path('_devolver_transferencia') }}',
+      titulosNoFiltrados: '[0,1,4,6]',
+      idListado: 'listado-cierres'
+};
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>  
+<script>
+$(document).on("click", ".open-confirm-transferencia", function () {
+     _globales.idTransferencia = $(this).data('id');
+     
+     $("#modalConfirmarTransferencia .id-transferencia").text( _globales.idTransferencia );
+     
+     /* Reemplaza la el :idTransferencia de la URL por el ID que se trae del modal */
+     var url = _globales.urlBuscarDatosTransferencia;
+     url = url.replace(':idTransferencia',_globales.idTransferencia);
+     
+      
+      $.ajax({
+        type: 'get',
+        url: url,
+        id: _globales.idTransferencia,
+        success: function(transferencia) {
+          /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+
+          $('#monto-transferencia').html(transferencia.montoTransferencia);
+          $('#fecha-transferencia').html(transferencia.feTransferencia);
+        }
+      });
+});     
+
+
+$(document).on("click", ".open-devolver-transferencia", function () {
+     _globales.idTransferencia = $(this).data('id');
+     
+     $("#modalDevolverTransferencia .id-transferencia").text( _globales.idTransferencia );
+     
+     /* Reemplaza la el :idTransferencia de la URL por el ID que se trae del modal */
+     var url = _globales.urlBuscarDatosTransferencia;
+     url = url.replace(':idTransferencia',_globales.idTransferencia);
+     
+      
+      $.ajax({
+        type: 'get',
+        url: url,
+        id: _globales.idTransferencia,
+        success: function(transferencia) {
+          /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+
+          $('#monto-transferencia-dev').html(transferencia.montoTransferencia);
+          $('#fecha-transferencia-dev').html(transferencia.feTransferencia);
+        }
+      });
+}); 
+
+
+$(".button-confirmar-transferencia").click(function () {
+     var urlConfirmarEntrega = _globales.urlConfirmarTransferencia;
+     urlConfirmarEntrega = urlConfirmarEntrega.replace(':idTransferencia',_globales.idTransferencia);
+      console.log(urlConfirmarEntrega);
+      $.ajax({
+        type: 'get',
+        url: urlConfirmarEntrega,
+        id: _globales.idTransferencia,
+        success: function(data) {
+          if(data != 'error') {
+            $('#estatus-'+_globales.idTransferencia).html('Confirmada');
+            $('#confirmar-'+_globales.idTransferencia).hide();
+          }
+          $("#modalConfirmarTransferencia").modal('hide');
+        }
+      });
+});
+
+
+$(".button-devolver-transferencia").click(function () {
+     $.ajax({
+        type: 'POST',
+        url: _globales.urlDevolverTransferencia,
+        data: { id: _globales.idTransferencia,
+                observacion: $('#observacion-devolucion').val()
+              },
+        success: function(data) {
+          if(data != 'error') {
+            $('#estatus-'+_globales.idTransferencia).html('Devuelta');
+            $('#confirmar-'+_globales.idTransferencia).hide();
+            $('#devolver-'+_globales.idTransferencia).hide();
+            $('#observacion-devolucion').val('');
+          }
+          $("#modalDevolverTransferencia").modal('hide');
+        }
+      });
+});
+</script>    
+{% endblock %}

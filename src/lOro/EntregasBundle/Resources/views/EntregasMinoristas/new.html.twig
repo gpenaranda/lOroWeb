@@ -1,0 +1,164 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas de Minoristas{% endblock %}
+{% block stylesheets %}
+  <style type="text/css">
+  #entregas-form .form-control-feedback {
+    right: 17px;
+  }
+  </style>
+
+{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Entregas de Minoristas
+      <small>Agregar</small>
+  </h1>
+</div>
+<div class="col-md-11">
+  {{ form_start(form) }}
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+      {{ form_label(form.feEntrega) }}
+      {{ form_widget(form.feEntrega) }}
+      {{ form_errors(form.feEntrega) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">        
+        {{ form_label(form.dolarReferenciaDia) }}
+        {{ form_widget(form.dolarReferenciaDia) }}
+        {{ form_errors(form.dolarReferenciaDia) }}   
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.valorOnza) }}
+        {{ form_widget(form.valorOnza) }}
+        {{ form_errors(form.valorOnza) }}   
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.pesoBrutoEntrega) }}
+        {{ form_widget(form.pesoBrutoEntrega) }}
+        {{ form_errors(form.pesoBrutoEntrega) }}          
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.ley) }}
+        {{ form_widget(form.ley) }}
+        {{ form_errors(form.ley) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.pesoPuroEntrega) }}
+        {{ form_widget(form.pesoPuroEntrega) }}
+        {{ form_errors(form.pesoPuroEntrega) }}        
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.montoBsPorGramo) }}
+        {{ form_widget(form.montoBsPorGramo) }}
+        {{ form_errors(form.montoBsPorGramo) }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.totalMontoBs) }}
+        {{ form_widget(form.totalMontoBs) }}
+        {{ form_errors(form.totalMontoBs) }}    
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.minorista) }}
+        {{ form_widget(form.minorista) }}
+        {{ form_errors(form.minorista) }}  
+      </div>
+    </div>        
+
+    <div class="form-group">
+      <div class="col-xs-4 col-md-offset-8 col-md-3">
+        {{ form_widget(form.submit) }}
+      </div>
+    </div>
+    
+  {{ form_end(form) }} 
+</div> 
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = { feEntrega: $( "#loro_entitybundle_entregas_minoristas_feEntrega" ),
+                    arregloOpcionesDP: { changeMonth: false,
+                                         changeYear: false,
+                                         buttonImageOnly: false,
+                                         dateFormat: 'dd-mm-yy' },
+                    pesoBrutoEntrega: $('#loro_entitybundle_entregas_minoristas_pesoBrutoEntrega'),
+                    valorOnza: $('#loro_entitybundle_entregas_minoristas_valorOnza'),
+                    dolarReferenciaDia: $('#loro_entitybundle_entregas_minoristas_dolarReferenciaDia'),
+                    ley: $('#loro_entitybundle_entregas_minoristas_ley'),
+                    pesoPuroEntrega: $('#loro_entitybundle_entregas_minoristas_pesoPuroEntrega'),
+                    montoBsPorGramo: $('#loro_entitybundle_entregas_minoristas_montoBsPorGramo'),
+                    totalMontoBs: $('#loro_entitybundle_entregas_minoristas_totalMontoBs'),
+                    formId: 'entregas-form',
+                    formBaseName: 'loro_entitybundle_entregas_minoristas_'
+  };
+
+
+
+  _globales.ley.number( true, 2,',','.' );
+  _globales.pesoBrutoEntrega.number( true, 2,',','.' );
+  _globales.montoBsPorGramo.number( true, 2,',','.' );
+  _globales.totalMontoBs.number( true, 2,',','.' );  
+  
+  _globales.dolarReferenciaDia.number( true, 2,',','.' );  
+  _globales.valorOnza.number( true, 2,',','.' );    
+  
+  
+  _globales.ley.keyup(function(){
+    var pesoBrutoXLey = _globales.pesoBrutoEntrega.val() * _globales.ley.val();
+    
+    var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+    _globales.pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));     
+  });  
+  
+  _globales.pesoBrutoEntrega.keyup(function(){
+    var pesoBrutoXLey = _globales.pesoBrutoEntrega.val() * _globales.ley.val();
+    
+    var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+    _globales.pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));     
+  });  
+  
+  _globales.montoBsPorGramo.keyup(function() {
+    var totalMontoBs = _globales.montoBsPorGramo.val() * _globales.pesoBrutoEntrega.val();
+    
+    _globales.totalMontoBs.val(totalMontoBs);     
+  });  
+
+
+
+  _globales.feEntrega.datepicker(_globales.arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+</script>
+
+  {% javascripts  'assets/self/js/retailSuppliers/new_validation.js'  filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+  <script>
+    $("#"+_globales.formBaseName+"minorista").combobox();
+  </script>
+{% endblock %}

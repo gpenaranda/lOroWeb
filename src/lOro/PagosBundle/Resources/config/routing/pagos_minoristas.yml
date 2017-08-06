@@ -1,0 +1,11 @@
+pagos_minoristas:
+    pattern:  /
+    defaults: { _controller: "lOroPagosBundle:PagosMinoristas:index" }
+    
+pagos_minoristas_new:
+    pattern:  /new
+    defaults: { _controller: "lOroPagosBundle:PagosMinoristas:new" }    
+    
+pagos_minoristas_create:
+    pattern:  /create
+    defaults: { _controller: "lOroPagosBundle:PagosMinoristas:create" }      

@@ -1,0 +1,160 @@
+{% extends '::base.html.twig' %}
+{% block title %}Nueva Carga Masiva{% endblock %}
+{% block stylesheets %}
+ <style>
+  .ui-autocomplete-loading {
+    background: white url('{{ asset('bundle/lOroBundle/images/ui-anim_basic_16x16.gif') }}') right center no-repeat;
+  }
+  </style> 
+{% endblock stylesheets %}
+
+{% block body -%}
+ 
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+    
+<div class="page-header">
+  <h1>Pagos a Proveedores - Carga Masiva</h1>
+</div>
+
+{{ form_start(form)}}
+  
+  <h3 class="col-md-offset-2">Datos Generales</h3>
+  <div class="row">
+    <div class="form-group">
+      <div class="col-md-2 col-md-offset-3">
+        {{ form_label(form.feEjecucion) }}
+        {{ form_widget(form.feEjecucion) }}
+      </div>
+
+      <div class="col-md-2">
+        {{ form_label(form.empresaCasa) }}
+        {{ form_widget(form.empresaCasa) }}
+      </div>
+
+      <div class="col-md-2">
+        {{ form_label(form.nrosCuenta) }}
+        {{ form_widget(form.nrosCuenta) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+  <h3 class="col-md-offset-2">Datos de la Instrucción</h3>
+
+  <div class="row">
+    <div class="col-md-offset-2 col-md-8">
+      <div class="panel panel-primary input_fields_wrap">
+        <div class="panel-heading"><label for="empresasCasa" class="required">Instrucciones</label></div>
+
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-3">
+                  Proveedor
+                </div>
+                <div class="col-xs-2">
+                  Empresa
+                </div>
+                <div class="col-xs-3">
+                  Nro. Cuenta
+                </div>
+                <div class="col-xs-2">
+                  Monto (Bs.)
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-xs-2">
+                    <select id="proveedor_1" class="form-control" name="loro_pagos_carga_masiva[proveedor][1]"> 
+                      <option value=""></option>
+                      {% for proveedor in proveedores %}
+                        <option value="{{ proveedor.id }}">{{ proveedor.nbProveedor }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="col-xs-3">
+                    <select id="empresasProveedor_1" class="form-control" name="loro_pagos_carga_masiva[empresasProveedor][1]" > 
+                      <option value=""></option>
+                    </select>
+                  </div>
+
+                  <div class="col-xs-3">
+                    <select id="nroCuenta_1" class="form-control" name="loro_pagos_carga_masiva[nroCuenta][1]" >
+                      <option value=""></option>
+                    </select> 
+                  </div> 
+
+                  <div class="col-xs-2">
+                    <input type="text" id="cantidadAEnviar_1" class="form-control" name="loro_pagos_carga_masiva[cantidadAEnviar][1]" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- The template for adding new field -->
+                <div class="form-group hide" id="paymentsTemplate">
+                  <div class="row">
+                    <div class="col-xs-2">
+                        <select class="form-control" name="proveedor" ></select>
+                    </div>
+                    <div class="col-xs-3">
+                        <select class="form-control" name="empresasProveedor" ></select>
+                    </div>
+                    <div class="col-xs-3">
+                        <select class="form-control" name="nroCuenta" ></select>
+                    </div>
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" name="cantidadAEnviar" />
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="button" class="btn btn-danger removeButton"><i class="glyphicon glyphicon glyphicon-minus"></i></button>
+                    </div>
+                  </div>
+                </div>
+              <!-- The template for adding new field -->
+
+            </div>
+
+            <div class="panel-footer">
+              <a href="javascript:void(0);" class="btn btn-sm btn-info addButton">Agregar Otra Empresa</a>
+            </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <div class="col-md-offset-8">
+    {{ form_widget(form.submit) }}
+  </div>
+  
+  {{ form_end(form)}}               
+</div>
+
+{% endblock body %}
+{% block javascripts %}
+
+<script>
+_globales = {
+      formName: 'loro_pagos_carga_masiva_',
+      formId: 'form-pagos-carga-masiva',
+      idEmpresa: '',
+      urlBusquedaCuentaPorEmpresa: "{{ path('_ajax_buscar_cuentas_por_empresa') }}",
+      pathFindCompaniesBySupplier: "{{ path('_ajax_buscar_empresas_por_proveedor') }}",
+      pathFindAccNumbersByCompany: "{{ path('_ajax_buscar_por_nro_cuenta_por_empresa') }}",
+      arregloOpcionesDP:{ changeMonth: false,
+                          changeYear: false,
+                          buttonImageOnly: false,
+                          dateFormat: 'dd-mm-yy' }
+};  
+</script>
+
+{% javascripts  'assets/self/js/payments/massive_payments_general_funct.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+  <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% endblock javascripts %}
+
+
+
+
+

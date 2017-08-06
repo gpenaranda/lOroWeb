@@ -1,0 +1,52 @@
+entregas:
+    path:  /
+    defaults: { _controller: "lOroEntregasBundle:Entregas:index" }
+    
+entregas_show:
+    path:  /{id}/show
+    defaults: { _controller: "lOroEntregasBundle:Entregas:show" }
+
+entregas_new:
+    path:  /new
+    defaults: { _controller: "lOroEntregasBundle:Entregas:new" }
+
+entregas_create:
+    path:  /create
+    defaults: { _controller: "lOroEntregasBundle:Entregas:create" }
+    requirements: { _method: post }
+
+entregas_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "lOroEntregasBundle:Entregas:edit" }
+
+entregas_update:
+    path:  /{id}/update
+    defaults: { _controller: "lOroEntregasBundle:Entregas:update" }
+    requirements: { _method: post|put }
+
+
+
+# Rutas para Borrar Entregas y Piezas
+entregas_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "lOroEntregasBundle:Entregas:delete" }
+
+piezas_delete:
+    path:  /{id}/delete-pieza
+    defaults: { _controller: "lOroEntregasBundle:Entregas:deletePieza" }
+    
+ 
+
+
+# Ajax para Agregar las Entregas Iniciales
+_ajax_agregar_entrega_inicial:
+    path:  /agregar-entrega-inicial-ajax
+    defaults: { _controller: "lOroEntregasBundle:Entregas:agregarEntregaInicial" }  
+
+      
+# Entregas HC
+entregas_hc:
+    path:  /entregas-hc
+    defaults: { _controller: "lOroEntregasBundle:EntregasHc:index" }
+    
+  

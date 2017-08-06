@@ -1,0 +1,122 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Transferencias Aupanas/HC{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Transferencias Aupanas/HC<small>Editar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(edit_form) }}
+    
+    {{ form_label(edit_form.feTransferencia) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.feTransferencia) }}
+    </div>
+    {{ form_errors(edit_form.feTransferencia) }}
+    
+    {{ form_label(edit_form.tipoTransaccion) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">&nbsp;</span>
+      {{ form_widget(edit_form.tipoTransaccion) }}
+    </div>
+    {{ form_errors(edit_form.tipoTransaccion) }}
+
+    {{ form_label(edit_form.estatus) }}
+        <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.estatus) }}
+        </div>
+    {{ form_errors(edit_form.estatus) }}
+    
+    <div id="nro-ref-div">
+    {{ form_label(edit_form.nroReferencia) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">&nbsp;</span>
+      {{ form_widget(edit_form.nroReferencia) }}
+    </div>
+    {{ form_errors(edit_form.nroReferencia) }}
+    </div>
+    
+    {{ form_label(edit_form.montoTransferencia) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">€</span>
+      {{ form_widget(edit_form.montoTransferencia) }}
+    </div>
+    {{ form_errors(edit_form.montoTransferencia) }}
+    
+
+        
+    {{ form_label(edit_form.beneficiario) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.beneficiario) }}
+        </div>
+    {{ form_errors(edit_form.beneficiario) }}
+        
+    {{ form_label(edit_form.empresa) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.empresa) }}
+        </div>
+    {{ form_errors(edit_form.empresa) }}       
+        
+  <div style='margin-top:12px;'>
+    {{ form_widget(edit_form.submit) }}
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('transferencias_list') }}">Volver</a>  
+  </div>
+
+    {{ form_end(edit_form)}}
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+ $('#nro-ref-div').hide();
+ 
+ 
+      if($('#loro_entitybundle_transferencias_tipoTransaccion').val() == 1 || 
+        $('#loro_entitybundle_transferencias_tipoTransaccion').val() == 2) {
+       $('#nro-ref-div').show();    
+     } else {
+       $('#nro-ref-div').hide();  
+     }
+     
+     
+ $('#loro_entitybundle_transferencias_tipoTransaccion').change(function(){
+     if($('#loro_entitybundle_transferencias_tipoTransaccion').val() == 1 || 
+        $('#loro_entitybundle_transferencias_tipoTransaccion').val() == 2) {
+       $('#nro-ref-div').show();    
+     } else {
+       $('#nro-ref-div').hide();  
+     }
+     
+ });
+ 
+    
+ $(function(){
+     
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_transferencias_feTransferencia" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+        
+  var montoTransferencia = $('#loro_entitybundle_transferencias_montoTransferencia');
+  montoTransferencia.val($.number(montoTransferencia.val(),2,',','.'));
+  montoTransferencia.number(true,2,',','.');
+
+$("#form-transferencias-hc").submit(function(e) {
+     
+     var montoTransferencia = $('#loro_entitybundle_transferencias_montoTransferencia');
+     var nuevoValorMontoTransferencia = $.number(montoTransferencia.val(), 2,'.','' );
+     montoTransferencia.number(true,2,'.','');
+     montoTransferencia.val(nuevoValorMontoTransferencia);
+
+});
+
+ });
+ </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+l_oro_admin_homepage:
+    path:  /hello/{name}
+    defaults: { _controller: lOroAdminBundle:Default:index }
+    
+relacion-entregas-cierres:
+    path:  /relacionar-entregas-cierres-index
+    defaults: { _controller: "lOroAdminBundle:Parametros:relacionEntregasCierresIndex" }
+    
+relacionar-entregas-cierres-aupanas-hc:
+    path:  /relacionar-entregas-cierres-aupanas-hc
+    defaults: { _controller: "lOroAdminBundle:Parametros:relacionEntregasCierresAupanas" }
+    
+relacionar-entregas-cierres-proveedores:
+    path:  /relacionar-entregas-cierres-proveedores
+    defaults: { _controller: "lOroAdminBundle:Parametros:relacionEntregasCierresProveedores" }  
+    
+    
+# SERVICIOS ROUTES
+_ajax_sacar_prom_ref:
+    path:  /ajax-sacar-prom-ref
+    defaults: { _controller: "lOroAdminBundle:Servicios:ajaxSacarPromRef" }  

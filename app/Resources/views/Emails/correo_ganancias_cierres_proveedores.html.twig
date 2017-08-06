@@ -1,0 +1,44 @@
+<html>
+    <head>
+    </head>
+    <body>
+<div class="page-header">
+  <h1>Reporte de Ganancias por Cierres a Proveedores ({{ feInicio | date('d-m-Y') }} hasta {{ feFinal | date('d-m-Y') }})</h1>
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+    <table border="1" style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Fecha de la Venta</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Gramos Cerrados</th>
+          <th style="text-align:center;">Valor de la Onza</th>
+          <th style="text-align:center;">Dolar de Referencia D&iacute;a</th>
+          <th style="text-align:center;">Bolivares por Gramos Dados</th>
+          <th style="text-align:center;">Ganancia Lineal</th>
+          <th style="text-align:center;">Ganancia Bruta</th>
+          <th style="text-align:center;">Ganancia Total</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for row in arregloEntity %}
+                <tr>
+                  <td align="center" valign="middle">{{ row.feVenta | date('d-m-Y') }}</td>
+                  <td align="center" valign="middle">{{ row.nbProveedor }}</td>
+                  <td align="center" valign="middle">{{ row.gramosCerrados | number_format('2',',','.')  }} Grs.</td>
+                  <td align="center" valign="middle">{{ row.valorOnza | number_format('2',',','.')}} Oz/€</td>
+                  <td align="center" valign="middle">{{ row.dolarReferenciaDia | number_format('2',',','.')}} Bs./€</td>
+                  <td align="center" valign="middle">{{ row.montoBsCierrePorGramo | number_format('2',',','.')}} Bs/Grs</td>
+                  <td align="center" valign="middle">{{ row.calculoLineal | number_format('2',',','.')}} €</td>
+                  <td align="center" valign="middle">{{ row.gananciaBruta | number_format('2',',','.')}} €</td>
+                  <td align="center" valign="middle" style="color:{{ row.totalGanancia > 0 ? 'green' : 'red' }}">{{ row.totalGanancia | number_format('2',',','.')}} €</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="font-size:16pt; font-weight: bold;" colspan="6" align="right" valign="middle">Total Ganancia:</td>
+                <td colspan="3" align="center" valign="middle" style="font-size:16pt; font-weight: bold; color:{{ gananciaTotalReporte > 0 ? 'green' : 'red' }}">{{ gananciaTotalReporte | number_format('2',',','.') }} €</td>
+            </tr>
+            </tbody>
+        </table>
+</body>
+</html>

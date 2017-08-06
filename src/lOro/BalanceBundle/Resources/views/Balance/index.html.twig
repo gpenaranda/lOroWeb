@@ -1,0 +1,278 @@
+{% extends '::base.html.twig' %}
+{% block title %}Balance{% endblock %}
+{% block body %}
+<div>
+  <h1>Balance para el d&iacute;a {{ "now" | date('d-m-Y') }}</h1>
+  
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+  
+  {{ form_start(form) }}
+  <div style="margin-top:40px;">
+  
+    <div class="col-lg-2 col-lg-offset-5">
+     {{ form_label(form.valorOnza) }}
+     {{ form_widget(form.valorOnza) }}
+     {{ form_errors(form.valorOnza) }}
+    </div>
+    <div class="col-lg-2 col-lg-offset-5">
+     {{ form_label(form.dolarReferencia) }}
+     {{ form_widget(form.dolarReferencia) }}
+     {{ form_errors(form.dolarReferencia) }}
+    </div>
+    <!--div class="col-lg-2 col-lg-offset-5">
+     {#{ form_label(form.creditoHc) }#}
+     {#{ form_widget(form.creditoHc) }#}
+     {#{ form_errors(form.creditoHc) }#}
+    </div-->
+    <div class="col-lg-2 col-lg-offset-6">
+      {{ form_widget(form.submit) }}
+    </div>
+  
+  </div>
+  
+  
+  {% if mostrar == true %}
+
+    <div class="col-lg-10 col-lg-offset-1" style="margin-top:20px;">
+        
+        <table class="table table-condensed tablaDatosBalanceTotal">
+            <caption style="font-size:20pt;">Material por Entegar en HC</caption>
+            <tr>        
+            <td style="text-align: center;"> <b>Fecha Venta</b></td>
+            <td style="text-align: center;"> <b>Gramos Cerrados</b></td>
+            <td style="text-align: center;"> <b>Valor Onza</b></td>
+            <td style="text-align: center;"> <b>Monto Total Dolar</b></td>
+            </tr>
+           {% for row in arregloMatPendiente  %}    
+          <tr>        
+            <td style="text-align: center;"> 
+              <b>{{ row.feVenta | date('d-m-Y') }}</b>
+            </td>
+            <td style="text-align: center;"> 
+                {{ row.cantidadTotalVenta  | number_format('2',',','.') }} Grs.
+            </td>
+            <td style="text-align: center;"> 
+                {{ row.valorOnza  | number_format('2',',','.') }} OZ/Grs.
+            </td>
+            <td style="text-align: center;"> 
+                {{ row.montoTotalDolar  | number_format('2',',','.') }} $
+            </td>
+          </tr>
+           {% endfor %} 
+          <tr>
+            <td style="text-align: center; font-size: 16pt;" ></td>
+            <td style="text-align: center; font-size: 16pt;" >
+              {{ gramosAdudadosAupanas | number_format('2',',','.') }} Grs.
+            </td>
+            <td style="text-align: center; font-size: 16pt;" ></td>
+            <td style="text-align: center; font-size: 16pt;" >
+              {{ dolaresMatPendienteAupanas  | number_format('2',',','.') }} $
+            </td>
+          </tr>          
+        </table>  
+
+
+<table class="table table-condensed tablaDatosBalanceTotal">
+            <caption style="font-size:20pt;">Material No Cerrado</caption>
+            <tr>        
+            <td style="text-align: center;"> <b>Balance con HC</b></td>
+            <td style="text-align: center;"> <b>Balance con Proveedores</b></td>
+            <td style="text-align: center;"> <b>Total (Grs)</b></td>
+            <td style="text-align: center;"> <b>Monto Total Dolar</b></td>
+            </tr>
+          <tr>        
+            <td style="text-align: center;"> 
+              <b>{{ balanceHc  | number_format('2',',','.') }} Grs.</b>
+            </td>
+            <td style="text-align: center;"> 
+                {{ balanceProveedores  | number_format('2',',','.') }} Grs.
+            </td>
+            <td style="text-align: center;"> 
+                {{ gramosNoCerrados  | abs | number_format('2',',','.') }} Grs.
+            </td>
+            <td style="text-align: center; font-size: 16pt;"> 
+                {{ (((valorOnza / 31.1035) * 0.97) * gramosNoCerrados)  | abs | number_format('2',',','.') }} $
+            </td>
+          </tr>
+        </table>
+        
+        
+    {% if arregloProveedores %}
+    <div class="col-lg-10 col-lg-offset-1" style="margin-top:20px;">
+         <table class="table table-condensed tablaDatosBalanceTotal">
+            <caption style="font-size:20pt;">Debo a Proveedores (Bs pasados a Verdes)</caption>
+            <tr>        
+              <td style="text-align: center;"> <b>Proveedor</b></td>
+              <td style="text-align: center;"> <b>Bolivares (Debo)</b></td>
+            </tr>
+           {% for id,arregloProveedor in arregloProveedores  %} 
+            
+          <tr>        
+            <td style="text-align: center;"> 
+              <b>{{ arregloProveedor.proveedor.nbProveedor }}</b>
+            </td>
+            <td style="text-align: center;">
+              {% if arregloProveedor.bolivares < 0 %}
+                <b style="color:red;">{{ arregloProveedor.bolivares  | number_format('2',',','.') }} Bs.</b>
+              {% else %}
+                {{ arregloProveedor.bolivares  | number_format('2',',','.') }} Bs.
+              {% endif %}
+            </td>          
+          </tr>
+       
+           {% endfor %} 
+          <tr>
+            <td style="text-align: center; font-size: 16pt;" ><b>Total</b></td>
+            <td style="text-align: center; font-size: 16pt;" >
+              {% if totalBolivaresDebo < 0 %}
+                <b style="color:red;">{{ totalBolivaresDebo  | number_format('2',',','.') }} Bs.</b>
+              {% else %}
+                {{ totalBolivaresDebo  | number_format('2',',','.') }} Bs.
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center; font-size: 16pt;" >Total (En Verdes)</td>
+            <td style="text-align: center; font-size: 16pt;" >
+              <a class="tip2" style="font-size: 16pt; {{ (totalBolivaresDebo < 0) ? 'color:red;' : 'color:black;' }}">
+                <span>{{ totalBolivaresDebo | number_format('2',',','.') }} Bs / {{ promDolarReferencia | number_format('2',',','.') }} Bs x $</span>
+                <b style="{{ (bolivaresEnDolaresDebo < 0) ? 'color:red;' : 'color:black;' }}" class="numerosErroneos">
+                  {{ bolivaresEnDolaresDebo  | number_format('2',',','.') }} $
+                </b> 
+              </a>                
+             
+            </td>
+          </tr>          
+        </table> 
+       {% else %}
+        <div class="alert alert-warning alert-dismissable" id="alertaEntregas" style="font-size: 16pt;">
+          <strong>Atención!</strong> No existen proveedores registrados.
+        </div>  
+       {% endif %}
+    </div>
+{% set balanceTotalBolivares = (balanceAcumuladoBolivares + (creditosBolivaresMes - debitosBolivaresMes)) %}
+{% set balanceCajaDolares = balanceTotalBolivares / promDolarReferencia  %}
+  
+  
+    <div class="col-lg-10 col-lg-offset-1" style="margin-top:20px;">
+  <table class="table table-condensed tablaBalanceCajaVerdes" border="1">
+      <caption style="font-size:20pt;">Total en Caja</caption>
+      <tr>
+        <td>Bolivares en Caja</td>
+        <td>Monto Total Dolar</td>    
+      </tr>
+      <tr>
+        <td>
+              {{ balanceTotalBolivares | number_format(2,',','.') }} Bs.
+          </td>
+        <td>
+              <a class="tip2" style="font-size: 16pt; {{ (balanceCajaDolares < 0) ? 'color:red;'}}">
+                  <bold style="color:black;">{{ balanceCajaDolares | number_format(2,',','.') }} $</bold> 
+                  <span>(Bolivares en Caja ({{ balanceTotalBolivares | number_format(2,',','.') }} Bs) / Referencia Verde ({{ promDolarReferencia | number_format(2,',','.') }} Bs/$) )</span>
+              </a>            
+          </td>
+      </tr>
+  </table>
+    </div>
+  
+    <div class="col-lg-10 col-lg-offset-1" style="margin-top:20px;">
+  <table class="table table-condensed tablaBalanceCajaVerdes" border="1">
+      <caption style="font-size:20pt;">Transferencias Pendientes</caption>
+      <tr>
+        <td>Monto Total Dolar</td>    
+      </tr>
+      <tr>
+        <td>
+              {{ totalTransferenciasPendientes | number_format(2,',','.') }} $
+          </td>
+      </tr>
+  </table>
+    </div>
+  
+  <div class="col-lg-9 col-lg-offset-2">
+  <table class="table table-condensed tablaBalanceTotal" border="1">
+      <caption style="font-size:20pt;">Balance</caption>
+      <tr>
+        <td>Material por Entregar HC</td>
+        <td style="text-align: center; font-size: 16pt;" >{{ dolaresMatPendienteAupanas  | number_format('2',',','.') }} $</td>
+        <td style="color:green;">+</td>
+      </tr>
+      <tr>
+        <td>Gramos no Cerrados</td>
+        {% set dolaresGramosNoCerrados = (((valorOnza / 31.1035) * 0.97) * gramosNoCerrados) | abs %}
+        <td style="text-align: center; font-size: 16pt;">{{ dolaresGramosNoCerrados  | abs | number_format('2',',','.') }} $</td>    
+        <td style="color:green;">+</td>
+      </tr>
+      <tr>
+        <td>Diferencia entre Entregas y Transferencias (HC)</td>
+        <td style="text-align: center; font-size: 16pt;">{{ creditoHc | number_format(2,',','.') }} $</td>
+        <td style="color:green;">+</td>
+      </tr>
+      <tr>
+        <td>Total en Caja</td>
+        <td style="text-align: center; font-size: 16pt;">{{ balanceCajaDolares | number_format(2,',','.') }} $</td>          
+        <td style="color:green;">+</td>
+      </tr>
+      <tr>
+        <td>Transferencias Pendientes</td>
+        <td style="font-size: 16pt;">{{ totalTransferenciasPendientes | number_format(2,',','.') }} $</td>
+        <td style="color:red;">-</td>  
+      </tr>
+      <tr>
+        <td>Debo a Proveedores</td>
+        <td style="text-align: center; font-size: 16pt;" >{{ bolivaresEnDolaresDebo  | number_format('2',',','.') }} $</td>
+        <td style="color:red;">-</td>
+      </tr>
+      {% set totalCreditos = dolaresMatPendienteAupanas + dolaresGramosNoCerrados + creditoHc + balanceCajaDolares %}
+      {% set totalDebitos = totalTransferenciasPendientes + bolivaresEnDolaresDebo %}
+      <tr>
+        <td>Total Creditos</td>
+        <td style="color:green; text-align: center; font-size: 16pt; font-weight: bold;">{{ totalCreditos | number_format(2,',','.') }} $</td>
+        <td style="color:green;">+</td>
+      </tr>
+      <tr>
+        <td>Total Debitos</td>
+        <td style="color:red; text-align: center; font-size: 16pt; font-weight: bold;">{{ totalDebitos | number_format(2,',','.') }} $</td>
+        <td style="color:red;">-</td>  
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>{{ (totalCreditos - totalDebitos) | number_format(2,',','.') }} $</td>
+      </tr>
+  </table>
+  </div>
+  <div class="col-lg-4 col-lg-offset-7" style="margin-top:20px; margin-bottom:20px;">
+      <input type="submit" name="submit_guardar_balance" value="Guardar Balance" class="btn btn-lg btn-success" />
+  {% endif %}
+</div>
+  {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+<script>
+ $(function(){
+   
+  var valorOnza = $('#loro_generar_balance_valorOnza');
+ 
+  var dolarReferencia = $('#loro_generar_balance_dolarReferencia');
+  
+  valorOnza.number( true, 2,',','.' );
+  dolarReferencia.number( true, 2,',','.' );
+  
+ });
+ 
+ $("#proveedores-hc-form").submit(function(e) {
+     
+  var pesoTotalVenta = $('#loro_entitybundle_cierres_hc_cantidadTotalVenta');
+  var nuevoValorpesoTotalVenta = $.number(pesoTotalVenta.val(), 2,'.','' );
+      pesoTotalVenta.number(true,2,'.','');
+      pesoTotalVenta.val(nuevoValorpesoTotalVenta);
+  
+  var valorOnza = $('#loro_entitybundle_cierres_hc_valorOnza');
+  var nuevoValorOnza = $.number(valorOnza.val(), 2,'.','' );
+      valorOnza.number(true,2,'.','');
+      valorOnza.val(nuevoValorOnza);
+  
+});
+
+ </script>        
+{% endblock %}

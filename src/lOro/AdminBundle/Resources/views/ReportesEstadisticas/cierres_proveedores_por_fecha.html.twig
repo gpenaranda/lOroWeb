@@ -1,0 +1,110 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Reporte de Cierres por Fechas y Proveedor</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+    {{ form(form) }}
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if arregloEntity != null %}
+  {% if arregloEntity == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen pagos generados
+      </div>
+    </div> 
+  {% else %}
+    <div class="col-lg-offset-9 col-lg-2" style="margin-bottom:10px;">
+      <button  style="color:black;" title="Enviar Correo" data-toggle="modal" class="btn btn-info modal-enviar-datos-entregas" data-target="#modalEnviarDatosEntregas">Enviar Por Correo</button>
+    </div>
+    <table class="table table-hover table-condensed tablasListados">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Fecha</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Total Cerrado</th>
+          <th style="text-align:center;">Monto Cerrado por Gramo</th>
+          <th style="text-align:center;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for row in arregloEntity %}
+                <tr>
+                  <td>{{ row.feVenta | date('d-m-Y') }}</td>
+                  <td>{{ row.nbProveedor }}</td>
+                  <td>{{ row.cantidadTotalVenta | number_format('2',',','.')  }} Grs.</td>
+                  <td>{{ row.montoCierrePorGramo | number_format('2',',','.')}} Bs.</td>
+                  <td>{{ row.montoCierre | number_format('2',',','.')}} Bs.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+
+<!-- LLamado del twig con el modal de Ver Entrega -->
+{% include 'lOroEntregasBundle:Entregas/extensiones:modal_enviar_datos_entrega.html.twig' %}
+    
+
+{% endblock %}
+{% block javascripts %}
+<script>
+$(function(){
+  $('#enviar-correo-datos-entrega').click(function() {
+    $.ajax({
+        type: "POST",
+        url: "{{ url('_ajax_enviar_correo_cierres_proveedor_por_fecha') }}",
+        data: { correoDestinatario: $('#correo-destinatario').val(),
+                asunto: $('#asunto-correo').val(), 
+                texto: $('#texto-correo').val(),
+                feDesde: $('#loro_seleccionar_proveedores_form_feDesde').val(),
+                feHasta: $('#loro_seleccionar_proveedores_form_feHasta').val(),
+                proveedorId: $('#loro_seleccionar_proveedores_form_proveedor').val()
+              },
+        success: function(data) {
+          $('#correo-destinatario').val('');
+          $('#asunto-correo').val(''); 
+          $('#texto-correo').val('');
+          
+          $('#modalEnviarDatosEntregas').modal('hide');
+        }
+    });
+
+    return false; 
+  });
+});
+</script>
+<script>
+     var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_seleccionar_proveedores_form_feDesde" ).datepicker(
+           {   
+          defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 2,
+      changeYear: false,
+      buttonImageOnly: false,
+      dateFormat: 'dd-mm-yy',      
+      onClose: function( selectedDate ) {
+        $( "#loro_seleccionar_proveedores_form_feHasta" ).datepicker( "option", "minDate", selectedDate );
+      }
+  },$.datepicker.regional[ "es" ]);
+   
+   $( "#loro_seleccionar_proveedores_form_feHasta" ).datepicker(
+           {defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 2,
+      changeYear: false,
+      buttonImageOnly: false,
+      dateFormat: 'dd-mm-yy',      
+      onClose: function( selectedDate ) {
+        $( "#loro_seleccionar_proveedores_form_feDesde" ).datepicker( "option", "maxDate", selectedDate );
+      }
+           },$.datepicker.regional[ "es" ]); 
+
+</script>
+{% endblock %}

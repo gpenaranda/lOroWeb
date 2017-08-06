@@ -1,0 +1,7 @@
+parameters:
+#    l_oro_ventas_dolares.example.class: lOro\VentasDolaresBundle\Example
+
+services:
+#    l_oro_ventas_dolares.example:
+#        class: %l_oro_ventas_dolares.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

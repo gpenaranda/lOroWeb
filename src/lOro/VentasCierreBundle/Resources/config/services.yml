@@ -1,0 +1,7 @@
+parameters:
+#    l_oro_ventas_cierre.example.class: lOro\VentasCierreBundle\Example
+
+services:
+#    l_oro_ventas_cierre.example:
+#        class: %l_oro_ventas_cierre.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

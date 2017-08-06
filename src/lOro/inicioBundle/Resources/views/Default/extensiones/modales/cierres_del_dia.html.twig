@@ -1,0 +1,15 @@
+<div class="modal fade" id="modalVerCierresDelDia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+        <h4 class="modal-title" id="myModalLabel">Cierres del Dia {{ "now" | date('d-m-Y') }}</h4>
+      </div>
+      <div class="modal-body" id="body-modal-ver-cierres-dia">
+        <div style="padding-left:33%;">
+          {% include '::loading_square.html.twig' with {'location': 'closed-deals-day'} %}
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

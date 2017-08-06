@@ -1,0 +1,242 @@
+{% extends '::base.html.twig' %}
+{% block title %}Nueva Carga Masiva{% endblock %}
+
+{% block stylesheets %}
+  <!-- style>.ui-autocomplete-loading {background: white url({{ asset('bundle/lOroBundle/images/ui-anim_basic_16x16.gif') }}) right center no-repeat;}</style --> 
+{% endblock stylesheets %}
+
+
+{% block body -%}
+ 
+<!-- LLamado del twig con los flash del sistema -->
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+    
+<div class="page-header">
+  <h1>Pago Salarios - Carga Masiva</h1>
+</div>
+<div class="row">
+    <div class="col-md-11 contenedor-formularios">
+{{ form_start(form)}}
+
+{{ form_label(form.feEjecucion) }}
+{{ form_widget(form.feEjecucion) }}
+
+{{ form_label(form.empresaCasa) }}
+{{ form_widget(form.empresaCasa) }}
+
+{{ form_label(form.nrosCuenta) }}
+{{ form_widget(form.nrosCuenta) }}
+
+<div class="panel panel-primary input_fields_wrap">
+  <div class="panel-heading"><label for="empresasCasa" class="required">Instrucciones</label></div>
+
+    <div class="panel-body">
+        <br/>
+        <div id="inputsParaClonar_1">
+            <div>
+              <select name="workers[1]" id="worker_1" class="form-control"> 
+                <option value="">Seleccione una Opción</option>
+              </select>
+            </div>
+            <br/>
+            <div>
+              <select name="salaryPaymentConcept[1]" id="salary_payment_concept_1" class="form-control"> 
+                <option value="">Seleccione un Tipo de Pago de Salario</option>
+              </select>
+            </div> 
+            <br/>           
+            <div>
+              <input  name="nroCuenta[1]" id="nroCuenta_1" class="form-control" placeholder="Indique el Nro de Cuenta" /> 
+            </div>            
+            <br/>
+            <div>
+                <input type="text" name="cantidadAEnviar[1]" id="cantidadAEnviar_1" class="form-control" placeholder="Indique la Cantidad de la Transferencia"/>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer"><div>
+      <button class="btn btn-sm btn-info add_field_button">Agregar Otra Empresa</button>
+    </div>
+
+  </div>
+</div>
+                
+                {{ form_widget(form.submit) }}
+ {{ form_end(form)}}               
+    </div>
+            
+            
+</div>
+
+                      
+{% endblock body %}
+{% block javascripts %}
+
+<script>
+  var _globales = {
+      formName: 'loro_pagos_carga_masiva_',
+      idEmpresa: '',
+      urlSearchWorkers: "{{ url('_search_workers') }}",
+      urlSearchSalaryConcepts: "{{ url('_search_salary_concepts') }}",
+      urlSearchAccNumberByWorker: "{{ path('_ajax_buscar_por_nro_cuenta_por_empresa') }}",
+      urlBusquedaCuentaPorEmpresa: "{{ path('_ajax_buscar_cuentas_por_empresa') }}",
+      nuevaUrlBusquedaCuentaPorEmpresa: ''
+  };  
+  
+  
+     var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+    $('#'+_globales.formName+'feEjecucion').datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+</script>
+
+<script>
+$(document).ready(function(){
+
+/* Fill the select with the Accounts of the Enterprise that we select of our own */
+$('#'+_globales.formName+'empresaCasa').change(function(){
+    var inputsNrosCuenta = '<option value="" selected="selected">Seleccione una Opción</option>';
+    $('#'+_globales.formName+'nrosCuenta').html(inputsNrosCuenta);
+    
+    _globales.idEmpresa = $(this).val();
+    
+   
+    $.ajax({
+        type: "POST",
+        url:  _globales.urlBusquedaCuentaPorEmpresa,
+        data: { idEmpresa: $(this).val()},
+        success: function(data) {
+        
+          if(data != 'vacio') {
+            var inputsNrosCuenta = '<option value="" selected="selected">Seleccione una Opción</option>';
+            for(var r in data) {
+              inputsNrosCuenta += '<option value="'+data[r].nroCuenta+'">'+data[r].banco+' - '+data[r].nroCuenta+'</option>';
+            } 
+            
+            $('#'+_globales.formName+'nrosCuenta').html(inputsNrosCuenta);
+          }
+            
+        }
+    });
+});
+
+
+  /* Fill the Initial Workers Select */
+  $.ajax({
+    type: "POST",
+    url: _globales.urlSearchWorkers,
+    data: {},
+    success: function(data) {
+          if(data != 'vacio') {
+            var inputsEmpresas = '<option value="">Seleccione una Opción</option>';
+            for(var r in data) {
+              inputsEmpresas += '<option value="'+data[r].id+'">'+data[r].nbEmpresa+'</option>';
+            } 
+            
+            $('#worker_1').html(inputsEmpresas);
+          }
+            
+        }
+  });
+
+  /* Fill the Initial Salary Payment Concept Select */
+  $.ajax({
+    type: "POST",
+    url: _globales.urlSearchSalaryConcepts,
+    data: {},
+    success: function(data) {
+          if(data != 'vacio') {
+            var inputsEmpresas = '<option value="">Seleccione un Tipo de Pago de Salario</option>';
+            for(var r in data) {
+              inputsEmpresas += '<option value="'+data[r].id+'">'+data[r].salaryConcept+'</option>';
+            } 
+            
+            $('#salary_payment_concept_1').html(inputsEmpresas);
+          }
+            
+        }
+  });  
+
+});
+</script>
+
+ <script>
+$(document).ready(function() {
+    
+    $('#cantidadAEnviar_1').number(true,2,',','.');
+    
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".panel-body"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            
+            $(wrapper).append("<hr style='background-color:blue;' id='divisor_"+x+"'> <div id='inputsParaClonar_"+x+"'></div>"); 
+            
+            var selectSalaryPaymentConcepts = $('select#salary_payment_concept_1').clone().attr('name','salaryPaymentConcept['+x+']').attr('id', 'salary_payment_concept_'+x);
+            var selectWorkers = $('select#worker_1').clone().attr('name','workers['+x+']').attr('id', 'worker_'+x);
+            var inputNroCuenta = '<input type="text" name="nroCuenta['+x+']" id="nroCuenta_'+x+'" class="form-control" placeholder="Indique el Nro de Cuenta"/>';
+            var inputCantidadAEnviar = '<input type="text" name="cantidadAEnviar['+x+']" id="cantidadAEnviar_'+x+'" class="form-control" placeholder="Indique la Cantidad a Enviar"/>';
+            var scriptSelectProveedor = '<script>(function( $ ) {$.widget( "custom.combobox", {_create: function() {this.wrapper = $( "<span>" ).addClass( "custom-combobox" ).insertAfter( this.element );this.element.hide();this._createAutocomplete();this._createShowAllButton();},_createAutocomplete: function() {var selected = this.element.children( ":selected" ),value = selected.val() ? selected.text() : "";this.input = $( "<input>" ).appendTo( this.wrapper ).val( value ).attr( "title", "" ).addClass( "form-control" ).autocomplete({delay: 0,minLength: 0,source: $.proxy( this, "_source" )}).tooltip({tooltipClass: "ui-state-highlight"});this._on( this.input, {autocompleteselect: function( event, ui ) {ui.item.option.selected = true;this._trigger( "select", event, {item: ui.item.option});},autocompletechange: "_removeIfInvalid"});},_createShowAllButton: function() {var input = this.input,wasOpen = false;$( "<a>" ).attr( "tabIndex", -1 ).attr( "title", "Show All Items" ).tooltip().appendTo( this.wrapper ).button({icons: {primary: "ui-icon-triangle-1-s"},text: false}).removeClass( "ui-corner-all" ).addClass( "custom-combobox-toggle ui-corner-right" ).mousedown(function() { wasOpen = input.autocomplete( "widget" ).is( ":visible" ); }).click(function() {input.focus();if ( wasOpen ) {return;}input.autocomplete( "search", "" );});},_source: function( request, response ) {var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );response( this.element.children( "option" ).map(function() {var text = $( this ).text(); if ( this.value && ( !request.term || matcher.test(text) ) )return {label: text,value: text,option: this};}) );},_removeIfInvalid: function( event, ui ) {if ( ui.item ) {return;}var value = this.input.val(), valueLowerCase = value.toLowerCase(),valid = false;this.element.children( "option" ).each(function() {if ( $( this ).text().toLowerCase() === valueLowerCase ) {this.selected = valid = true; return false;}});if ( valid ) {return;}this.input.val( "" ).attr( "title", value + " didnt match any item" ).tooltip( "open" );this.element.val( "" );this._delay(function() {this.input.tooltip( "close" ).attr( "title", "" );}, 2500 );this.input.autocomplete( "instance" ).term = "";},_destroy: function() {this.wrapper.remove();this.element.show();}});})( jQuery );$(function() {$( "#proveedor_'+x+'" ).combobox({select: function (event, ui) {buscarEmpresasProveedor($(this));}});});  ';
+            var scriptBuscarNrosCuenta = '<script>$(function() {$( "#nroCuenta_'+x+'" ).autocomplete({source: function(request, response) {$.ajax({url: "{{ path('_ajax_buscar_por_nro_cuenta_por_empresa') }}",dataType: "json",data: {term : request.term,idEmpresa : $("#worker_'+x+'").val()},success: function(data) {response(data);}});},minLength: 2,select: function( event, ui ) {}});});';
+  
+            
+            $('#inputsParaClonar_'+x).append(selectWorkers); //add input box
+            $('#inputsParaClonar_'+x).append('<br id="divisor_'+x+'">'); //add input box
+            $('#inputsParaClonar_'+x).append(selectSalaryPaymentConcepts); //add input box
+            $('#inputsParaClonar_'+x).append('<br id="divisor_'+x+'">'); //add input box
+            $('#inputsParaClonar_'+x).append(inputNroCuenta); //add input box
+            $('#inputsParaClonar_'+x).append('<br id="divisor_'+x+'">'); //add input box
+            $('#inputsParaClonar_'+x).append(inputCantidadAEnviar); //add input box
+            $('#inputsParaClonar_'+x).append('<a href="#" onClick="event.preventDefault(); eliminarCampos('+x+');" class="remove_field">Eliminar</a></div>'); //add input box
+            $('#inputsParaClonar_'+x).append("<script>var cantidadAEnviar"+x+" = $('#cantidadAEnviar_"+x+"'); cantidadAEnviar"+x+".number(true,2,',','.');");
+            $('#inputsParaClonar_'+x).append(scriptSelectProveedor);
+            $('#inputsParaClonar_'+x).append(scriptBuscarNrosCuenta);
+            _globales.cantEmpresas = x;
+        }
+    });
+    
+});
+
+
+
+
+
+function eliminarCampos(numCampo) {
+  $("#inputsParaClonar_"+numCampo).remove();
+  $("#divisor_"+numCampo).remove();
+}
+</script>
+
+<script>
+  $(document).ready(function() {
+      
+     $( "#nroCuenta_1" ).autocomplete({
+      source: function(request, response) {
+        $.ajax({
+          url: _globales.urlSearchAccNumberByWorker,
+               dataType: "json",
+          data: {
+            term : request.term,
+            idEmpresa : $("#worker_1").val()
+          },
+          success: function(data) {
+            response(data);
+          }
+        });
+      },
+      minLength: 2,
+      select: function( event, ui ) {
+        
+      }
+    });
+    
+       
+  });
+  </script>
+{% endblock javascripts %}

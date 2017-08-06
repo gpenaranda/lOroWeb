@@ -1,0 +1,30 @@
+margenes_ganancia:
+    path:  /
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:index" }
+
+margenes_ganancia_show:
+    path:  /{id}/show
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:show" }
+
+margenes_ganancia_new:
+    path:  /new
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:new" }
+
+margenes_ganancia_create:
+    path:  /create
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:create" }
+    requirements: { methods: post }
+
+margenes_ganancia_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:edit" }
+
+margenes_ganancia_update:
+    path:  /{id}/update
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:update" }
+    requirements: { methods: post|put }
+
+margenes_ganancia_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "lOroAdminBundle:MargenesGanancias:delete" }
+    requirements: { methods: post|delete }

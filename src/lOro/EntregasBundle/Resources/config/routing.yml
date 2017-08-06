@@ -1,0 +1,3 @@
+l_oro_entregas_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: lOroEntregasBundle:Default:index }

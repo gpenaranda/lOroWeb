@@ -1,0 +1,15 @@
+new_massive_misc_payments:
+    path: /massive-salary-payments
+    defaults: {_controller: "lOroAppBundle:MiscellaneousPayments:MassiveSalaryPayments" }   
+
+_search_workers:
+  path: /search-workers
+  defaults: {_controller: "lOroAppBundle:MiscellaneousPayments:SearchWorkers" }   
+
+_search_salary_concepts:
+  path: /search-salary-concepts
+  defaults: {_controller: "lOroAppBundle:MiscellaneousPayments:SearchSalaryConcepts" }   
+
+_generate_txt_for_salary_payments:
+  path: /generate-txt-for-salary-payments
+  defaults: {_controller: "lOroAppBundle:MiscellaneousPayments:GenerateTxtForSalaryPayments" }   

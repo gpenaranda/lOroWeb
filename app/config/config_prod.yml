@@ -1,0 +1,39 @@
+imports:
+    - { resource: config.yml }
+
+#framework:
+#    validation:
+#        cache: apc
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: apc
+#        result_cache_driver: apc
+#        query_cache_driver: apc
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
+
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [lOroAdminBundle,lOroAppBundle,lOroBalanceBundle,lOroEntregasBundle,lOroVentasCierreBundle,lOroPagosBundle]
+    filters:
+        uglifyjs2:
+            # the path to the uglifyjs executable
+            bin: %kernel.root_dir%/Resources/node_modules/.bin/uglifyjs
+            node: null
+        uglifycss:
+            bin: %kernel.root_dir%/Resources/node_modules/.bin/uglifycss
+            node: null
+        cssrewrite: ~

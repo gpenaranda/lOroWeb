@@ -1,0 +1,62 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_dev.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  debug
+        console:
+            type:   console
+            bubble: false
+        # uncomment to get logging in your browser
+        # you may have to allow bigger header sizes in your Web server configuration
+        #firephp:
+        #    type:   firephp
+        #    level:  info
+        #chromephp:
+        #    type:   chromephp
+        #    level:  info
+
+assetic:
+    use_controller: true
+
+#swiftmailer:
+#    delivery_address: me@example.com
+
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_dev_driver%"
+        host:     "%database_dev_host%"
+        port:     "%database_dev_port%"
+        dbname:   "%database_dev_name%"
+        user:     "%database_dev_user%"
+        password: "%database_dev_password%"
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+        
+  
+# Swiftmailer Configuration
+swiftmailer:
+    transport:  "%mailer_dev_transport%"
+    host:       "%mailer_dev_host%"
+    username:   "%mailer_dev_user%"
+    port:       "%mailer_dev_port%"
+    password:   "%mailer_dev_password%"
+    encryption: "%mailer_dev_encryption%"        

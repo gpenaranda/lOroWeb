@@ -1,0 +1,34 @@
+home_proveedores:
+    path:     /index
+    defaults: { _controller: lOroProveedoresBundle:Default:index }
+
+
+app_prov_cierres:
+    path:     /cierres
+    defaults: { _controller: lOroProveedoresBundle:Default:listadoCierres }
+
+
+app_prov_entregas:
+    path:     /entregas
+    defaults: { _controller: lOroProveedoresBundle:Default:listadoEntregas }
+
+
+app_prov_pagos:
+    path:     /pagos
+    defaults: { _controller: lOroProveedoresBundle:Default:listadoPagos }
+
+
+app_download_pdf_prov:
+    path:     /descargar-pdf/{pagoId}
+    defaults: { _controller: lOroProveedoresBundle:Default:descargarPdfPago }
+
+
+
+
+prueba_rename_pdf:
+    path:     /rename-pdf/{tipoProveedores}
+    defaults: { _controller: lOroProveedoresBundle:Default:renamePdf }    
+
+
+
+

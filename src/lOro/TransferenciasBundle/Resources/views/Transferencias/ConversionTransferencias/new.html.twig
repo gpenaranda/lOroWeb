@@ -1,0 +1,78 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Conversión de Transferencias a Bolivares <small>Agregar</small>
+  </h1>
+</div>
+{% if banco %}
+  {% if banco.montoDolares != 0 %}
+  <div class="row">
+    <div class="col-md-5">
+      <h3>Información de Dinero en Dolares</h3>
+      <h4>Dolares Totales: <b>{{ banco.montoDolares | number_format('2',',','.') }} $</b></h4>
+    </div>
+  </div>
+    {{ form_start(form) }}
+    
+    {{ form_label(form.feCambio) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.feCambio) }}
+    </div>
+    {{ form_errors(form.feCambio) }}
+    
+    {{ form_label(form.montoCambiado) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">$</span>
+      {{ form_widget(form.montoCambiado) }}
+    </div>
+    {{ form_errors(form.montoCambiado) }}
+    
+    {{ form_label(form.dolarReferencia) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.dolarReferencia) }}
+    </div>
+    {{ form_errors(form.dolarReferencia) }}
+
+    {{ form_label(form.montoFinalBolivares) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">BsF</span>
+      {{ form_widget(form.montoFinalBolivares) }}
+    </div>
+    {{ form_errors(form.montoFinalBolivares) }}
+    
+    
+    {{ form_end(form)}}
+   {% else %}
+     <div class="alert alert-warning alert-dismissable" style="font-size: 16pt;">
+       <strong>Atención!</strong> No posee dolares para cambiar
+     </div>
+   {% endif %}
+{% else %}
+<div class="alert alert-warning alert-dismissable" style="font-size: 16pt;">
+  <strong>Atención!</strong> No puede realizar Cambios de dolares a bolivares si no posee transferencias registradas
+</div>
+{% endif %}
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(function(){
+      var montoDolares = $('#loro_entitybundle_conversion_transferencias_montoCambiado');
+      var dolarReferencia = $('#loro_entitybundle_conversion_transferencias_dolarReferencia');
+      var montoFinalBs = $('#loro_entitybundle_conversion_transferencias_montoFinalBolivares');
+      
+      dolarReferencia.keyup(function(){
+        if(montoDolares.val() != ''){
+          var resultado = parseFloat(montoDolares.val()) * parseFloat(dolarReferencia.val());
+          
+          montoFinalBs.val(resultado);
+        } else if(montoDolares.val() == '' || dolarReferencia.val() == '')
+          {
+            montoFinalBs.val('');
+          }      
+      });
+    });
+</script>
+{% endblock %}

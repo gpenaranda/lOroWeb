@@ -1,0 +1,148 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Debitos{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Debito<small>Editar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(edit_form) }}
+    
+    {{ form_label(edit_form.feDebito) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.feDebito) }}
+    </div>
+    {{ form_errors(edit_form.feDebito) }}
+        
+    {{ form_label(edit_form.tipoTransaccion) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.tipoTransaccion) }}
+    </div>
+    {{ form_errors(edit_form.tipoTransaccion) }}
+    
+    {{ form_label(edit_form.tipoPago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.tipoPago) }}
+    </div>
+    {{ form_errors(edit_form.tipoPago) }}    
+
+    <div class="campos-ocultos" id="nroReferencia">
+      {{ form_label(edit_form.nroReferencia) }}
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon">N°</span>
+        {{ form_widget(edit_form.nroReferencia) }}
+      </div>
+      {{ form_errors(edit_form.nroReferencia) }}        
+    </div>
+       
+        
+    {{ form_label(edit_form.monto) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon" id="tipo-moneda"></span>
+      {{ form_widget(edit_form.monto) }}
+    </div>
+    {{ form_errors(edit_form.monto) }}
+    
+    {{ form_label(edit_form.descripcion) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.descripcion) }}
+    </div>
+    {{ form_errors(edit_form.descripcion) }}        
+
+  <div style='margin-top:12px;'>
+    {{ form_widget(edit_form.submit) }}
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('debitos') }}">Volver</a>  
+  </div>
+
+    {{ form_end(edit_form)}}
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = {
+    formName:'loro_transferenciasbundle_debitos_',
+    montoPagado:$('#loro_transferenciasbundle_debitos_monto')
+  };        
+  
+    $('.campos-ocultos').hide(); 
+</script> 
+<script>
+  var campoTipoTransaccion = $('#'+_globales.formName+'tipoTransaccion');
+  
+  if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+    $('#nroReferencia').show(); 
+  } else {
+      $('#'+_globales.formName+'nroReferencia').val('');
+      $('#nroReferencia').hide();
+    } 
+    
+  campoTipoTransaccion.change(function(){
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else {
+      $('#'+_globales.formName+'nroReferencia').val('');
+      $('.campos-ocultos').hide();
+    }  
+  });    
+  
+  if($('#'+_globales.formName+'tipoPago').val() == 'B') {
+    $('#tipo-moneda').html('Bs.'); 
+  } else if($('#'+_globales.formName+'tipoPago').val() == 'V') {
+      $('#tipo-moneda').html('$'); 
+    } else {
+        $('#tipo-moneda').html(''); 
+      }
+      
+  _globales.montoPagado.val($.number(_globales.montoPagado.val(),2,',','.'));
+  _globales.montoPagado.number(true,2,',','.');   
+</script>
+<script>
+        $(function(){
+            
+
+  
+  var campoTipoTransaccion = $('#'+_globales.formName+'tipoTransaccion');
+  
+  campoTipoTransaccion.change(function(){
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else {
+      $('#'+_globales.formName+'nroReferencia').val('');
+      $('.campos-ocultos').hide();
+    }  
+  });
+  
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( '#'+_globales.formName+'feDebito').datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+   
+   
+  
+   $("#form-abonos").submit(function(e) {
+                 var nuevoValorMontoPagado = $.number(_globales.montoPagado.val(), 2,'.','' );
+                 _globales.montoPagado.number(true,2,'.','');
+                 _globales.montoPagado.val(nuevoValorMontoPagado);
+            });          
+        });
+        
+     $('#'+_globales.formName+'tipoPago').change(function(){
+         if($(this).val() == 'B') {
+            $('#tipo-moneda').html('Bs.'); 
+         } else if($(this).val() == 'V') {
+            $('#tipo-moneda').html('$'); 
+         } else {
+            $('#tipo-moneda').html(''); 
+         }
+         
+     });
+    </script>
+{% endblock %}

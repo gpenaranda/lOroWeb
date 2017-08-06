@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Reporte de Balance General por Mes</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+    {{ form(form) }}
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+
+{% if arregloEntity != null %}
+  {% if arregloEntity == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen registros para generar el balace general del mes seleccionado
+      </div>
+    </div> 
+  {% else %}
+    <table class="table table-hover table-condensed tablasListados">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Fecha Cierre</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Total Cerrado</th>
+          <th style="text-align:center;">Monto Cerrado Por Gramo</th>
+          <th style="text-align:center;">Total Cerrado</th>
+          <th style="text-align:center;">Ganancia Total Cierre</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for row in arregloEntity %}
+                <tr>
+                  <td>{{ row.fecha_cierre }}</td>
+                  <td>{{ row.nb_proveedor }}</td>
+                  <td>{{ row.cantidad_total_venta | number_format('2',',','.')  }} Grs.</td>
+                  <td>{{ row.monto_bs_cierre_por_gramo | number_format('2',',','.')  }} Bs/Grs.</td>
+                  <td>{{ row.monto_bs_cierre | number_format('2',',','.')  }} Bs.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+
+    
+
+{% endblock %}

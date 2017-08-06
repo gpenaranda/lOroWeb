@@ -1,0 +1,63 @@
+security:
+    encoders:
+        lOro\EntityBundle\Entity\Users:
+            algorithm:        sha1
+            encode_as_base64: false
+            iterations:       1
+    providers:
+        main:
+            entity:
+                class: lOro\EntityBundle\Entity\Users
+                property: username
+
+
+
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_PROVEEDOR, ROLE_ALLOWED_TO_SWITCH]
+
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+#        login:
+#            pattern:  ^/demo/secured/login$
+#            security: false
+
+#        secured_area:
+#             pattern:    ^/
+#             anonymous: ~
+#             form_login:
+#                 check_path: /login/
+#                 login_path: login_check
+        login_firewall:
+            pattern:   ^/
+            form_login:
+                login_path: /login
+                check_path: /login_check
+                success_handler: redirect.after.login
+            anonymous: ~
+        relacion_entregas_firewall:
+            pattern:   ^/admin/relacionar-entregas-cierres-aupanas-hc$
+            anonymous: ~            
+        secured_area:
+            pattern:    ^/
+            form_login: ~
+            logout:
+                path: /logout
+                target: /
+            #anonymous: /relacionar-entregas-cierres-aupanas-hc
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+    access_control:
+         - { path: ^/admin/relacionar-entregas-cierres-aupanas-hc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/servicios, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/cargar, roles: IS_AUTHENTICATED_ANONYMOUSLY }    
+         - { path: ^/app-proveedores/*, roles: ROLE_PROVEEDOR } 
+         - { path: ^/cambio-contrasena, roles: [ROLE_PROVEEDOR, ROLE_USER] }
+         - { path: ^/entregas/[0-9]+/show$, roles: [ROLE_PROVEEDOR, ROLE_USER] }
+         - { path: ^/, roles: ROLE_USER }

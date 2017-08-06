@@ -1,0 +1,53 @@
+<div class="navbar navbar-primary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand active" href="javascript:void(0)">Orotex</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav">
+            <li><a href="{{ path('home_proveedores') }}">Inicio</a></li>
+            <li class="dropdown">
+              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown">Cierres <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="divider"></li>
+                <li class="dropdown-header">Cierres</li>
+                <li><a href="{{ path('app_prov_cierres') }}">Listado de Cierres</a></li>
+              </ul>      
+            </li>
+            <li class="dropdown">
+              <a data-target="#" class="dropdown-toggle" data-toggle="dropdown">Entregas <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li class="divider"></li>
+                <li class="dropdown-header">Entregas</li>
+                <li><a href="{{ path('app_prov_entregas') }}">Listado Entregas</a></li>
+              </ul>      
+            </li>            
+            <li class="dropdown">
+            <a data-target="#" class="dropdown-toggle" data-toggle="dropdown">Pagos<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="divider"></li>
+              <li class="dropdown-header">Pagos</li>
+              <li><a href="{{ path('app_prov_pagos') }}">Listado de Pagos a Proveedores</a></li>
+             </ul>
+          </li>
+          <li class="dropdown">
+            <a data-target="#" class="dropdown-toggle" data-toggle="dropdown">Administración <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="divider"></li>
+              <!--li class="dropdown-header">Reportes y Estadisticas</li>
+              <li><a href="{{ path('reportes_estadisticas') }}">Reportes</a></li-->
+              <li class="divider"></li>
+              <li class="dropdown-header">Usuario</li>
+              <li><a href="{{ path('cambiar_contrasena') }}">Cambiar Contraseña</a></li>
+            </ul>
+          </li>           
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="{{ path('logout') }}">Salir</a></li>
+        </ul>
+    </div>
+</div>

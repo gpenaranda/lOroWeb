@@ -1,0 +1,173 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Entregas Minoristas<small>Listado</small></h1>
+</div>
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    
+    <!-- LLamado del twig con el modal de Ver Entrega -->
+    {% include 'lOroEntregasBundle:Entregas/extensiones/minoristas:modal_cambiar_estatus_entrega_minoristas.html.twig' %}
+   
+
+  <div class="col-md-9" id="divSumatoria">
+      <span  class="bubble you" style="float:right;">Sumatoria de los Seleccionados: <span id="montoSumatoria"></span> Grs.
+      </span>
+  </div>
+    <div class="col-md-11 col-xs-10" id="divAgregarNuevaEntrega" style="padding:0 0 3em 0; margin-left: -5px;">
+      <a style="float:right;" class="btn btn-primary btn-fab btn-raised mdi-content-add" href="{{ path('entregas_minoristas_new') }}">
+      </a>
+    </div>
+
+    {% if entities %}
+
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-entregas-minoristas" class="display">
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha de entrega</th>
+                <th style="text-align:center;">Peso bruto de la entrega</th>
+                <th style="text-align:center;">Pagado Bs x Grms</th>
+                <th style="text-align:center;">Total Pagado</th>
+                <th style="text-align:center;">Entrega realizada por</th>
+                <th style="text-align:center;">Ubicación Fisica de Entrega</th>
+                <th style="text-align:center;">Acciones</th>
+                <th style="text-align:center;">Sumar</th>
+            </tr>
+        </thead>
+        <tbody class="data-entregas">
+        {% for entity in entities %}
+            <tr>
+                <td style="text-align:center;">{{ entity.id }}</td>
+                <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
+                <td style="text-align:center;">{{ entity.pesoBrutoEntrega | number_format('2',',','.') }} Grs.</td>
+                <td style="text-align:center;">{{ entity.montoBsPorGramo | number_format('2',',','.') }} Grs.</td>
+                <td style="text-align:center;">{{ entity.totalMontoBs | number_format('2',',','.') }} Bs.</td>
+                <td style="text-align:center;">{{ entity.nbMinorista }}</td>
+                <td style="text-align:center;">{% if entity.ubicacionFisicaEntrega == 'P' %}
+                                                 Con el Proveedor
+                                               {% elseif entity.ubicacionFisicaEntrega == 'O' %}
+                                                 Oficina
+                                               {% elseif entity.ubicacionFisicaEntrega == 'W' %}
+                                                 Entregado / Web
+                                               {% else %}
+                                                 -
+                                               {% endif %}
+                </td>
+                <td style="text-align:center;">
+                  <a title="Ubicación Mat" data-toggle="modal" data-id="{{ entity.id }}" onclick="buscarUbicacionFisica('{{ entity.id }}');" data-target="#modalCambiarUbicFisicaMat" id="ubicacion-fisica-mat" style="text-decoration: none;" href="#  ">
+                    {% image 'assets/self/images/marcador-mapa.png' %}
+                      <img src="{{ asset_url }}" alt="Ubicacion Fisica de Entrega" />
+                    {% endimage %}                    
+                  </a>                    
+                  <a title="Editar" style="text-decoration: none;" href="{{ path('entregas_minoristas_edit', { 'id': entity.id }) }}">
+                    {% image 'assets/self/images/editar.png' %}
+                      <img src="{{ asset_url }}" alt="Editar" />
+                    {% endimage %}
+                  </a>                  
+                </td>
+                <td>
+                 <input type="checkbox" name="rows[]" id="pago_proveedor_{{ entity.id }}" onclick="sumarMontos('{{ entity.pesoBrutoEntrega }}','{{ entity.id }}')" value="{{ entity.pesoBrutoEntrega }}"/>
+                </td>                
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    
+    <div class="row alerta-busqueda" style="margin: 220px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se encontraron registros
+      </div>
+    </div>  
+    {% endif %}
+    {% endblock %}
+{% block javascripts %}
+<script>
+var _globales = {
+      titulosNoFiltrados: [0,1,2,3,4,6,7],
+      idListado: 'listado-entregas-minoristas',
+      idUbicacionFisicaMat: 'ubicacion-fisica-mat',
+      urlBuscarUbicacionFisica: '{{ url('_ajax_buscar_ubicacion_fisica_actual') }}',
+      urlCambiarUbicacionEntrega: '{{ url('_ajax_cambiar_ubicacion_fisica_entrega') }}',
+      montoSumatoria: 0.00
+};
+
+ function buscarUbicacionFisica(idEntregaMinorista)
+ {
+   $.ajax({
+        type: "POST",
+        url: _globales.urlBuscarUbicacionFisica,
+        data: {"idEntregaMinorista" : idEntregaMinorista },
+        success: function(data) {
+            
+          if (data.codUbicacionFisica == 'P'){
+              $('#con-proveedor').hide();
+              $('#oficina').show();
+              $('#web').show();
+          } else if (data.codUbicacionFisica == 'O') {
+              $('#con-proveedor').show();
+              $('#oficina').hide();
+              $('#web').show();              
+          } else {
+              $('#con-proveedor').show();
+              $('#oficina').show();
+              $('#web').hide();                 
+          }
+          $('#id-entrega-minorista').val(data.idEntregaMinorista);
+          
+          $('#ubicacion-actual-entrega').html(data.ubicacionFisicaActual);
+        }
+    });
+    
+    $('#cambiar-ubicacion-actual').click(function(e){
+      $.ajax({
+        type: "POST",
+        url: _globales.urlCambiarUbicacionEntrega,
+        data: {"idEntregaMinorista" : $('#id-entrega-minorista').val(),
+               "nuevaUbicacionFisicaEntrega": $('#ubicacion-fisica-entrega').val()},
+        success: function(data) {
+            window.location.href = '{{ path('entregas_minoristas') }}'; 
+        }});
+    });
+}
+
+
+
+
+/****************************************** SUMATORIA DE CAMPOS ********************************/
+$('#divSumatoria').hide();
+
+function sumarMontos(montoPagado,idPagoProveedor) {
+  
+  if ($('#pago_proveedor_'+idPagoProveedor).is(':checked')) {
+   
+  
+   _globales.montoSumatoria = _globales.montoSumatoria + parseFloat(montoPagado);
+   
+   } else {
+     _globales.montoSumatoria = _globales.montoSumatoria - parseFloat(montoPagado);
+   }
+   
+   if(_globales.montoSumatoria > 0) {
+      $('#divSumatoria').show(); 
+      $('#divAgregarNuevaEntrega').removeClass('col-md-11');
+      $('#divAgregarNuevaEntrega').addClass('col-md-2');      
+   } else {
+      $('#divSumatoria').hide();
+      
+      $('#divAgregarNuevaEntrega').removeClass('col-md-2');
+      $('#divAgregarNuevaEntrega').addClass('col-md-11');
+   }
+   
+   $('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
+}
+
+$('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregasMinoristas.js') }}"></script>
+{% endblock %}

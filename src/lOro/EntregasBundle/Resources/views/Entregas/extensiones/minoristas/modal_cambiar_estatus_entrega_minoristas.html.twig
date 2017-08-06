@@ -1,0 +1,29 @@
+<div class="modal fade" id="modalCambiarUbicFisicaMat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modificar Ubicación Fisica de la Entrega</h4>
+      </div>
+      <div class="modal-body">
+        <div id="mensaje-accion"></div>
+          <h4>Ubicación Actual de la Entrega</h4>
+          <hr style="border-color: black;">
+          <div id="ubicacion-actual-entrega" ></div>          
+        <div id="mensaje-accion"></div>
+          <h4>Modificar Ubicaci&oacute;n de la Entrega</h4>
+          <hr style="border-color: black;">
+          <select id="ubicacion-fisica-entrega" class="form-control">
+              <option value="null">Seleccione una Opción</option>
+              <option id="con-proveedor" value="P">Con el Proveedor</option>
+              <option id="oficina" value="O">En Oficina</option>
+              <option id="web" value="W">Entregado / Web</option>
+          </select>
+          <input type="hidden" name="id-entrega-minorista" id="id-entrega-minorista" value="" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cambiar-ubicacion-actual" class="btn btn-success">Cambiar Ubicación Actual</button>
+      </div>
+    </div> 
+  </div>
+</div>

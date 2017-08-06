@@ -1,0 +1,11 @@
+  
+/* Allows clear the shadows and colors of Input Fields, when validated */
+.has-success .form-control,
+.has-error .form-control,
+.has-success .form-control:focus,
+.has-error .form-control:focus {
+    border-color: none  !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}

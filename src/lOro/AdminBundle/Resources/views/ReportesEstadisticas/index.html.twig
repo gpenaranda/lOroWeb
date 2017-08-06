@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Reportes y Estadisticas</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-2">
+    <div class="list-group">
+      <h4 style="text-align: center;">Reportes de Proveedores</h4>
+      <a class="list-group-item" href="{{ path('reporte_tiempo_cierres_entregas_proveedor') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Tiempo Transcurrido entre Cierres y Entregas por Proveedor
+      </a>      
+      <a class="list-group-item" href="{{ path('reporte_pagos_proveedores_por_fecha') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Pagos Realizados por Fechas y Proveedor
+      </a>           
+      <a class="list-group-item" href="{{ path('reporte_entregas_por_fecha_proveedor') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Entregas realizadas por Fechas y Proveedor
+      </a>
+      <a class="list-group-item" href="{{ path('reporte_cierres_por_fecha_proveedor') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Cierres reaizados por Fechas y Proveedor
+      </a>           
+    </div>
+</div>
+<div class="col-lg-4 ">
+    <div class="list-group">
+      <h4 style="text-align: center;">Reportes Generales</h4>  
+      <!--a class="list-group-item" href="{{ path('reporte_balance_general_por_meses') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Balance General por Meses
+      </a-->          
+      <a class="list-group-item" href="{{ path('ganancias_por_cierre_proveedor') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Ganancias por Cierre Proveedor
+      </a>         
+      <a class="list-group-item" href="{{ path('reporte_balances_generados') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Balances Generados
+      </a>          
+      <a class="list-group-item" href="{{ path('reporte_pagos_varios_por_mes_anio') }}">
+        <span class="glyphicon glyphicon-list-alt"></span>  
+        Pagos Varios Realizados Por Meses
+      </a>                   
+    </div>
+</div>
+{% endblock %}

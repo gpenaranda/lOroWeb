@@ -1,0 +1,111 @@
+l_oro_proveedores:
+    resource: "@lOroAppBundle/Resources/config/proveedores.yml"
+    prefix:   /proveedores
+
+l_oro_general_routes:
+    resource: "@lOroAppBundle/Resources/config/general_routes.yml"
+    prefix:   /general    
+    
+l_oro_pagos:
+    resource: "@lOroPagosBundle/Resources/config/routing.yml"
+    prefix:   /
+
+l_oro_balance:
+    resource: "@lOroBalanceBundle/Resources/config/routing/balance.yml"
+    prefix:   /balance
+
+lOroEntityBundle_ventas-dolares:
+    resource: "@lOroVentasDolaresBundle/Resources/config/routing/ventasdolares.yml"
+    prefix:   /ventas-dolares
+
+
+l_oro_ventas_dolares:
+    resource: "@lOroVentasDolaresBundle/Resources/config/routing.yml"
+    prefix:   /
+
+
+l_oro_transferencias:
+    resource: "@lOroTransferenciasBundle/Resources/config/routing/transferencias.yml"
+    prefix:   /pagos-transferencias
+    
+lOroEntityBundle_pagos-varios:
+    resource: "@lOroTransferenciasBundle/Resources/config/routing/pagosvarios.yml"
+    prefix:   /pagos-varios
+
+
+l_oro_debitos:
+    resource: "@lOroTransferenciasBundle/Resources/config/routing/debitos.yml"
+    prefix:   /debitos
+    
+    
+l_oro_abonos:
+    resource: "@lOroTransferenciasBundle/Resources/config/routing/abonos.yml"
+    prefix:   /abonos
+
+l_oro_login:
+    resource: "@lOroLoginBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pagina_inicial:
+    path:  /
+    defaults: { _controller: "lOroinicioBundle:Default:index" }
+    
+    
+lOroEntityBundle_empresas_proveedores:
+    resource: "@lOroAdminBundle/Resources/config/routing/empresasproveedores.yml"
+    prefix:   /empresas-proveedores
+
+
+l_oro_ventas_cierre:
+    resource: "@lOroVentasCierreBundle/Resources/config/routing/ventascierres.yml"
+    prefix:   /ventas_cierre  
+    
+l_oro_admin:
+    resource: "@lOroAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+    
+l_oro_admin_margenes_ganancia:
+    resource: "@lOroAdminBundle/Resources/config/routing/margenesganancias.yml"
+    prefix:   /admin/margenes_ganancia
+    
+l_oro_admin_proveedores:
+    resource: "@lOroAdminBundle/Resources/config/routing/proveedores.yml"
+    prefix:   /admin/proveedores  
+    
+l_oro_admin_reportes_estadisticas:
+    resource: "@lOroAdminBundle/Resources/config/routing/reportesestadisticas.yml"
+    prefix:   /admin/reportes-estadisticas      
+
+
+
+l_oroinicio:
+    resource: "@lOroinicioBundle/Resources/config/routing.yml"
+    prefix:   /
+
+l_oro_entregas:
+    resource: "@lOroEntregasBundle/Resources/config/routing/entregas.yml"
+    prefix:   /entregas
+    
+l_oro_entregas_minoristas:
+    resource: "@lOroEntregasBundle/Resources/config/routing/entregas_minoristas.yml"
+    prefix:   /entregas-minoristas  
+
+
+lOroEntityBundle_parametros:
+    resource: "@lOroAdminBundle/Resources/config/routing/parametros.yml"
+    prefix:   /parametros
+
+
+l_oro_pagos_minoristas:
+    resource: "@lOroPagosBundle/Resources/config/routing/pagos_minoristas.yml"
+    prefix:   /pagos-minoristas
+
+
+l_oro_proveedores_app:
+    resource: "@lOroProveedoresBundle/Resources/config/routing.yml"
+    prefix:   /app-proveedores
+
+
+l_oro_servicios:
+    resource: "@lOroEntityBundle/Resources/config/routing.yml"
+    prefix:   /servicios

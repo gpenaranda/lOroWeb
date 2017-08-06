@@ -1,0 +1,95 @@
+{% extends('::base.html.twig') %}
+
+{% block title %}Pagos{% endblock %}
+
+{% block body %}
+<div class="page-header">
+  <h1 style="font-size: 40pt;">Pagos</h1>
+</div>
+
+
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+
+{% if entities %}
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="display" >
+        <thead>
+            <tr>
+            	<th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha</th>
+                <th style="text-align:center;">Tipo de Transacción</th>
+                <th style="text-align:center;">Pagado en</th>
+                <th style="text-align:center;">Monto del Pago</th>
+                <th style="text-align:center;">Nro Referencia</th>
+                <th style="text-align:center;">Empresa</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="data-tabla">
+        {% for entity in entities if entity.id != 9999 %}
+            <tr>
+            	<td style="text-align:center;">{{ entity.id }}</td>
+                <td style="text-align:center;">{% if entity.fePago %}{{ entity.fePago | date('Y-m-d') }}{% endif %}</td>
+                <td style="text-align:center;">{{ entity.nbTransaccion }}</td>
+                <td style="text-align:center;">{{ entity.tipoPago }}</td>
+                <td style="text-align:center;">{{ entity.montoPagado | number_format('2',',','.')}}  {% if entity.tipoPago == 'Bolivares' %}Bs.{% elseif entity.tipoPago == 'Dolares' %}${% else %}€{% endif%}</td>
+                <td style="text-align:center;">{{ entity.nroReferencia }}</td>
+                <td style="text-align:center;">{{ entity.nombreEmpresa }}</td>                
+                <td style="text-align:center;">                        
+                    <a title="Descargar PDF" href="{{ path('app_download_pdf_prov',{ 'pagoId':entity.id }) }}">    
+                       <img src="{{ asset('bundles/lOroBundle/images/ic_file_download_black_36dp_1x.png') }}" />
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+   
+    </div>
+    {% endif %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+var _globales = {
+      titulosNoFiltrados: '[0,1,4,7,8]',
+      idListado: 'listado-cierres',
+      montoSumatoria: 0.00,
+      urlTxtLang: "{{ asset('lang.txt') }}"
+};
+$('#divSumatoria').hide();
+
+function sumarMontos(montoPagado,idPagoProveedor) {
+  
+  if ($('#pago_proveedor_'+idPagoProveedor).is(':checked')) {
+   
+  
+   _globales.montoSumatoria = _globales.montoSumatoria + parseFloat(montoPagado);
+   
+   } else {
+     _globales.montoSumatoria = _globales.montoSumatoria - parseFloat(montoPagado);
+   }
+   
+   if(_globales.montoSumatoria > 0) {
+      $('#divSumatoria').show(); 
+      $('#divAgregarNuevoPago').removeClass('col-md-11');
+      $('#divAgregarNuevoPago').addClass('col-md-2');      
+   } else {
+      $('#divSumatoria').hide();
+      
+      $('#divAgregarNuevoPago').removeClass('col-md-2');
+      $('#divAgregarNuevoPago').addClass('col-md-11');
+   }
+   
+   $('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
+}
+
+$('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
+</script>
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoPagosProveedores.js') }}"></script>    
+{% endblock %}

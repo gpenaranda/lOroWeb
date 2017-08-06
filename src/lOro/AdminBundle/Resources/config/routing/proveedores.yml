@@ -1,0 +1,30 @@
+proveedores:
+    path:  /
+    defaults: { _controller: "lOroAdminBundle:Proveedores:index" }
+
+proveedores_show:
+    path:  /{id}/show
+    defaults: { _controller: "lOroAdminBundle:Proveedores:show" }
+
+proveedores_new:
+    path:  /new
+    defaults: { _controller: "lOroAdminBundle:Proveedores:new" }
+
+proveedores_create:
+    path:  /create
+    defaults: { _controller: "lOroAdminBundle:Proveedores:create" }
+    requirements: { methods: post }
+
+proveedores_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "lOroAdminBundle:Proveedores:edit" }
+
+proveedores_update:
+    path:  /{id}/update
+    defaults: { _controller: "lOroAdminBundle:Proveedores:update" }
+    requirements: { methods: post|put }
+
+proveedores_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "lOroAdminBundle:Proveedores:delete" }
+#    requirements: { methods: post|delete }

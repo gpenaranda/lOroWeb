@@ -1,0 +1,7 @@
+parameters:
+#    l_oro_transferencias.example.class: lOro\TransferenciasBundle\Example
+
+services:
+#    l_oro_transferencias.example:
+#        class: %l_oro_transferencias.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

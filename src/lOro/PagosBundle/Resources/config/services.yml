@@ -1,0 +1,4 @@
+services:
+#    l_oro_pagos.example:
+#        class: lOro\PagosBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

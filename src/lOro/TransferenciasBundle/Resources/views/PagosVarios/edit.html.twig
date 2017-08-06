@@ -1,0 +1,123 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Pagos Proveedores{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Pago Vario<small>Editar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(edit_form) }}
+    
+    {{ form_label(edit_form.fePago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.fePago) }}
+    </div>
+    {{ form_errors(edit_form.fePago) }}
+        
+    {{ form_label(edit_form.tipoPagoVario) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.tipoPagoVario) }}
+    </div>
+    {{ form_errors(edit_form.tipoPagoVario) }} 
+    
+    {{ form_label(edit_form.tipoTransaccion) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.tipoTransaccion) }}
+    </div>
+    {{ form_errors(edit_form.tipoTransaccion) }}
+
+    {{ form_label(edit_form.tipoPago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.tipoPago) }}
+    </div>
+    {{ form_errors(edit_form.tipoPago) }}    
+    
+    <div class="campos-ocultos">
+      {{ form_label(edit_form.nroReferencia) }}
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon">N°</span>
+        {{ form_widget(edit_form.nroReferencia) }}
+      </div>
+      {{ form_errors(edit_form.nroReferencia) }}        
+    </div>
+       
+    {{ form_label(edit_form.empresaCasa) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.empresaCasa) }}
+    </div>
+    {{ form_errors(edit_form.empresaCasa) }}
+        
+    {{ form_label(edit_form.montoPago) }}
+    <div class="input-group input-group-lg">
+      <span class="input-group-addon">Bs.</span>
+      {{ form_widget(edit_form.montoPago) }}
+    </div>
+    {{ form_errors(edit_form.montoPago) }}
+    
+    {{ form_label(edit_form.descripcionPago) }}
+    <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(edit_form.descripcionPago) }}
+    </div>
+    {{ form_errors(edit_form.descripcionPago) }}        
+
+  <div style='margin-top:12px;'>
+    {{ form_widget(edit_form.submit) }}
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('pagos-varios') }}">Volver</a>  
+  </div>
+
+    {{ form_end(edit_form)}}
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(function(){
+            
+  
+  var campoTipoTransaccion = $('#loro_transferenciasbundle_pagosvarios_tipoTransaccion');
+  
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else {
+      $('#loro_transferenciasbundle_pagosvarios_nroReferencia').val('');
+      $('.campos-ocultos').hide();
+    } 
+    
+  campoTipoTransaccion.change(function(){
+    if(campoTipoTransaccion.val() == 1 || campoTipoTransaccion.val() == 2){
+      $('.campos-ocultos').show(); 
+    } else {
+      $('#loro_transferenciasbundle_pagosvarios_nroReferencia').val('');
+      $('.campos-ocultos').hide();
+    }  
+  });
+  
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_transferenciasbundle_pagosvarios_fePago" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+   var montoPagado = $('#loro_transferenciasbundle_pagosvarios_montoPago');
+   montoPagado.val($.number(montoPagado.val(),2,',','.'));
+   montoPagado.number(true,2,',','.');
+  
+   $("#form-pagos-varios").submit(function(e) {
+
+                 var montoPagado = $('#loro_transferenciasbundle_pagosvarios_montoPago');
+                 var nuevoValorMontoPagado = $.number(montoPagado.val(), 2,'.','' );
+                 montoPagado.number(true,2,'.','');
+                 montoPagado.val(nuevoValorMontoPagado);
+            });          
+        });
+    </script>
+ 
+
+{% endblock %}

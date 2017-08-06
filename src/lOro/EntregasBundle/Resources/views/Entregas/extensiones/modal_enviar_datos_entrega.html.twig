@@ -1,0 +1,27 @@
+<div class="modal fade" id="modalEnviarDatosEntregas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">Enviar Correo</h4>
+      </div>
+      <div class="modal-body">
+        <div id="mensaje-accion"></div>
+          <h4>Destinatario</h4>
+          <hr style="border-color: black;">
+          <input id="correo-destinatario" class="form-control" />          
+        <div id="mensaje-accion"></div>
+          <h4>Asunto del Correo</h4>
+          <hr style="border-color: black;">
+          <input id="asunto-correo" class="form-control" />
+        <div id="mensaje-accion"></div>
+          <h4>Texto del Correo</h4>
+          <hr style="border-color: black;">
+          <textarea id="texto-correo" class="form-control" style="height:150px;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="enviar-correo-datos-entrega" class="btn btn-success">Enviar Correo</button>
+      </div>
+    </div> 
+  </div>
+</div>

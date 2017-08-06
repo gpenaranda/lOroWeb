@@ -1,0 +1,13 @@
+parameters:
+#    l_oro_entity.example.class: lOro\EntityBundle\Example
+
+services:
+#    l_oro_entity.example:
+#        class: %l_oro_entity.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    loro_datos_generales:
+        class: lOro\EntityBundle\Service\DatosGenerales
+        arguments: ["@doctrine.orm.entity_manager", @mailer,"@service_container", "@session", "@router" ]
+    loro_relaciones_registros:
+        class: lOro\EntityBundle\Service\RelacionesRegistros
+        arguments: ["@doctrine.orm.entity_manager"]        

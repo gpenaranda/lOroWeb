@@ -1,0 +1,33 @@
+    <div class="col-md-11" style="padding:0 0 0 0; margin-left: -5px; margin-bottom: 5px;">
+      <select class="col-md-2 form-control" id="tipo-busqueda" name="tipo-busqueda" type="text" style="width: 180px; float:right;">
+        <option value="vacio">Buscar Por:</option>
+        {% for value, tipoBusqueda in tiposBusqueda %}
+        <option value="{{ value }}">{{ tipoBusqueda }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-11" style="padding:0 0 0 0; margin-left: -5px;">
+      <input id="buscador" class="col-md-2 form-control" type="text" style="width: 200px; float:right;"  name="buscador">
+      <div class="contenedor-buscador-fechas">
+        <input id="fechaFinal" class="col-md-2 form-control" type="text" style="width: 200px; float:right;"  name="buscador">
+        <span style="height:28px; padding-top:6px; margin-right: 4px; margin-left: 4px; float:right;" >Hasta:</span>
+        <input id="fechaInicio" class="col-md-2 form-control" type="text" style="width: 200px; float:right;"  name="buscador">
+        <span style="height:28px; padding-top:6px; margin-right: 4px; margin-left: 4px; float:right;" >Desde:</span>        
+      </div>
+      {% if proveedores is defined %}
+      <select class="col-md-2 form-control" id="select-proveedor" name="select-proveedor" type="text" style="width: 180px; float:right;">
+         <option value="vacio">Seleccione una Opci&oacute;n</option>
+        {% for proveedor in proveedores %}
+          <option value="{{ proveedor.id }}">{{ proveedor.nbProveedor }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
+      {% if empresasCasa is defined %}
+      <select class="col-md-2 form-control" id="select-empresa-casa" name="select-proveedor" type="text" style="width: 180px; float:right;">
+         <option value="vacio">Seleccione una Opci&oacute;n</option>
+        {% for empresa in  empresasCasa %}
+          <option value="{{ empresa.id }}">{{ empresa.nombreEmpresa }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}      
+    </div>

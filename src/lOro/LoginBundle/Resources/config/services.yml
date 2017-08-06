@@ -1,0 +1,12 @@
+parameters:
+#    l_oro_login.example.class: lOro\LoginBundle\Example
+
+
+services:
+  redirect.after.login:
+    class: lOro\LoginBundle\Redirection\AfterLoginRedirection
+    arguments: [@router]
+
+  redirect.after.logout:
+    class: lOro\LoginBundle\Redirection\AfterLogoutRedirection
+    arguments: [@router, @security.context]

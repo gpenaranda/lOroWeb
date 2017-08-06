@@ -1,0 +1,45 @@
+<div class="modal fade" id="modalVerEntrega" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Ver Entrega N° <b class="id-entrega"></b></h4>
+            </div>
+            <div class="modal-body">
+              <div id="mensaje-accion"></div>
+              <h4>Datos Generales de la Entrega</h4>
+              <hr style="border-color: black;">
+              <table class="table table-condensed">
+                  <thead>
+                      <tr>
+                          <th style="text-align:center;">ID</th>
+                          <th style="text-align:center;">Fecha de entrega</th>
+                          <th style="text-align:center;">Peso bruto de la entrega</th>
+                          <th style="text-align:center;">Promedio de la ley</th>
+                          <th style="text-align:center;">Peso puro de la entrega</th>
+                          <th style="text-align:center;">Entrega realizada por</th>
+                          <th style="text-align:center;">Piezas Entregadas</th>
+                      </tr>
+                  </thead>
+                  <tbody class="data-entrega">
+                  </tbody>
+              </table>
+              <h4>Datos de las Piezas</h4>
+              <hr style="border-color: black;">
+              <table class="table table-condensed" id="tabla-datos-piezas">
+                  <thead>
+                      <tr>
+                          <th style="text-align:center;">ID</th>
+                          <th style="text-align:center;">Peso bruto de la pieza</th>
+                          <th style="text-align:center;">Ley de la pieza</th>
+                          <th style="text-align:center;">Peso puro de la pieza</th>
+                      </tr>
+                  </thead>
+                  <tbody class="data-piezas">
+                  </tbody>
+              </table>
+              <div class="alert alert-danger" id="alerta-piezas">No se poseen piezas asociadas a esta entrega</div>
+            </div>
+        </div>
+    </div> 
+</div>

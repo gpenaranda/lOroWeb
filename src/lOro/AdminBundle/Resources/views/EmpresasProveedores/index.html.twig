@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Empresas Por Proveedores{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Empresa por Proveedores<small>Listado</small>
+  </h1>
+</div>
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
+{% if not entities %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen proveedores registrados actualmente
+      </div>
+    </div>   
+  {% endif %}
+  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+    <a style="float:right;" href="{{ path('empresas-proveedores_new') }}" class="btn btn-lg btn-success">Agregar Nueva Empresa</a>
+  </div>
+  {% if entities %}
+  <table class="table table-hover table-condensed tablasListadosPequena" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de la Empresa</th>
+                <th>Proveedor asociado a la empresa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>              
+                <td>{{ entity.nombreEmpresa }}</td>
+                <td>{{ entity.proveedor.nbProveedor }}</td>  
+                <td>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_show', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  </a>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_edit', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

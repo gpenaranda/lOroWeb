@@ -1,0 +1,3 @@
+_select_empresas_x_comprador:
+    pattern:  /empresas-por-comprador
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:empresasPorComprador" }

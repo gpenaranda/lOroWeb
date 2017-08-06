@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Empresas Casa{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Empresa Casa<small>Listado</small>
+  </h1>
+</div>
+{% if not entities %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen proveedores registrados actualmente
+      </div>
+    </div>   
+  {% endif %}
+  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+    <a style="float:right;" href="{{ path('empresas-casa_new') }}" class="btn btn-lg btn-success">Agregar Nueva Empresa</a>
+  </div>
+  {% if entities %}
+  <table class="table table-hover table-condensed tablasListadosPequena" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de la Empresa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>              
+                <td>{{ entity.nombreEmpresa }}</td>  
+                <td>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-casa_show', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  </a>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-casa_edit', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

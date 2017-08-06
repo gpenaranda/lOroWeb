@@ -1,0 +1,20 @@
+abonos:
+    pattern:  /
+    defaults: { _controller: "lOroTransferenciasBundle:Abonos:index" }
+    
+    
+abono_new:
+    pattern:  /new
+    defaults: { _controller: "lOroTransferenciasBundle:Abonos:new" }
+    
+abono_show:
+    pattern:  /show/{id}
+    defaults: { _controller: "lOroTransferenciasBundle:Abonos:show" }  
+    
+abono_delete:
+    pattern:  /delete/{id}
+    defaults: { _controller: "lOroTransferenciasBundle:Abonos:delete" } 
+    
+abono_edit:
+    pattern:  /edit/{id}
+    defaults: { _controller: "lOroTransferenciasBundle:Abonos:edit" }     

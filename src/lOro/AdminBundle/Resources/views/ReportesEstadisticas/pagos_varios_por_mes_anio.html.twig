@@ -1,0 +1,69 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Reporte de Pagos Varios por Meses</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+    {{ form(form) }}
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if arregloEntity != null %}
+  {% if arregloEntity == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen pagos generados
+      </div>
+    </div> 
+  {% else %}
+    <table class="table table-hover table-condensed tablasListados">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Año</th>
+          <th style="text-align:center;">Mes</th>
+          <th style="text-align:center;">Descripcion</th>
+          <th style="text-align:center;">Monto (Bs.)</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for entrega in arregloEntity %}
+                <tr>
+                  <td>{{ entrega.anio }}</td>
+                  <td>{% if entrega.mes == 1 %}
+                       Enero
+                      {% elseif entrega.mes == 2 %}
+                       Febrero
+                      {% elseif entrega.mes == 3 %}
+                       Marzo
+                      {% elseif entrega.mes == 4 %}
+                       Abril
+                      {% elseif entrega.mes == 5 %}
+                       Mayo
+                      {% elseif entrega.mes == 6 %}
+                       Junio
+                      {% elseif entrega.mes == 7 %}
+                       Julio
+                      {% elseif entrega.mes == 8 %}
+                       Agosto
+                      {% elseif entrega.mes == 9 %}
+                       Septiembre
+                      {% elseif entrega.mes == 10 %}
+                       Octubre
+                      {% elseif entrega.mes == 11 %}
+                       Noviembre
+                      {% elseif entrega.mes == 12 %}
+                       Diciembre
+                      {% endif %}
+                  </td>
+                  <td>{{ entrega.descripcion }}</td>
+                  <td>{{ entrega.totalPagado | number_format('2',',','.')  }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+
+    
+
+{% endblock %}

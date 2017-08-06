@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Venta de Dolares por Comprador</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+    {{ form(form) }}
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if poseePagos != 'vacio' %}
+    {% if poseePagos == false %}
+        <div class="row" style="margin:0px 10% 0 10%;">
+          <div class="alert alert-danger">
+            No se poseen ventas de dolares generadas para este comprador
+          </div>
+        </div> 
+    {% elseif poseePagos == true %}
+       <table class="table table-hover table-condensed tablasListados">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">ID de la Venta Realizada</th>
+                    <th style="text-align:center;">Comprador</th>
+                    <th style="text-align:center;">Empresa</th>
+                    <th style="text-align:center;">Monto Comprado ($)</th>
+                    <th style="text-align:center;">Dolar de Referencia ($xBs.)</th>
+                    <th style="text-align:center;">Monto Pagado (Bs.)</th>
+                    <th style="text-align:center;">Fecha de Compra</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for compraRealizada in comprasRealizadas %}
+                <tr>
+                  <td>{{ compraRealizada.id }}</td>
+                  <td>{{ compraRealizada.comprador.nbProveedor }}</td>
+                  <td>{{ compraRealizada.empresa | title }}</td>
+                  <td>{{ compraRealizada.cantidadDolaresComprados | number_format('2',',','.') }} $</td>
+                  <td>{{ compraRealizada.dolarReferencia | number_format('2',',','.') }} $xBs.</td>
+                  <td>{{ compraRealizada.montoVentaBolivares | number_format('2',',','.') }} Bs.</td>
+                  <td>{{ compraRealizada.fechaVenta | date('d-m-Y') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Pagos Varios{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1 style="font-size: 40pt;">Pagos Varios<small style="margin-left:10px; font-size: 26pt;">Ver</small>
+  </h1>
+</div>
+<div class="row">
+<dl class="col-md-7  col-md-offset-1 dl-horizontal">
+  <dt style="width:500px; margin-right: 10px">ID</dt>
+  <dd style="width:600px;">{{ entity.id }}</dd>
+  <dt style="width:500px; margin-right: 10px">Fecha del Abono</dt>
+  <dd style="width:600px;">{{ entity.feAbono | date('d-m-Y') }}</dd>
+  <dt style="width:500px; margin-right: 10px">Tipo de Transacci&oacute;n</dt>
+  <dd style="width:600px;">{{ entity.tipoTransaccion.nbTransaccion }}</dd>
+  <dt style="width:500px; margin-right: 10px">Tipo de Pago</dt>
+  <dd style="width:600px;">{{ entity.tipoPago == 'B' ? 'Bolivares' : 'Verdes' }}</dd>  
+  <dt style="width:500px; margin-right: 10px">Monto del Abono</dt>
+  <dd style="width:600px;">{{ entity.monto | number_format('2',',','.') }} {{ entity.tipoPago == 'B' ? 'Bs.' : '$' }}</dd>
+  <dt style="width:500px; margin-right: 10px">Descripci&oacute;n del Pago</dt>
+  <br />
+  <dd style="width:600px;" >{{ entity.descripcion }}</dd>
+</dl>
+</div>
+<div class="row">
+  <div class="col-md-4 col-md-offset-5">
+    <a  href="{{ path('abono_delete', { 'id': entity.id }) }}" class="btn btn-lg btn-danger" >Eliminar</a>
+    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('abonos') }}">Volver</a>
+  </div>
+</div>
+
+{% endblock %}

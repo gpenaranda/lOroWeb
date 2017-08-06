@@ -1,0 +1,215 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Entregas HC<small>Listado</small></h1>
+</div>
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+      <button style="float:right;" class="btn btn-lg btn-success" data-toggle="modal" data-target="#modalAgregarEntregas">
+        Nueva Entrega HC
+      </button>
+    </div>
+
+
+
+    
+
+    <!-- LLamado del twig con el modal de Nueva Entrega -->
+    {% include 'lOroEntregasBundle:Entregas/extensiones/hc:modal_nueva_entrega.html.twig' %}
+    
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-entregas" class="display">
+        <thead>
+            <tr>
+                <th style="text-align:center;">Cod Entrega</th>
+                <th style="text-align:center;">Fecha de entrega</th>
+                <th style="text-align:center;">Pieza Inicial</th>
+                <th style="text-align:center;">Pieza Final</th>
+                <th style="text-align:center;">Cant Piezas Entregadas</th>
+                <th style="text-align:center;">Peso Puro Entrega</th>
+            </tr>
+        </thead>
+        <tbody class="data-entregas">
+        {% for entity in entities %}
+            <tr>
+              <td style="text-align:center;">{{ entity.codEntrega }}</td>
+              <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
+              <td style="text-align:center;">{{ entity.piezaInicial.codPieza }}</td>
+              <td style="text-align:center;">{{ entity.piezaFinal.codPieza }}</td>
+              <td style="text-align:center;">{{ entity.cantPiezasEntregadas }}</td>
+              <td style="text-align:center;">{{ entity.gramosEntregaHc | number_format(2,',','.') }} Grs</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    
+    
+    <div class="row alerta-busqueda" style="margin: 220px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se encontraron registros
+      </div>
+    </div>  
+    {% endblock %}
+{% block javascripts %}
+<script>
+var _globales = {
+      idEntrega: '',
+      urlVerEntrega: '{{ path('entregas_show', { 'id': ':idEntrega' }) }}',
+      urlEliminarEntrega: '{{ path('entregas_delete', { 'id': ':idEntrega' }) }}',
+      urlEliminarPieza: '{{ path('piezas_delete', { 'id': ':idPieza' }) }}',
+      titulosNoFiltrados: [0,1,2,3,4,5],
+      idListado: 'listado-entregas'
+};
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>
+<script>
+$('#cargando-reg').hide();
+</script>    
+<script>
+$(document).on("click", ".open-ver-entrega", function () {
+     _globales.idEntrega = $(this).data('id');
+     $("#modalVerEntrega .id-entrega").text( _globales.idEntrega );
+     
+     /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+     var url = _globales.urlVerEntrega;
+     url = url.replace(':idEntrega',_globales.idEntrega);
+      
+      
+      $.ajax({
+        type: 'get',
+        url: url,
+        id: _globales.idEntrega,
+        success: function(entrega) {
+            
+          /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+          var urlEliminarEntrega = _globales.urlEliminarEntrega;
+          urlEliminarEntrega = urlEliminarEntrega.replace(':idEntrega',_globales.idEntrega);
+     
+          var htmlEntrega = '<tr>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.id+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.feEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoBrutoEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.promLeyEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoPuroEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.proveedorEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+entrega.cantPiezasEntregadas+'</td>';
+              htmlEntrega += '<td style="text-align:center;"><a class="btn btn-danger" href="'+urlEliminarEntrega+'">Eliminar Entrega</a></td>';
+              htmlEntrega += '</tr>';
+           
+          var piezas = entrega.piezasEntregadas;
+         
+          if(piezas != 'vacio') {
+            $('#tabla-datos-piezas').show(); 
+            $('#alerta-piezas').hide();
+            
+            var htmlPiezas = '';
+            for(var row in piezas) {
+                htmlPiezas += '<tr id="'+piezas[row].id+'">';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].codPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoBrutoPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].leyPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoPuroPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\',\''+entrega.id+'\');" class="btn btn-danger">Eliminar Pieza</a></td>';
+                htmlPiezas += '</tr>';                
+            }
+          } else {
+            $('#tabla-datos-piezas').hide(); 
+            $('#alerta-piezas').show();    
+          }
+          
+          $('.data-entrega').html(htmlEntrega);
+          $('.data-piezas').html(htmlPiezas);
+        }
+      });
+});     
+ 
+
+ </script>
+  <script>
+  $('.alerta-busqueda').hide();
+</script>
+<script>
+
+ $(function(){
+  var pesoBrutoEntrega = $('#loro_entitybundle_entregas_pesoBrutoEntrega');
+  var ley = $('#loro_entitybundle_entregas_ley');
+  var pesoPuroEntrega = $('#loro_entitybundle_entregas_pesoPuroEntrega');
+  
+  //pesoBrutoEntrega.number( true, 2,',','.' );
+  ley.number( true, 2,',','.' );
+  pesoBrutoEntrega.number( true, 2,',','.' );
+  
+
+  
+  ley.keyup(function(){
+      var pesoBrutoXLey = pesoBrutoEntrega.val() * ley.val();
+    
+        var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+      pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));
+      
+  });  
+ });
+
+$("#entregas-form").submit(function(e) {
+     
+     var pesoBrutoEntrega = $('#loro_entitybundle_entregas_pesoBrutoEntrega');
+     
+     var nuevoValorPesoBruto = $.number(pesoBrutoEntrega.val(), 2,'.','' );
+     pesoBrutoEntrega.number(true,2,'.','');
+     pesoBrutoEntrega.val(nuevoValorPesoBruto);
+    
+     var ley = $('#loro_entitybundle_entregas_ley');
+     
+     var nuevoLey = $.number(ley.val(), 2,'.','' );
+     ley.number(true,2,'.','');
+     ley.val(nuevoLey);         
+     
+     var pesoPuroEntrega = $('#loro_entitybundle_entregas_pesoPuroEntrega');
+    
+     var nuevoValorPesoPuro = parseFloat((nuevoValorPesoBruto * nuevoLey) /parseInt(1000));
+     pesoPuroEntrega.number(true,2,'.','');
+     pesoPuroEntrega.val(nuevoValorPesoPuro);   
+});
+
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_entregas_hc_feEntrega" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+ </script>
+ 
+<!-- Script para agregar  las piezas -->
+<script>
+$(function(){
+  $('#entregas-form').submit( function() {
+    $.ajax({
+        type: "POST",
+        url: "{{ url('_ajax_agregar_entrega_hc') }}",
+        data: $(this).serialize(),
+        success: function(data) {
+          
+          //window.location.href = '{{ path('entregas_hc') }}';
+      
+        }
+    });
+
+    return false; 
+  });
+});
+</script>
+<script>
+  $(function(){
+    $('#loro_entitybundle_entregas_piezasEntregadas_0_codPieza').change(function(){
+
+    });
+    
+    $( "#loro_entitybundle_entregas_piezasEntregadas_0_codPieza" ).trigger( "click" );
+  });
+</script>
+{% endblock %}

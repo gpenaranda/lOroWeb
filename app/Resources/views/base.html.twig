@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Textiles Lolo | {% block title %}{% endblock %}</title>
+        {%  stylesheets 'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
+                        'assets/self/css/redmond/jquery-ui.min.css'
+                        'assets/self/css/roboto.min.css'
+                        'assets/self/css/layout.css'
+                        'assets/self/css/material.min.css'
+                        'assets/self/css/material-fullpalette.min.css'
+                        'assets/self/css/ripples.min.css'
+                        'assets/self/css/jquery.dataTables.min.css'
+                        'assets/self/css/jquery.dataTables_themeroller.css'
+                        'assets/self/css/responsive.dataTables.min.css'
+                        'assets/self/formvalidation/css/formValidation.min.css'
+                        'assets/vendor/bootstrap-combobox/css/bootstrap-combobox.css'
+                        'assets/self/css/general/general.css'
+            filter='?uglifycss' filter='cssrewrite' output='css/compiled/app.css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body class="material-grey-200">
+      <div class="container-fluid">
+        <!--div class="row"-->
+
+            <!-- DEPENDIENDO DEL ROL SE DEBE CONFORMAR EL MENU PRINCIPAL -->
+            {% if is_granted('ROLE_PROVEEDOR') %}
+                {% include '::menu_proveedores.html.twig' %}
+            {% else %}
+                {% include '::menu_principal.html.twig' %}         
+            {% endif %}
+            
+
+          <!--div style="margin-top:20px;"-->
+            {% block body %}{% endblock %}
+          <!--/div-->
+        <!--/div-->
+      </div>
+      
+      {% javascripts  'assets/vendor/jquery/dist/jquery.min.js'
+                      'assets/vendor/bootstrap/dist/js/bootstrap.min.js'
+                      'assets/self/js/jquery-ui.min.js'
+                      'assets/self/js/jquery.number.min.js'
+                      'assets/self/js/jquery.ui.datepicker-es.js'
+                      'assets/vendor/jquery.maskedinput/dist/jquery.maskedinput.min.js'
+                      'assets/self/js/material.min.js'
+                      'assets/self/js/ripples.min.js'
+                      'assets/self/js/moment.min.js'
+                      'assets/self/js/jquery.dataTables.min.js'
+                      'assets/self/formvalidation/js/formValidation.min.js'
+                      'assets/self/formvalidation/js/framework/bootstrap.min.js'
+                      'assets/self/formvalidation/js/language/es_ES.js'
+                      'assets/vendor/bootstrap-combobox/js/bootstrap-combobox.js' 
+          filter='?uglifyjs2'
+          output='js/compiled/app.js' %}
+          <script src="{{ asset_url }}"></script>
+       {% endjavascripts %}
+        <script>
+            $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+            });
+        </script>
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

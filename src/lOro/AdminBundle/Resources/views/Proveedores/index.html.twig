@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Proveedores{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Proveedores<small>Listado</small>
+  </h1>
+</div>
+{% for flashMessage in app.session.flashbag.get('notice') %}
+<div class="alert alert-info mensajes-info">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('error') %}
+<div class="alert alert-warning mensajes-info">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success mensajes-info">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+{% if not entities %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen proveedores registrados actualmente
+      </div>
+    </div>   
+  {% endif %}
+  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+    <a style="float:right;" href="{{ path('proveedores_new') }}" class="btn btn-lg btn-success">Agregar Nuevo Proveedor</a>
+  </div>
+  {% if entities %}
+  <table class="table table-hover table-condensed tablasListadosPequena" style="margin-bottom: 0px;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Proveedor</th>
+                <th>Realiza compra de Dolares</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>              
+                <td>{{ entity.nbProveedor }}</td>  
+                <td>{{ entity.compraDolares == 0 ? 'No' : 'Si' }}</td>
+                <td>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('proveedores_show', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  </a>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('proveedores_edit', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

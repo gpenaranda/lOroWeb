@@ -1,0 +1,95 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Ventas de Dolares <small>Editar Venta</small></h1> 
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form(edit_form) }}
+</div>
+
+{% endblock %}
+{% block javascripts %}
+<script>
+ $(function(){
+     
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_ventasdolares_fechaVenta" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+        
+  var cantidadDolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
+  var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
+  var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
+  
+  dolarReferencia.keyup(function(){
+    if(cantidadDolaresComprados.val() != '')
+    {
+      var resultadoFinal = (parseFloat(cantidadDolaresComprados.val()) * parseFloat(dolarReferencia.val()));
+      montoVentaBolivares.val($.number(resultadoFinal,2,',','.'));
+    }
+  });
+
+var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
+ montoVentaBolivares.val($.number(montoVentaBolivares.val(),2,',','.'));
+ 
+var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
+ dolaresComprados.val($.number(dolaresComprados.val(),2,',','.'));
+dolaresComprados.number(true,2,',','.');
+
+var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
+ dolarReferencia.val($.number(dolarReferencia.val(),2,',','.'));
+dolarReferencia.number(true,2,',','.');
+
+$("#form-ventas-dolares").submit(function(e) {
+     
+     var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
+     var nuevoValorDolaresComprados = $.number(dolaresComprados.val(), 2,'.','' );
+     dolaresComprados.number(true,2,'.','');
+     dolaresComprados.val(nuevoValorDolaresComprados);
+    
+     var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
+     var nuevoValorDolarReferencia = $.number(dolarReferencia.val(), 2,'.','' );
+     dolarReferencia.number(true,2,'.','');
+     dolarReferencia.val(nuevoValorDolarReferencia);
+    
+     var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
+     var nuevoValorMontoVentaBolivares = parseFloat((nuevoValorDolaresComprados * nuevoValorDolarReferencia));
+     
+     montoVentaBolivares.number(true,2,'.','');
+     montoVentaBolivares.val(nuevoValorMontoVentaBolivares);
+     
+     
+});
+
+ });
+ </script>
+ 
+<script>
+     
+$("#loro_entitybundle_ventasdolares_comprador").change(function(){
+    var data = {
+      comprador_id: $(this).val()
+    };
+    
+    $.ajax({
+        type: 'post',
+        url: '{{ path("_select_empresas_x_comprador") }}',
+        data: data,
+        success: function(data) {
+            var $empresas_selector = $('#loro_entitybundle_ventasdolares_empresa');
+ 
+            $empresas_selector.html('<option>Seleccione una Opción</option>');
+            
+            var empresas = jQuery.parseJSON(data);
+            
+            for (var i=0, total = empresas.length; i < total; i++) {
+                $empresas_selector.append('<option value="' + empresas[i].id + '">' + empresas[i].nombreEmpresa + '</option>');
+            }
+        }
+    });  
+});   
+</script> 
+{% endblock %}

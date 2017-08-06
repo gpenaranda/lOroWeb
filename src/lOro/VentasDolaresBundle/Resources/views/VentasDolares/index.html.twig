@@ -1,0 +1,156 @@
+{% extends '::base.html.twig' %}
+{% block title %}Ventas de Divisas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Ventas de Divisas <small>Listado</small></h1>
+</div>
+
+    
+  {% if not entities %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen ventas de euros registradas actualmente
+      </div>
+    </div>   
+  {% endif %}
+
+  
+
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+    
+<div class="col-md-11" style="padding: 0 0 3em 0; margin-left: -5px;">
+            <a href="{{ path('ventas-dolares_new') }}" style="float:right;" class="btn btn-lg btn-success">
+                Agregar nueva venta
+            </a>
+  </div>   
+{% if entities %}
+
+ 
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="display" >
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha de la venta</th>
+                <th style="text-align:center;">Comprador</th>
+                <th style="text-align:center;">Empresa</th>
+                <th style="text-align:center;">Moneda</th>
+                <th style="text-align:center;">Cantidad Comprada</th>
+                <th style="text-align:center;">Cambio de Referencia</th>
+                <th style="text-align:center;">Monto en Bolivares</th>
+                <th style="text-align:center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities if entity.id != 9999  %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{% if entity.fechaVenta %}{{ entity.fechaVenta|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ entity.comprador.nbProveedor | title }}</td>
+                <td>{{ entity.empresa | title }}</td>
+                <td>{{ entity.tipoMoneda ? entity.tipoMoneda.nbMoneda : 'N/A' }}</td>
+                <td>{{ entity.cantidadDolaresComprados | number_format('2',',','.') }} {{ entity.tipoMoneda ? entity.tipoMoneda.simboloMoneda : 'N/A' }}</td>
+                <td>{{ entity.dolarReferencia | number_format('2',',','.') }} Bs x {{ entity.tipoMoneda ? entity.tipoMoneda.simboloMoneda : 'N/A' }}</td>
+                <td>{{ entity.montoVentaBolivares | number_format('2',',','.') }} Bs</td>
+                <td>
+                  
+                  <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" class="open-modal-ver" data-target="#modalVer" style="text-decoration: none;" href="#">
+                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  </a>
+                  <a  title="Editar" style="text-decoration: none;" href="{{ path('ventas-dolares_edit', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+<!-- LLamado del twig con el modal de Ver Venta Divisa -->
+    {% include 'lOroVentasDolaresBundle:VentasDolares/extensiones:modal_ver_venta_divisa.html.twig' %}
+    
+        </div>
+{% endif %}
+    {% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = {
+      idEntity: '',
+      urlVerAction: '{{ path('ventas-dolares_show', { 'id': ':idEntity' }) }}',  
+      urlEliminarAction: '{{ path('ventas-dolares_delete', { 'id': ':idEntity' }) }}', 
+      titulosNoFiltrados: '[0,1,4,5,6,7]',
+      idListado: 'listado-cierres'
+};
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>  
+
+
+<script>
+$(document).on("click", ".open-modal-ver", function () {
+      _globales.idEntity = $(this).data('id');
+     $("#modalVer .id-entrega").text( _globales.idEntity );
+     
+     /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+     var url = _globales.urlVerAction;
+     url = url.replace(':idEntity',_globales.idEntity);
+      
+      $.ajax({
+        type: 'get',
+        url: url,
+        id: _globales.idEntity,
+        success: function(entity) {
+           
+         var depositosPorCuenta = entity.depositosPorCuenta;
+           
+        
+         var htmlVer = '<tr><td style="text-align: center;">Fecha de la Venta</td>';
+             htmlVer += '<td style="text-align:center;">'+entity.fechaVenta+'</td>';
+             htmlVer += '</tr><tr><td style="text-align: center;">Comprador</td>';
+             htmlVer += '<td style="text-align:center;">'+entity.comprador+'</td>';
+             htmlVer += '</tr><tr><td style="text-align: center;">Divisas Vendidas</td>';
+             htmlVer += '<td style="text-align:center;">'+entity.tipoMoneda+'</td>';
+             htmlVer += '</tr><tr><td style="text-align: center;">Monto Vendido</td>';
+             htmlVer += '<td style="text-align:center;">'+entity.cantidadDolaresComprados+' '+entity.simboloMoneda+'</td>';
+             htmlVer += '</tr><tr><td style="text-align: center;">Divisa Referencia</td>';
+             htmlVer += '<td style="text-align:center;">'+entity.dolarReferencia+' Bs / '+entity.simboloMoneda+'</td>';
+             htmlVer += '</tr><tr><td style="text-align: center;">Monto en Bolivares</td>';
+             htmlVer += '<td style="text-align:center;">'+entity.montoVentaBolivares+' Bs</td>';
+             htmlVer += '</tr><tr><td colspan=2 style="text-align: center;">Enviado a las Cuentas</td></tr>';
+             htmlVer += '<tr><td colspan=2><table width="100%" class="table-hover">';
+             htmlVer += '<tr>';
+             htmlVer += '<td style="text-align:center;">Cuenta</td>';
+             htmlVer += '<td style="text-align:center;">Total Depositado</td>';
+             htmlVer += '</tr>';
+             for(var row in depositosPorCuenta) {
+               htmlVer += '<tr>';
+               htmlVer += '<td style="text-align:center;">'+depositosPorCuenta[row].cuenta+'</td>';
+               htmlVer += '<td style="text-align:center;">'+depositosPorCuenta[row].cantidadDepositada+' Bs.</td>';
+               htmlVer += '</tr>';
+             }
+             htmlVer += '</table></td></tr>';
+            
+            
+          var htmlButtonEliminar = '<button class="btn btn-lg btn-danger" onclick="eliminarVentaSeleccionada(\''+entity.id+'\')">Eliminar Venta de Divisas</button>';
+          
+          $('.modal-footer').html(htmlButtonEliminar);
+          $('.data-ver-entity').html(htmlVer);
+        }
+      });
+});     
+
+function eliminarVentaSeleccionada(idVenta) {
+  /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
+  var url = _globales.urlEliminarAction;
+  url = url.replace(':idEntity',idVenta);
+  
+  $.ajax({
+        type: 'get',
+        url: url,
+        id: idVenta,
+        success: function(entity) {
+         window.location.href = '{{ path('ventas-dolares') }}';
+      }});  
+}
+</script>
+{% endblock %}

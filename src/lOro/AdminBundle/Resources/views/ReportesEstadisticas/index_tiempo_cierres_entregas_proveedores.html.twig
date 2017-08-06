@@ -1,0 +1,105 @@
+{% extends '::base.html.twig' %}
+{% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Reporte de Balance General por Mes</h1>
+</div>
+<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+    {{ form(form) }}
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+
+{% if arregloPorCierres != null %}
+  {% if arregloPorCierres == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen registros para generar el balace general del mes seleccionado
+      </div>
+    </div> 
+  {% else %}
+    <table class="table table-hover table-condensed tablasListados">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Fecha Cierre</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Total Cerrado</th>
+          <th style="text-align:center;">Pagado a</th>
+          <th style="text-align:center;">Valor Onza</th>
+          <th style="text-align:center;">Ref Dia</th>
+          <th style="text-align:center;">Estatus</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for key,row in arregloPorCierres %}
+                <tr>
+                  <td>{{ row.fe_venta | date('d-m-Y')}}</td>
+                  <td>{{ row.nb_proveedor }}</td>
+                  <td>{{ row.cantidad_total_venta | number_format('2',',','.')  }} Grs.</td>
+                  <td>{{ row.monto_bs_cierre_por_gramo | number_format('2',',','.')  }} Bs/Grs.</td>
+                  <td>{{ row.valor_onza | number_format('2',',','.')  }} €/Oz</td>
+                  <td>{{ row.dolar_referencia_dia | number_format('2',',','.')  }} Bs/$</td>
+                  <td>{{ row.estatus == 'A' ? 'Cierre Abierto' : 'Cierre Completado' }}</td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <table width="100%">
+                            <tr>
+                              <td>Fecha Entrega</td>
+                              <td>Cod Pieza</td>
+                              <td>Mat. Entregado para el Cierre</td>
+                              <td>Dias Diferencia</td>
+                              <td>Ganancia Pieza</td>
+                            </tr>
+                            {% for key,rowEntrega in arregloEntregas %}
+                  {% if row.id_cierre == rowEntrega.id_cierre %}
+                  <tr>
+                    <td>{{ rowEntrega.fe_entrega | date('d-m-Y')}}</td>
+                    <td>{{ rowEntrega.cod_pieza }}</td>
+                    <td>{{ rowEntrega.material_entregado | number_format('2',',','.')  }} Grs.</td>
+                    <td>{{ rowEntrega.dias_diferencia }} Dias de Diferencia</td>
+                    <td>{{ rowEntrega.ganancia_pieza | number_format('2',',','.')  }} €</td>
+                  </tr>
+                  {% endif %}
+                {% endfor %}
+                  </table>
+                </td>
+              </tr>    
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+{% endblock %}
+{% block javascripts %}
+<script>
+     var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_seleccionar_proveedores_form_feDesde" ).datepicker(
+           {   
+          defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 2,
+      changeYear: false,
+      buttonImageOnly: false,
+      dateFormat: 'dd-mm-yy',      
+      onClose: function( selectedDate ) {
+        $( "#loro_seleccionar_proveedores_form_feHasta" ).datepicker( "option", "minDate", selectedDate );
+      }
+  },$.datepicker.regional[ "es" ]);
+   
+   $( "#loro_seleccionar_proveedores_form_feHasta" ).datepicker(
+           {defaultDate: "+1w",
+      changeMonth: false,
+      numberOfMonths: 2,
+      changeYear: false,
+      buttonImageOnly: false,
+      dateFormat: 'dd-mm-yy',      
+      onClose: function( selectedDate ) {
+        $( "#loro_seleccionar_proveedores_form_feDesde" ).datepicker( "option", "maxDate", selectedDate );
+      }
+           },$.datepicker.regional[ "es" ]); 
+
+</script>
+{% endblock %}

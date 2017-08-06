@@ -1,0 +1,20 @@
+debitos:
+    pattern:  /
+    defaults: { _controller: "lOroTransferenciasBundle:Debitos:index" }
+    
+    
+debitos_new:
+    pattern:  /new
+    defaults: { _controller: "lOroTransferenciasBundle:Debitos:new" }
+    
+debitos_show:
+    pattern:  /show/{id}
+    defaults: { _controller: "lOroTransferenciasBundle:Debitos:show" }  
+    
+debitos_delete:
+    pattern:  /delete/{id}
+    defaults: { _controller: "lOroTransferenciasBundle:Debitos:delete" } 
+    
+debitos_edit:
+    pattern:  /edit/{id}
+    defaults: { _controller: "lOroTransferenciasBundle:Debitos:edit" }    

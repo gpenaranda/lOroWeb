@@ -1,0 +1,170 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Transferencias Aupanas/HC{% endblock %}
+
+{% block body -%}
+<div class="page-header">
+  <h1>Transferencias Aupanas/HC<small>Registrar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(form) }}
+
+    {{ form_label(form.feTransferencia) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.feTransferencia) }}
+        </div>
+    {{ form_errors(form.feTransferencia) }}
+
+    {{ form_label(form.tipoTransaccion) }}
+        <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.tipoTransaccion) }}
+        </div>
+    {{ form_errors(form.tipoTransaccion) }}
+
+
+    {{ form_label(form.estatus) }}
+        <div class="input-group input-group-lg">
+        <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.estatus) }}
+        </div>
+    {{ form_errors(form.estatus) }}
+
+    
+    <div id="nro-ref-div">
+    {{ form_label(form.nroReferencia) }}
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon">N°</span>
+        {{ form_widget(form.nroReferencia) }}
+      </div>
+    {{ form_errors(form.nroReferencia) }}
+    </div>
+
+        
+    
+   {{ form_label(form.esConversion) }}
+        <div class="from-group">
+      {{ form_widget(form.esConversion) }}
+        </div>
+    {{ form_errors(form.esConversion) }}
+        
+        
+        <!-- Oculto hasta que se indique que es una conversion de Dinero -->
+        <div id="conversion-dinero">
+          {{ form_label(form.tipoMonedaConversion) }}
+            <div class="from-group">
+            {{ form_widget(form.tipoMonedaConversion) }}
+            </div>
+          {{ form_errors(form.tipoMonedaConversion) }}
+                
+          {{ form_label(form.montoAConvertir) }}
+            <div class="from-group">
+            {{ form_widget(form.montoAConvertir) }}
+            </div>
+          {{ form_errors(form.montoAConvertir) }}  
+                
+          {{ form_label(form.cotizacionReferencia) }}
+            <div class="from-group">
+            {{ form_widget(form.cotizacionReferencia) }}
+            </div>
+          {{ form_errors(form.cotizacionReferencia) }}
+        </div>
+        
+        
+        
+        
+    {{ form_label(form.tipoMonedaTransf) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">€</span>
+      {{ form_widget(form.tipoMonedaTransf) }}
+        </div>
+    {{ form_errors(form.tipoMonedaTransf) }}
+        
+        
+    {{ form_label(form.montoTransferencia) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">€</span>
+      {{ form_widget(form.montoTransferencia) }}
+        </div>
+    {{ form_errors(form.montoTransferencia) }}
+
+    {{ form_label(form.beneficiario) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.beneficiario) }}
+        </div>
+    {{ form_errors(form.beneficiario) }}
+
+    {{ form_label(form.empresa) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+      {{ form_widget(form.empresa) }}
+        </div>
+    {{ form_errors(form.empresa) }}
+        
+        
+    {{ form_label(form.descripcion) }}
+      <div class="from-group">
+      {{ form_widget(form.descripcion) }}
+      </div>
+    {{ form_errors(form.descripcion) }}
+
+        <div style='margin-top:12px;'>
+    {{ form_widget(form.submit) }}
+                <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('transferencias_list') }}">Volver</a>  
+            </div>
+
+    {{ form_end(form)}}
+        </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+ $('#conversion-dinero').hide();
+ $('#nro-ref-div').hide();
+ 
+ $("input[name='loro_entitybundle_transferencias[esConversion]']").click(function(){
+   var esConversion = $("input[name='loro_entitybundle_transferencias[esConversion]']:checked").val();
+   
+   if(esConversion == 1) {
+       $('#conversion-dinero').show();
+   } else {
+       $('#conversion-dinero').hide();
+   }
+ });
+ 
+ $('#loro_entitybundle_transferencias_tipoTransaccion').change(function(){
+     if($('#loro_entitybundle_transferencias_tipoTransaccion').val() == 1 || 
+        $('#loro_entitybundle_transferencias_tipoTransaccion').val() == 2) {
+       $('#nro-ref-div').show();    
+     } else {
+       $('#nro-ref-div').hide();  
+     }
+     
+ });
+ 
+ $(function(){
+     
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_transferencias_feTransferencia" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+        
+  var montoTransferencia = $('#loro_entitybundle_transferencias_montoTransferencia');
+  montoTransferencia.number(true,2,',','.');
+
+$("#form-transferencias-hc").submit(function(e) {
+     
+     var montoTransferencia = $('#loro_entitybundle_transferencias_montoTransferencia');
+     var nuevoValorMontoTransferencia = $.number(montoTransferencia.val(), 2,'.','' );
+     montoTransferencia.number(true,2,'.','');
+     montoTransferencia.val(nuevoValorMontoTransferencia);
+     
+});
+
+ });
+ </script>
+{% endblock %}

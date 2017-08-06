@@ -1,0 +1,39 @@
+ventas-dolares:
+    path:  /
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:index" }
+
+ventas-dolares_show:
+    path:  /{id}/show
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:show" }
+
+ventas-dolares_new:
+    path:  /new
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:new" }
+
+ventas-dolares_create:
+    path:  /create
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:create" }
+    requirements: { methods: post }
+
+ventas-dolares_edit:
+    path:  /{id}/edit
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:edit" }
+
+ventas-dolares_update:
+    path:  /{id}/update
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:update" }
+    requirements: { methods: post|put }
+
+ventas-dolares_delete:
+    path:  /{id}/delete
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:delete" }
+
+
+    
+_buscar_empresas_venta_dolares:
+    path:  /buscar-empresas-venta-dolares
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:buscarEmpresas"}    
+    
+_buscar_credito_verdes:    
+    path:  /buscar-credito-verdes
+    defaults: { _controller: "lOroVentasDolaresBundle:VentasDolares:buscarCreditoVerdesProveedor"}  

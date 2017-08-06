@@ -1,0 +1,302 @@
+{% extends '::base.html.twig' %}
+{% block title %}Ventas de Euros{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Ventas de Euros <small>Agregar Venta</small></h1> 
+</div>
+<div id="credito-en-verdes" style="font-size: 16pt;" class="col-lg-4 col-lg-offset-4">
+  Credito en Verdes Actual: <span id="total-credito-en-verdes"></span>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(form) }}
+      {{ form_label(form.fechaVenta) }}
+      {{ form_widget(form.fechaVenta) }}
+      {{ form_errors(form.fechaVenta) }}
+
+      {{ form_label(form.comprador) }}
+      {{ form_widget(form.comprador) }}
+      {{ form_errors(form.comprador) }}
+
+      
+    
+      {{ form_label(form.tipoMoneda) }}
+      {{ form_widget(form.tipoMoneda) }}
+      {{ form_errors(form.tipoMoneda) }}
+      
+      <div id="cotizacionReferencia">    
+      {{ form_label(form.cotizacionReferencia) }}
+      {{ form_widget(form.cotizacionReferencia) }}
+      {{ form_errors(form.cotizacionReferencia) }}
+      </div>
+      
+      {{ form_label(form.cantidadDolaresComprados) }}
+      {{ form_widget(form.cantidadDolaresComprados) }}
+      {{ form_errors(form.cantidadDolaresComprados) }}
+    
+      {{ form_label(form.dolarReferencia) }}
+      {{ form_widget(form.dolarReferencia) }}
+      {{ form_errors(form.dolarReferencia) }}
+    
+      {{ form_label(form.montoVentaBolivares) }}
+      {{ form_widget(form.montoVentaBolivares) }}
+      {{ form_errors(form.montoVentaBolivares) }}    
+    
+      <br>
+<div class="panel panel-primary input_fields_wrap">
+          <div class="panel-heading"><label for="empresasCasa" class="required">Empresas</label></div>
+          
+<div class="panel-body">
+          
+          <br/>
+          <div id="inputsParaClonar_1">
+              <div>
+
+                  <select name="empresasCasa[1]" id="empresasCasa_1" class="form-control"> 
+                      <option value="">Seleccione una Opción</option>
+                      {% for empresaCasa in empresasCasa %}
+                          <option value="{{ empresaCasa.id }}">{{ empresaCasa.nombreEmpresa }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+              <br/>
+              <div>
+                  <input type="text" name="cantidadAEnviar[1]" id="cantidadAEnviar_1" class="form-control" placeholder="Indique la Cantidad a Enviar"/>
+              </div>
+          </div>
+          </div>
+                  <div class="panel-footer"><div>
+              <button class="btn btn-sm btn-info add_field_button">Agregar Otra Empresa</button>
+          </div></div>
+      </div>
+                  
+      {{ form_widget(form.submit) }}
+    {{ form_end(form) }}
+
+</div>
+     
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+      
+
+var _globales = {
+  formName: 'loro_entitybundle_ventasdolares_' ,
+  urlBuscarAutocomplete: '{{ path('_buscar_empresas_venta_dolares') }}',
+  urlBuscarCreditoVerdes: '{{ path('_buscar_credito_verdes',{'proveedorId':':idProveedor'}) }}',
+  inputTipoMoneda: 'loro_entitybundle_ventasdolares_tipoMoneda',
+  inputCotizacionReferencia: 'loro_entitybundle_ventasdolares_cotizacionReferencia',
+  creditoEnVerdes: '0.00',
+  cantEmpresas: 0
+};  
+    </script>
+    <script>
+$(document).ready(function() {
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".panel-body"); //Fields wrapper
+    var add_button      = $(".add_field_button"); //Add button ID
+    
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            
+            $(wrapper).append("<hr style='background-color:blue;' id='divisor_"+x+"'> <div id='inputsParaClonar_"+x+"'></div>"); 
+            
+            var selectEmpresasCasa = $('select#empresasCasa_1').clone().attr('name','empresasCasa['+x+']').attr('id', 'empresasCasa_'+x);
+            var inputCantidadAEnviar = '<input type="text" name="cantidadAEnviar['+x+']" id="cantidadAEnviar_'+x+'" class="form-control" placeholder="Indique la Cantidad a Enviar"/>';
+            
+            $('#inputsParaClonar_'+x).append(selectEmpresasCasa); //add input box
+            $('#inputsParaClonar_'+x).append('<br id="divisor_'+x+'">'); //add input box
+            $('#inputsParaClonar_'+x).append(inputCantidadAEnviar); //add input box
+            $('#inputsParaClonar_'+x).append('<a href="#" onClick="event.preventDefault(); eliminarCampos('+x+');" class="remove_field">Eliminar</a></div>'); //add input box
+            $('#inputsParaClonar_'+x).append("<script>var cantidadAEnviar"+x+" = $('#cantidadAEnviar_"+x+"'); cantidadAEnviar"+x+".number(true,2,',','.');");
+            _globales.cantEmpresas = x;
+        }
+    });
+    
+});
+
+
+
+
+function eliminarCampos(numCampo) {
+  $("#inputsParaClonar_"+numCampo).remove();
+  $("#divisor_"+numCampo).remove();
+}
+    
+    </script>
+<script>
+
+
+$('#cotizacionReferencia').hide();
+$('#credito-en-verdes').hide();
+
+
+$('#'+_globales.inputTipoMoneda).change(function(){
+  if($(this).val() == 3) 
+  {
+    $('#cotizacionReferencia').show();  
+  } else {
+    $('#cotizacionReferencia').hide();   
+  }
+  
+});
+
+$('#loro_entitybundle_ventasdolares_comprador').change(function() {
+  var urlBuscarCreditoVerdesProveedor = _globales.urlBuscarCreditoVerdes.replace(":idProveedor", $(this).val());
+  
+  if($(this).val() == 15) {
+    
+$.ajax({
+  method: "POST",
+  url: _globales.urlBuscarCreditoVerdes,
+  data: {proveedorId: $(this).val()}})
+  .done(function( data ) {
+    var datosCreditoComprador = jQuery.parseJSON(data);
+    
+    $('#total-credito-en-verdes').html($.number(datosCreditoComprador.total_credito_comprador,2,',','.')+' €');
+  });
+  
+    
+    $('#credito-en-verdes').show();
+  } else {
+      $('#credito-en-verdes').hide();
+  }
+});
+
+$( "#"+_globales.formName+'empresa' ).autocomplete({
+      source: function( request, response ) {
+        $.ajax({
+          type: "POST",
+          url: _globales.urlBuscarAutocomplete,
+          data: {
+            q: request.term
+          },
+          success: function( data ) {
+            console.log(data);
+            response( data );
+          }
+        });
+      },
+      minLength: 3,
+      select: function( event, ui ) {
+        $(this).val(this.value);
+      },
+      open: function() {
+        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+      },
+      close: function() {
+        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+      }
+    });    
+</script>
+<script>
+ $(function(){
+     
+    var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_ventasdolares_fechaVenta" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+  
+  var cantidadDolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
+  var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
+  var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
+  
+  dolarReferencia.keyup(function(){
+    if(cantidadDolaresComprados.val() != '')
+    {
+      var resultadoFinal = (parseFloat(cantidadDolaresComprados.val()) * parseFloat(dolarReferencia.val()));
+      montoVentaBolivares.val($.number(resultadoFinal,2,',','.'));
+    }
+  });
+
+var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
+dolaresComprados.number(true,2,',','.');
+
+var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
+dolarReferencia.number(true,2,',','.');
+
+var cantidadAEnviarInicial = $('#cantidadAEnviar_1');
+cantidadAEnviarInicial.number(true,2,',','.');
+
+$('#'+_globales.inputCotizacionReferencia).number(true,4,',','.');
+
+$("#form-ventas-dolares").submit(function(e) {
+     
+     var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
+     var nuevoValorDolaresComprados = $.number(dolaresComprados.val(), 2,'.','' );
+     dolaresComprados.number(true,2,'.','');
+     dolaresComprados.val(nuevoValorDolaresComprados);
+    
+     var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
+     var nuevoValorDolarReferencia = $.number(dolarReferencia.val(), 2,'.','' );
+     dolarReferencia.number(true,2,'.','');
+     dolarReferencia.val(nuevoValorDolarReferencia);
+    
+     var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
+     var nuevoValorMontoVentaBolivares = parseFloat((nuevoValorDolaresComprados * nuevoValorDolarReferencia));
+     
+     montoVentaBolivares.number(true,2,'.','');
+     montoVentaBolivares.val(nuevoValorMontoVentaBolivares);
+     
+     
+     var cotizacionReferencia = $('#'+_globales.inputCotizacionReferencia);
+     
+     var nuevoValorCotizacionReferencia = $.number(cotizacionReferencia.val(),4,'.','' );
+     $('#'+_globales.inputCotizacionReferencia).number(true,4,'.','');
+     $('#'+_globales.inputCotizacionReferencia).val(nuevoValorCotizacionReferencia);
+     
+     
+     console.log(_globales.cantEmpresas);
+     
+     for (var n = 1; n <= _globales.cantEmpresas; ++ n) {
+       var cantidadEnviadaEmpresa = $("#cantidadAEnviar_"+n);
+     
+       console.log("#cantidadAEnviar_"+n);
+       
+       var nuevoValorCantidadEnviadaEmpresa = $.number(cantidadEnviadaEmpresa.val(),2,'.','' );
+       $("#cantidadAEnviar_"+n).number(true,2,'.','');
+       $("#cantidadAEnviar_"+n).val(nuevoValorCantidadEnviadaEmpresa);      
+   }
+     
+    
+
+        //e.preventDefault();
+});
+
+
+
+    
+
+ });
+ </script>
+ <script>
+     
+$("#loro_entitybundle_ventasdolares_comprador").change(function(){
+    var data = {
+      comprador_id: $(this).val()
+    };
+    
+    $.ajax({
+        type: 'post',
+        url: '{{ path("_select_empresas_x_comprador") }}',
+        data: data,
+        success: function(data) {
+            var $empresas_selector = $('#loro_entitybundle_ventasdolares_empresa');
+ 
+            $empresas_selector.html('<option>Seleccione una Opción</option>');
+            
+            var empresas = jQuery.parseJSON(data);
+            
+            for (var i=0, total = empresas.length; i < total; i++) {
+                $empresas_selector.append('<option value="' + empresas[i].id + '">' + empresas[i].nombreEmpresa + '</option>');
+            }
+        }
+    });  
+});   
+</script>
+
+{% endblock %}

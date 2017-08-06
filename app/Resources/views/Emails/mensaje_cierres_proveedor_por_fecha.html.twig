@@ -1,0 +1,46 @@
+<html>
+    <head>
+    </head>
+    <body>
+<div>
+    {{ texto }}
+</div>
+
+<div class="page-header">
+  <h1>Reporte de Cierres por Fechas y Proveedor - {{ nombreProveedor }}</h1>
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if arregloEntity != null %}
+  {% if arregloEntity == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen pagos generados
+      </div>
+    </div> 
+  {% else %}
+    <table border="1" style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+<th style="text-align:center;">Fecha</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Total Cerrado</th>
+          <th style="text-align:center;">Monto Cerrado por Gramo</th>
+          <th style="text-align:center;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for row in arregloEntity %}
+                <tr>
+                  <td align="center" valign="middle">{{ row.feVenta | date('d-m-Y') }}</td>
+                  <td align="center" valign="middle">{{ row.nbProveedor }}</td>
+                  <td align="center" valign="middle">{{ row.cantidadTotalVenta | number_format('2',',','.')  }} Grs.</td>
+                  <td align="center" valign="middle">{{ row.montoCierrePorGramo | number_format('2',',','.')}} Bs.</td>
+                  <td align="center" valign="middle">{{ row.montoCierre | number_format('2',',','.')}} Bs.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+</body>
+</html>

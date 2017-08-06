@@ -1,0 +1,7 @@
+parameters:
+#    l_oro_admin.example.class: lOro\AdminBundle\Example
+
+services:
+#    l_oro_admin.example:
+#        class: %l_oro_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

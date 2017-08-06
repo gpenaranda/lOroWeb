@@ -1,0 +1,12 @@
+balance:
+    path:  /
+    defaults: { _controller: "lOroBalanceBundle:Balance:index" }
+   
+conciliacion-caja:
+    path:  /conciliacion-caja
+    defaults: { _controller: "lOroBalanceBundle:Balance:conciliacionCajaIndex" }  
+    
+
+_ajax_conciliar_caja:
+    path:  /ajax-conciliacion-caja
+    defaults: { _controller: "lOroBalanceBundle:Balance:ajaxConciliacionCaja" } 

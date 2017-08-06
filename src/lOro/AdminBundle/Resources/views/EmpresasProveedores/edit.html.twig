@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Empresas Proveedores{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Empresa Proveedor
+      <small>Editar</small>
+  </h1>
+</div>
+<div class="col-md-11 contenedor-formularios">
+    {{ form_start(edit_form) }}
+   <div class="row"> 
+      {{ form_label(edit_form.proveedor) }}
+      {{ form_widget(edit_form.proveedor) }}
+      {{ form_errors(edit_form.proveedor) }}
+
+      {{ form_label(edit_form.nombreEmpresa) }}
+      {{ form_widget(edit_form.nombreEmpresa) }}
+      {{ form_errors(edit_form.nombreEmpresa) }}      
+     
+     {{ form_end(edit_form) }} 
+</div>       
+{% endblock %}
+{% block javascripts %}
+<script>
+$('#loro_entitybundle_empresasproveedores_nombreEmpresa').keypress(function (e) {
+    var regex = new RegExp("^[a-zA-Z0-9]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+        return true;
+    }
+
+    e.preventDefault();
+    return false;
+});
+
+$('#loro_entitybundle_empresasproveedores_aliasEmpresa').keypress(function (e) {
+    var regex = new RegExp("^[a-zA-Z0-9]+$");
+    var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if (regex.test(str)) {
+        return true;
+    }
+
+    e.preventDefault();
+    return false;
+});
+</script> 
+{% endblock %}   

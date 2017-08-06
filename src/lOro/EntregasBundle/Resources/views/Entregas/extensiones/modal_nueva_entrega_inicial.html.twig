@@ -1,0 +1,97 @@
+<div class="modal fade" id="modalAgregarEntregas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Entrega de Piezas - Proveedores</h4>
+      </div>
+
+      {{ form_start(piezasInicialesForm) }}
+      <div class="modal-body">
+        <div class="row contenedor-grande"> 
+
+          <div class="form-group">
+            <div class="col-xs-11">
+              {{ form_label(piezasInicialesForm.feEntrega) }}
+              {{ form_widget(piezasInicialesForm.feEntrega) }}
+              {{ form_errors(piezasInicialesForm.feEntrega) }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-xs-11">
+              {{ form_label(piezasInicialesForm.tipoMonedaEntrega) }}
+              {{ form_widget(piezasInicialesForm.tipoMonedaEntrega) }}
+              {{ form_errors(piezasInicialesForm.tipoMonedaEntrega) }}   
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-xs-3">
+                {{ form_label(piezasInicialesForm.proveedor) }}
+                {{ form_widget(piezasInicialesForm.proveedor) }}
+                {{ form_errors(piezasInicialesForm.proveedor) }} 
+              </div>
+
+              <div class="col-xs-3">
+                {{ form_label(piezasInicialesForm.piezaInicial) }}
+                {{ form_widget(piezasInicialesForm.piezaInicial) }}
+                {{ form_errors(piezasInicialesForm.piezaInicial) }} 
+              </div>
+
+              <div class="col-xs-3">
+                {{ form_label(piezasInicialesForm.piezaFinal) }}
+                {{ form_widget(piezasInicialesForm.piezaFinal) }}
+                {{ form_errors(piezasInicialesForm.piezaFinal) }} 
+              </div>
+              <div class="col-xs-1">
+                  <button type="button" class="btn btn-info addButton"><i class="glyphicon glyphicon glyphicon-plus"></i></button>
+              </div>
+            </div>            
+          </div>
+
+          <!-- The template for adding new field -->
+          <div class="form-group hide" id="piecesTemplate">
+            <div class="row">
+              <div class="col-xs-3">
+                  <select class="form-control" name="proveedor" ></select>
+              </div>
+              <div class="col-xs-3">
+                  <input type="text" class="form-control" name="piezaInicial" />
+              </div>
+              <div class="col-xs-3">
+                  <input type="text" class="form-control" name="piezaFinal" />
+              </div>
+              <div class="col-xs-1">
+                  <button type="button" class="btn btn-danger removeButton"><i class="glyphicon glyphicon glyphicon-minus"></i></button>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <!--div class="row">
+            <div class="col-md-8 col-md-offset-3" style="padding-top:30px;">
+              <a href="#" id="agregar-nueva-entrega-inicial" title="Agregar Nuevo Proveedor">
+                Agregar Otra Entrega de Proveedor <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span>
+              </a>
+            </div>
+        </div-->
+
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        {{ form_widget(piezasInicialesForm.submit)}}
+      </div>
+      {{ form_end(piezasInicialesForm) }}
+    </div>
+  </div>
+</div>
+
+

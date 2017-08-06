@@ -1,0 +1,69 @@
+<html>
+    <head>
+    </head>
+    <body>
+<div>
+    {{ texto }}
+</div>
+
+<div class="page-header">
+  <h1>Reporte de Entregas por Fechas y Proveedor</h1>
+</div>
+<div class="row" style="margin-bottom:5px;"></div>
+{% if arregloEntregas != null %}
+  {% if arregloEntregas == 'vacio' %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen pagos generados
+      </div>
+    </div> 
+  {% else %}
+    <table border="1" style="width:100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:center;">Fecha de la Entrega</th>
+          <th style="text-align:center;">Total Entregado</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Cantidad de Piezas Entregadas</th>
+        </tr>
+      </thead>
+      <tbody>
+            {% for entrega in arregloEntregas %}
+                <tr>
+                  <td align="center" valign="middle" style="font-size: 12pt; color:darkblue">{{ entrega.fe_entrega | date('d-m-Y') }}</td>
+                  <td align="center" valign="middle" style="font-size: 12pt; color:darkblue">{{ entrega.peso_puro_entrega | number_format('2',',','.')  }} Grs.</td>
+                  <td align="center" valign="middle" style="font-size: 12pt; color:darkblue">{{ entrega.nb_proveedor }}</td>
+                  <td align="center" valign="middle" style="font-size: 12pt; color:darkblue">{{ entrega.cantidad_piezas_entregadas }}</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: bolde; text-align:center; vertical-align: middle;">Piezas Entregadas</td>
+                  <td colspan="3">
+                    <table border="1" style="width:100%; border-collapse: collapse;">
+                      <thead>
+                        <tr>
+                          <th style="text-align:center;">Cod Pieza</th>
+                          <th style="text-align:center;">Peso Bruto Pieza</th>
+                          <th style="text-align:center;">Ley</th>
+                          <th style="text-align:center;">Peso Puro Pieza</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for pieza in entrega.piezas_entregadas %}
+                        <tr>
+                          <td align="center" valign="middle">{{ pieza.cod_pieza }}</td>
+                          <td align="center" valign="middle">{{ pieza.peso_bruto_pieza | number_format('2',',','.') }}</td>
+                          <td align="center" valign="middle">{{ pieza.ley_pieza | number_format('2',',','.') }}</td>
+                          <td align="center" valign="middle">{{ pieza.peso_puro_pieza | number_format('2',',','.') }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{% endif %}
+{% endif %}
+</body>
+</html>

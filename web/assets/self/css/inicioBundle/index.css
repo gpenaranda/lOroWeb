@@ -1,0 +1,14 @@
+table#supplier-condensed-table tr td,
+table#supplier-condensed-table tr th,
+table#retail-supplier-condensed-table tr td,
+table#retail-supplier-condensed-table tr th {
+	text-align: center;
+	font-size: 14pt;
+}
+
+table#supplier-condensed-table tfoot tr td,
+table#retail-supplier-condensed-table tfoot tr td
+{
+	text-align: center;
+	font-size: 16pt;
+}

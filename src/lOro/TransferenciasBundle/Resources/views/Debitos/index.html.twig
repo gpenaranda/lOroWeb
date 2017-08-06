@@ -1,0 +1,71 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Debitos{% endblock %}
+
+{% block body -%}
+    {% include "lOroTransferenciasBundle:Debitos:base_deb.html.twig" %}
+
+
+    
+    
+    {% if not entities %}
+    <div class="row" style="margin:0px 10% 0 10%;">
+      <div class="alert alert-danger">
+        No se poseen debitos registrados actualmente
+      </div>
+    </div>   
+  {% endif %}
+
+  
+  
+  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+    <a  href="{{ path('debitos_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Debito</a>
+  </div>
+  
+  {% if entities %}
+
+  <!-- Select y Text Input para el Buscador -->
+    <div class="col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="display" >
+        <thead>
+            <tr>
+                <th style="text-align:center;">ID</th>
+                <th style="text-align:center;">Fecha</th>
+                <th style="text-align:center;">Monto del Debito</th>
+                <th style="text-align:center;">Pagado en</th>
+                <th style="text-align:center;">Descripción del Debito</th>   
+                <th style="text-align:center;">Acciones</th>  
+            </tr>
+        </thead>
+        <tbody class="data-entregas">
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td width="160">{% if entity.feDebito %}{{ entity.feDebito | date('Y-m-d') }}{% endif %}</td>
+                <td width="170">{{ entity.monto | number_format('2',',','.')}}  {{ entity.tipoPago == 'B' ? 'Bs.' : '$' }}</td>
+                <td>{{ entity.tipoPago == 'B' ? 'Bolivares' : 'Verdes' }}</td>
+                <td>{{ entity.descripcion }}</td>     
+                <td>
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('debitos_show', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  </a>
+                  <a title="Editar" style="text-decoration: none;" href="{{ path('debitos_edit', { 'id': entity.id }) }}">
+                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}
+{% endblock %}
+  {% block javascripts %}
+<script>
+  var _globales = {
+      titulosNoFiltrados: '[0,1,2,4,5]',
+      idListado: 'listado-cierres'
+};
+</script>
+<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>  
+    {% endblock %}

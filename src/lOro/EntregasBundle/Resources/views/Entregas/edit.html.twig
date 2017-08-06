@@ -1,0 +1,144 @@
+{% extends '::base.html.twig' %}
+{% block title %}Entregas{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Entregas
+      <small>Editar</small>
+  </h1>
+</div>
+<div class="col-md-12 col-xs-12">
+  {{ form_start(edit_form) }}
+   
+  <h1>Datos Generales</h1>
+  <br>
+  
+  
+    <div class="form-group">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-3">
+          {{ form_label(edit_form.feEntrega) }}
+          {{ form_widget(edit_form.feEntrega) }}
+          {{ form_errors(edit_form.feEntrega) }}
+        </div>
+        
+        <div class="col-xs-12 col-sm-12 col-md-3">
+          {{ form_label(edit_form.proveedor) }}
+          {{ form_widget(edit_form.proveedor) }}
+          {{ form_errors(edit_form.proveedor) }} 
+        </div>
+               
+        <div class="col-xs-12 col-sm-12 col-md-3">
+          {{ form_label(edit_form.tipoMonedaEntrega) }}
+          {{ form_widget(edit_form.tipoMonedaEntrega) }}
+          {{ form_errors(edit_form.tipoMonedaEntrega) }}    
+        </div>
+      </div>       
+    </div>
+
+
+  <h1>Piezas</h1>
+  <hr>
+  
+    <div class="form-group" data-prototype="{{ form_widget(edit_form.piezasEntregadas.vars.prototype)|e }} <script>var nuevaCodPieza = (parseInt($('#loro_entitybundle_entregas_piezasEntregadas___name___codPieza').val()) + parseInt(__name__)); $('#loro_entitybundle_entregas_piezasEntregadas___name___codPieza').val(parseInt(nuevaCodPieza)); var pesoBrutoPieza = $('#loro_entitybundle_entregas_piezasEntregadas___name___pesoBrutoPieza'); var leyPieza = $('#loro_entitybundle_entregas_piezasEntregadas___name___leyPieza'); var pesoPuroPieza = $('#loro_entitybundle_entregas_piezasEntregadas___name___pesoPuroPieza'); pesoBrutoPieza.number( true, 2,',','.' ); leyPieza.number( true, 2,',','.' );  leyPieza.keyup(function(){ var pesoBrutoXLey = pesoBrutoPieza.val() * leyPieza.val(); var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000)); pesoPuroPieza.val($.number(resultadoPesoPuro, 2,',','.' )); });</script>">
+      
+      {{ form_label(edit_form.piezasEntregadas) }}
+        {% for tag in edit_form.piezasEntregadas %}
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-2">
+            {{ form_row(tag.codPieza) }}
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-2">
+            {{ form_row(tag.pesoBrutoPieza) }}
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-2">
+            {{ form_row(tag.leyPieza) }}
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-2">
+            {{ form_row(tag.pesoPuroPieza) }}
+          </div>
+        </div>
+        <br>
+        {% endfor %}
+
+    </div>  
+       
+  <div class="col-md-offset-8 col-md-4 col-xs-offset-2 col-xs-10">
+    {{ form_widget(edit_form.submit) }}
+  </div>
+
+     {{ form_end(edit_form) }} 
+</div>       
+{% endblock %}
+{% block javascripts %}
+<script>
+ $(function(){
+  {% set i = 0%}
+  {% for tag in edit_form.piezasEntregadas %}
+    var i = '{{ i }}';
+  
+    eval("var pesoBrutoEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoBrutoPieza');");
+    eval("var ley_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_leyPieza');");
+    eval("var pesoPuroEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoPuroPieza');");
+
+  
+    eval("pesoBrutoEntrega_" + i + ".val($.number(pesoBrutoEntrega_" + i + ".val(), 2,',','.' ));");
+    eval("pesoBrutoEntrega_" + i + ".number( true, 2,',','.' );");
+  
+    eval("ley_" + i + ".val($.number(ley_" + i + ".val(), 2,',','.' ));");
+    eval("ley_" + i + ".number( true, 2,',','.' );");
+  
+    eval("pesoPuroEntrega_" + i + ".val($.number(pesoPuroEntrega_" + i + ".val(), 2,',','.' ));");
+    eval("pesoPuroEntrega_" + i + ".number( true, 2,',','.' );");
+  
+  
+    eval("ley_" + i + ".keyup(function(){ var pesoBrutoXLey_" + i + " = pesoBrutoEntrega_" + i + ".val() * ley_" + i + ".val(); var resultadoPesoPuro_" + i + " = parseFloat(pesoBrutoXLey_" + i + " / parseInt(1000)); pesoPuroEntrega_" + i + ".val(resultadoPesoPuro_" + i + "); });");
+    
+  
+  {% set i = i+1 %}
+  {% endfor %}
+ });
+
+
+$("#entregas-form").submit(function(e) {
+   {% set i = 0 %}
+  {% for tag in edit_form.piezasEntregadas %}
+    var i = '{{ i }}';
+    
+    eval("var pesoBrutoEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoBrutoPieza');");
+    
+    
+     
+     
+    eval("var nuevoValorPesoBruto_" + i + " = $.number(pesoBrutoEntrega_" + i + ".val(), 2,'.','' );");
+    eval("pesoBrutoEntrega_" + i + ".number(true,2,'.','');");
+    eval("pesoBrutoEntrega_" + i + ".val(nuevoValorPesoBruto_" + i + ");");
+    
+    
+    
+    eval("var ley_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_leyPieza');");
+     
+    eval("var nuevoLey_" + i + " = $.number(ley_" + i + ".val(), 2,'.','' );");
+    eval("ley_" + i + ".number(true,2,'.','');");
+    eval("ley_" + i + ".val(nuevoLey_" + i + ");  ");
+    
+    
+          
+    eval("var pesoPuroEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoPuroPieza');"); 
+    
+    eval("var nuevoValorPesoPuro_" + i + " = parseFloat((nuevoValorPesoBruto_" + i + " * nuevoLey_" + i + ") /parseInt(1000));");
+    eval("pesoPuroEntrega_" + i + ".number(true,2,'.','');");
+    eval("pesoPuroEntrega_" + i + ".val(nuevoValorPesoPuro_" + i + ");");
+    
+    {% set i = i+1 %}
+  {% endfor %}
+     
+});
+
+   var arregloOpcionesDP = {changeMonth: false,
+                            changeYear: false,
+                            buttonImageOnly: false,
+                            dateFormat: 'dd-mm-yy' };
+   $( "#loro_entitybundle_entregas_feEntrega" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+</script>
+{% endblock %}

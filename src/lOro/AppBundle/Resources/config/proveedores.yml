@@ -1,0 +1,24 @@
+nueva_carga_masiva:
+    path: /nueva-carga-masiva
+    defaults: {_controller: "lOroAppBundle:PagosProveedores:newCargaMasiva" }   
+    
+_ajax_buscar_cuentas_por_empresa:
+    path: /ajax-buscar-cuentas-por-empresa
+    defaults: {_controller: "lOroAppBundle:PagosProveedores:buscarCuentasPorEmpresa"}  
+    
+_ajax_buscar_por_nro_cuenta_por_empresa:
+    path: /ajax-buscar-por-nro-cuenta-por-empresa
+    defaults: {_controller: "lOroAppBundle:PagosProveedores:buscarPorNroCuentaPorEmpresa"}      
+    
+_ajax_buscar_empresas_por_proveedor:
+    path: /ajax-buscar-empresas-por-proveedor
+    defaults: {_controller: "lOroAppBundle:PagosProveedores:buscarEmpresasPorProveedor" }     
+    
+generar_txt_carga_masiva:
+    path: /generar-txt-carga-masiva
+    defaults: {_controller: "lOroAppBundle:PagosProveedores:generarTxtCargaMasiva" }
+
+
+prueba_response:
+    path: /prueba-response
+    defaults: {_controller: "lOroAppBundle:PagosProveedores:prueba" }

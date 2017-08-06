@@ -1,0 +1,28 @@
+{% extends '::base.html.twig' %}
+{% block title %}Cambio de Contraseña{% endblock %}
+{% block body %}
+<div class="page-header">
+  <h1>Cambiar Contraseña</h1>
+</div>
+  {{ form_start(form) }}
+  <div style="margin-left: 210px;" class="row">
+    <div class="col-lg-4">
+      {{ form_label(form.password.first) }}
+      {{ form_widget(form.password.first) }}
+      <div id="errorContrasena" style="margin-top:5px;">{{ form_errors(form.password.first) }}</div>       
+    </div>
+    <div class="col-lg-4">
+      {{ form_label(form.password.second) }}  
+      {{ form_widget(form.password.second) }}
+      {{ form_errors(form.password.second) }}
+    </div>
+  </div>
+    <div class="row">
+        
+        <div style="margin-top: 10px;" class="col-lg-offset-7">
+        {{ form_widget(form.submit) }}
+  </div>
+        </div>
+        
+  {{ form_end(form) }}
+{% endblock %}
