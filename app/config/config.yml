@@ -30,7 +30,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [lOroTransferenciasBundle, lOroinicioBundle,lOroAdminBundle,lOroAppBundle,lOroBalanceBundle,lOroEntregasBundle,lOroVentasCierreBundle,lOroPagosBundle]
+    bundles:        [lOroVentasDolaresBundle,lOroTransferenciasBundle, lOroinicioBundle,lOroAdminBundle,lOroAppBundle,lOroBalanceBundle,lOroEntregasBundle,lOroVentasCierreBundle,lOroPagosBundle]
     filters:
         uglifyjs2:
             # the path to the uglifyjs executable

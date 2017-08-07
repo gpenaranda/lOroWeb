@@ -56,10 +56,14 @@
                 <td>
                   
                   <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" class="open-modal-ver" data-target="#modalVer" style="text-decoration: none;" href="#">
-                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                    {% image 'assets/self/images/ver.png' %}
+                      <img src="{{ asset_url }}" alt="Ver" />
+                    {% endimage %} 
                   </a>
                   <a  title="Editar" style="text-decoration: none;" href="{{ path('ventas-dolares_edit', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                    {% image 'assets/self/images/editar.png' %}
+                      <img src="{{ asset_url }}" alt="Editar" />
+                    {% endimage %}
                   </a>
                 </td>
             </tr>
@@ -80,10 +84,14 @@
       urlVerAction: '{{ path('ventas-dolares_show', { 'id': ':idEntity' }) }}',  
       urlEliminarAction: '{{ path('ventas-dolares_delete', { 'id': ':idEntity' }) }}', 
       titulosNoFiltrados: '[0,1,4,5,6,7]',
-      idListado: 'listado-cierres'
+      idListado: 'listado-cierres',
+      urlDatatableLang: '{{ asset('lang.txt') }}'
 };
 </script>
-<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>  
+
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
 
 
 <script>

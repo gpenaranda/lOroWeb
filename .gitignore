@@ -7,6 +7,9 @@
 # Email spool folder
 /app/spool/*
 
+# Symfony Vendors
+/vendor/*
+
 
 # Parameters
 /app/config/parameters.yml
