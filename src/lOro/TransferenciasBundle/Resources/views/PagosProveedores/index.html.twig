@@ -5,28 +5,26 @@
 <div class="page-header">
   <h1>Pagos a Proveedores <small>Listado</small></h1>
 </div>
-  {% if not entities %}
-    <div class="row" style="margin:0px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se poseen pagos a proveedores registradas actualmente
-      </div>
-    </div>   
-  {% endif %}
-  
-  
-  <div class="col-md-9" id="divSumatoria">
-      <span  class="bubble you" style="float:right;">Sumatoria de los Seleccionados: <span id="montoSumatoria"></span> Bs.
-      </span>
-  </div>
-  <div class="col-md-11" id="divAgregarNuevoPago" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a  href="{{ path('nueva_carga_masiva') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Pago</a>
-  </div>
 
-  {% if entities %}
-    <!-- Select y Text Input para el Buscador -->
-    <div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
-        <thead>
+
+<!-- LLamado del twig con los flash del sistema -->
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+
+  
+  <div class="col-md-offset-1 col-md-9">
+    <div class="col-md-11" id="divSumatoria">
+        <span  class="bubble you" style="float:right; display:none;">Sumatoria de los Seleccionados: <span id="montoSumatoria"></span> Bs.</span>
+    </div>
+    <div class="col-md-1" style="padding:0 0 3em 0; margin-left: -5px;">
+      <a href="{{ path('nueva_carga_masiva') }}" style="float:right;" class="btn btn-primary btn-fab btn-raised mdi-content-add"></a>
+    </div>
+  </div>
+  
+
+    <div class="col-md-offset-1 col-md-9">
+    <table id="listado-cierres" class="display">
+      <thead>
             <tr>
                 <th style="text-align:center;">ID</th>
                 <th style="text-align:center;">Fecha</th>
@@ -38,7 +36,7 @@
                 <th style="text-align:center;">Acciones</th>
                 <th style="text-align:center;">Sumar</th>
             </tr>
-        </thead>
+      </thead>
         <tbody class="data-tabla">
         {% for entity in entities if entity.id != 9999 %}
             <tr>
@@ -68,10 +66,9 @@
         {% endfor %}
         </tbody>
     </table>
-    {% else %}
-   
-    </div>
-    {% endif %}
+   </div>
+
+
 {% endblock %}
 {% block javascripts %}
 <script>
@@ -131,7 +128,6 @@ $(document).ready( function () {
    );
 });
 
-$('#divSumatoria').hide();
 
 function sumarMontos(montoPagado,idPagoProveedor) {
   
@@ -145,11 +141,11 @@ function sumarMontos(montoPagado,idPagoProveedor) {
    }
    
    if(_globales.montoSumatoria > 0) {
-      $('#divSumatoria').show(); 
+      $('#divSumatoria > span').show();
       $('#divAgregarNuevoPago').removeClass('col-md-11');
       $('#divAgregarNuevoPago').addClass('col-md-2');      
    } else {
-      $('#divSumatoria').hide();
+      $('#divSumatoria > span').hide();
       
       $('#divAgregarNuevoPago').removeClass('col-md-2');
       $('#divAgregarNuevoPago').addClass('col-md-11');

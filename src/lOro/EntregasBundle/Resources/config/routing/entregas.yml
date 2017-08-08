@@ -13,7 +13,7 @@ entregas_new:
 entregas_create:
     path:  /create
     defaults: { _controller: "lOroEntregasBundle:Entregas:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 entregas_edit:
     path:  /{id}/edit
@@ -22,7 +22,7 @@ entregas_edit:
 entregas_update:
     path:  /{id}/update
     defaults: { _controller: "lOroEntregasBundle:Entregas:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 
 

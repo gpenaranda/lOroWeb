@@ -7,25 +7,18 @@
 
 
     
-    
-    {% if not entities %}
-    <div class="row" style="margin:0px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se poseen debitos registrados actualmente
-      </div>
-    </div>   
-  {% endif %}
+
 
   
   
-  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+  <div class="col-md-offset-1 col-md-10" style="padding:0 0 3em 0; margin-left: -5px;">
     <a  href="{{ path('debitos_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Debito</a>
   </div>
   
-  {% if entities %}
+
 
   <!-- Select y Text Input para el Buscador -->
-    <div class="col-lg-offset-1 col-lg-10">
+    <div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
     <table id="listado-cierres" class="display" >
         <thead>
             <tr>
@@ -37,7 +30,7 @@
                 <th style="text-align:center;">Acciones</th>  
             </tr>
         </thead>
-        <tbody class="data-entregas">
+        <tbody>
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
@@ -47,10 +40,14 @@
                 <td>{{ entity.descripcion }}</td>     
                 <td>
                   <a title="Ver" style="text-decoration: none;" href="{{ path('debitos_show', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                    {% image 'assets/self/images/ver.png' %}
+                      <img src="{{ asset_url }}" alt="Ver" />
+                    {% endimage %}
                   </a>
                   <a title="Editar" style="text-decoration: none;" href="{{ path('debitos_edit', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                    {% image 'assets/self/images/editar.png' %}
+                      <img src="{{ asset_url }}" alt="Editar" />
+                    {% endimage %}
                   </a>
                 </td>
             </tr>
@@ -58,14 +55,19 @@
         </tbody>
     </table>
     </div>
-    {% endif %}
+ 
+
 {% endblock %}
   {% block javascripts %}
 <script>
   var _globales = {
       titulosNoFiltrados: '[0,1,2,4,5]',
-      idListado: 'listado-cierres'
+      idListado: 'listado-cierres',
+      urlDatatableLang: '{{ asset('lang.txt') }}'
 };
 </script>
-<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>  
-    {% endblock %}
+
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}

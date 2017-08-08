@@ -144,14 +144,7 @@ background: linear-gradient(to bottom,  #5B9EFF 0%,#5B9EFF 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5B9EFF', endColorstr='#5B9EFF',GradientType=0 ); /* IE6-9 */ 
 }
 
-.tablasListadosPequena {
-    position:relative;
-    width: 60%;
-    font-size: 16pt;
-    left:50%;
-    margin-left: -30%;
-    text-align: center;    
-}
+
 
 
 .tablasListados {
@@ -163,7 +156,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5B9EFF', end
     text-align: center;
 }
 
-.tablasListadosPequena thead tr th,
+
 .tablasListados  thead th th {
   text-align: center;  
 }

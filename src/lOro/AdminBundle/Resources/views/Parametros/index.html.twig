@@ -5,7 +5,11 @@
   <h1>Parametros del Sistema<small>Listado</small>
   </h1>
 </div>
-<table class="table table-hover table-condensed tablasListadosPequena" style="margin-bottom: 0px;">
+
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+<div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
+<table id="system-parameters" class="table table-hover table-condensed" style="margin-bottom: 0px;">
     <thead>
         <tr>
             <th>Parametro</th>
@@ -19,10 +23,14 @@
         <td>Activo</td>
         <td>
           <a title="Ver" style="text-decoration: none;" href="{{ path('parametros_show', { 'id': 1 }) }}">
-            <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                      {% image 'assets/self/images/ver.png' %}
+                        <img src="{{ asset_url }}" alt="Ver" />
+                      {% endimage %}
           </a>
           <a title="Ver" style="text-decoration: none;" href="{{ path('parametros_edit', { 'id': 1 }) }}">
-            <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                      {% image 'assets/self/images/editar.png' %}
+                        <img src="{{ asset_url }}" alt="Editar" />
+                      {% endimage %}
           </a>
         </td>
       </tr>
@@ -31,10 +39,14 @@
         <td>Activo</td>
         <td>
           <a title="Ver" style="text-decoration: none;" href="{{ path('margenes_ganancia_show', { 'id': 1 }) }}">
-            <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                      {% image 'assets/self/images/ver.png' %}
+                        <img src="{{ asset_url }}" alt="Ver" />
+                      {% endimage %}
           </a>
           <a title="Ver" style="text-decoration: none;" href="{{ path('margenes_ganancia_edit', { 'id': 1 }) }}">
-            <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                      {% image 'assets/self/images/editar.png' %}
+                        <img src="{{ asset_url }}" alt="Editar" />
+                      {% endimage %}
           </a>
         </td>
       </tr>
@@ -43,13 +55,32 @@
         <td>Activo</td>
         <td>
           <a title="Ver" style="text-decoration: none;" href="{{ path('margenes_ganancia_show', { 'id': 2 }) }}">
-            <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                      {% image 'assets/self/images/ver.png' %}
+                        <img src="{{ asset_url }}" alt="Ver" />
+                      {% endimage %}
           </a>
           <a title="Ver" style="text-decoration: none;" href="{{ path('margenes_ganancia_edit', { 'id': 2 }) }}">
-            <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                      {% image 'assets/self/images/editar.png' %}
+                        <img src="{{ asset_url }}" alt="Editar" />
+                      {% endimage %}
           </a>
         </td>
       </tr>      
     </tbody>
 </table>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+    var _globales = {
+        titulosNoFiltrados: '[0,1,2]',
+        idListado: 'system-parameters',
+        urlDatatableLang: '{{ asset('lang.txt') }}'
+  };
+  </script>
+
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %} 
 {% endblock %}

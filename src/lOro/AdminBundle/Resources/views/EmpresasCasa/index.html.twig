@@ -5,18 +5,16 @@
   <h1>Empresa Casa<small>Listado</small>
   </h1>
 </div>
-{% if not entities %}
-    <div class="row" style="margin:0px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se poseen proveedores registrados actualmente
-      </div>
-    </div>   
-  {% endif %}
-  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
+
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+
+  <div class="col-md-offset-1 col-md-10" style="padding:0 0 3em 0; margin-left: -5px;">
     <a style="float:right;" href="{{ path('empresas-casa_new') }}" class="btn btn-lg btn-success">Agregar Nueva Empresa</a>
   </div>
-  {% if entities %}
-  <table class="table table-hover table-condensed tablasListadosPequena" style="margin-bottom: 0px;">
+
+  <div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
+  <table id="house-companies-list" class="table table-hover table-condensed" style="margin-bottom: 0px;">
         <thead>
             <tr>
                 <th>ID</th>
@@ -30,16 +28,35 @@
                 <td>{{ entity.id }}</td>              
                 <td>{{ entity.nombreEmpresa }}</td>  
                 <td>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-casa_show', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_show', { 'id': entity.id }) }}">
+                      {% image 'assets/self/images/ver.png' %}
+                        <img src="{{ asset_url }}" alt="Ver" />
+                      {% endimage %}
                   </a>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-casa_edit', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_edit', { 'id': entity.id }) }}">
+                      {% image 'assets/self/images/editar.png' %}
+                        <img src="{{ asset_url }}" alt="Editar" />
+                      {% endimage %}
                   </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-{% endif %}
+  </div>
+
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+    var _globales = {
+        titulosNoFiltrados: '[0,1,2]',
+        idListado: 'house-companies-list',
+        urlDatatableLang: '{{ asset('lang.txt') }}'
+  };
+  </script>
+
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %} 
 {% endblock %}

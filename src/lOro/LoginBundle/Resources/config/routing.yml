@@ -1,19 +1,19 @@
 login:
-    pattern:  /login
+    path:  /login
     defaults: { _controller: lOroLoginBundle:Security:login }
     
 logout:
-    pattern:  /logout
+    path:  /logout
     defaults: { _controller: lOroLoginBundle:Security:logout } 
     
 login_check:
-    pattern: /login_check    
+    path: /login_check    
 
 cambiar_contrasena:
-    pattern: /cambio-contrasena
+    path: /cambio-contrasena
     defaults: { _controller: lOroLoginBundle:Security:cambiarContrasena }
     
     
 cargar:
-    pattern: /cargar
+    path: /cargar
     defaults: { _controller: lOroLoginBundle:Security:cargarUser }

@@ -1,61 +1,61 @@
 ventas_cierres_proveedores:
-    pattern:  /cierres-proveedores
+    path:  /cierres-proveedores
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:index" ,lugar: proveedores }
     
 ventas_cierres_proveedores_new:
-    pattern:  /new-proveedores
+    path:  /new-proveedores
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:new",lugar: proveedores }
     
 ventas_cierres_proveedores_create:
-    pattern:  /create-proveedores
+    path:  /create-proveedores
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:create",lugar: proveedores }
-    requirements: { _method: post }
+    requirements: { methods: post }
 
 ventas_cierres_proveedores_edit:
-    pattern:  /{id}/edit
+    path:  /{id}/edit
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:edit" ,lugar: proveedores }
     
 ventas_cierres_proveedores_update:
-    pattern:  /{id}/update
+    path:  /{id}/update
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:update",lugar: proveedores }
-    requirements: { _method: post|put }    
+    requirements: { methods: post|put }    
     
 ventas_cierres_proveedores_show:
-    pattern:  /{id}/show-proveedores
+    path:  /{id}/show-proveedores
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:show",lugar: proveedores }
     
 ventas_cierres_proveedores_delete:
-    pattern:  /{id}/delete-proveedores
+    path:  /{id}/delete-proveedores
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:delete",lugar: proveedores }
   
     
 # Rutas de los Cierres con HC 
 ventas_cierres_hc:
-    pattern:  /cierres-hc
+    path:  /cierres-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:index", lugar: hc }    
     
 ventas_cierres_hc_new:
-    pattern:  /new-hc
+    path:  /new-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:new",lugar: hc }
     
 ventas_cierres_hc_create:
-    pattern:  /create-hc
+    path:  /create-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:create",lugar: hc }
-    requirements: { _method: post }    
+    requirements: { methods: post }    
     
 ventas_cierres_hc_edit:
-    pattern:  /{id}/edit-hc
+    path:  /{id}/edit-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:edit",lugar: hc }
     
 ventas_cierres_hc_update:
-    pattern:  /{id}/update-hc
+    path:  /{id}/update-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:update",lugar: hc }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
     
 ventas_cierres_hc_show:
-    pattern:  /{id}/show-hc
+    path:  /{id}/show-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:show",lugar: hc }
     
 ventas_cierres_hc_delete:
-    pattern:  /{id}/delete-hc
+    path:  /{id}/delete-hc
     defaults: { _controller: "lOroVentasCierreBundle:VentasCierres:delete",lugar: hc } 

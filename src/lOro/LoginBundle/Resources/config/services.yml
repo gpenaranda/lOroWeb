@@ -5,8 +5,8 @@ parameters:
 services:
   redirect.after.login:
     class: lOro\LoginBundle\Redirection\AfterLoginRedirection
-    arguments: [@router]
+    arguments: ["@router"]
 
   redirect.after.logout:
     class: lOro\LoginBundle\Redirection\AfterLogoutRedirection
-    arguments: [@router, @security.context]
+    arguments: ["@router", "@security.context"]

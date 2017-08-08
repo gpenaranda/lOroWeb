@@ -3,44 +3,32 @@
 {% block title %}Abonos{% endblock %}
 
 {% block body -%}
-    <div class="page-header">
-        <h1>Abonos <small>Listado</small>
-        </h1>
-    </div>
+<div class="page-header">
+  <h1>Abonos <small>Listado</small></h1>
+</div>
     
-    {% include '::VariosSistema/mensajes_flash.html.twig' %}
-    
-    
-    {% if not entities %}
-    <div class="row" style="margin:0px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se poseen abonos registrados actualmente
-      </div>
-    </div>   
-  {% endif %}
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+  
+  
+<div class="col-md-offset-1 col-md-10" style="padding:0 0 3em 0; margin-left: -5px;">
+  <a  href="{{ path('abono_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Abono</a>
+</div>
+  
 
-  
-  
-  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a  href="{{ path('abono_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Abono</a>
-  </div>
-  
-  {% if entities %}
 
-  <!-- Select y Text Input para el Buscador -->
-    <div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
-        <thead>
-            <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha</th>
-                <th style="text-align:center;">Monto del Abono</th>
-                <th style="text-align:center;">Pagado en</th>
-                <th style="text-align:center;">Descripción del Abono</th>   
-                <th style="text-align:center;">Acciones</th>  
-            </tr>
-        </thead>
-        <tbody class="data-entregas">
+<div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
+  <table id="listado-cierres" class="display" >
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Monto del Abono</th>
+        <th>Pagado en</th>
+        <th>Descripción del Abono</th>   
+        <th>Acciones</th>  
+      </tr>
+    </thead>
+    <tbody>
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
@@ -50,25 +38,33 @@
                 <td>{{ entity.descripcion }}</td>     
                 <td>
                   <a title="Ver" style="text-decoration: none;" href="{{ path('abono_show', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                    {% image 'assets/self/images/ver.png' %}
+                      <img src="{{ asset_url }}" alt="Ver" />
+                    {% endimage %} 
                   </a>
                   <a title="Editar" style="text-decoration: none;" href="{{ path('abono_edit', { 'id': entity.id }) }}">
-                    <img src="{{ asset('bundles/lOroBundle/images/editar.png') }}" />
+                    {% image 'assets/self/images/editar.png' %}
+                      <img src="{{ asset_url }}" alt="Editar" />
+                    {% endimage %}
                   </a>
                 </td>
             </tr>
         {% endfor %}
-        </tbody>
-    </table>
-    </div>
-    {% endif %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}
   {% block javascripts %}
-<script>
-  var _globales = {
-      titulosNoFiltrados: '[0,1,2,4,5]',
-      idListado: 'listado-cierres'
-};
-</script>
-<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>  
-    {% endblock %}
+  <script>
+    var _globales = {
+        titulosNoFiltrados: '[0,1,2,4,5]',
+        idListado: 'listado-cierres',
+        urlDatatableLang: '{{ asset('lang.txt') }}'
+  };
+  </script>
+
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %} 
+{% endblock %}

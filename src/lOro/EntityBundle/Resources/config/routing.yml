@@ -1,3 +1,3 @@
 l_oro_entity_homepage:
-    pattern:  /balance-general-admin
+    path:  /balance-general-admin
     defaults: { _controller: lOroEntityBundle:Default:index }

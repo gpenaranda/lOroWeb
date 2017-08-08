@@ -7,7 +7,7 @@ services:
 #        arguments: [@service_id, "plain_value", %parameter%]
     loro_datos_generales:
         class: lOro\EntityBundle\Service\DatosGenerales
-        arguments: ["@doctrine.orm.entity_manager", @mailer,"@service_container", "@session", "@router" ]
+        arguments: ["@doctrine.orm.entity_manager", "@mailer","@service_container", "@session", "@router" ]
     loro_relaciones_registros:
         class: lOro\EntityBundle\Service\RelacionesRegistros
         arguments: ["@doctrine.orm.entity_manager"]        

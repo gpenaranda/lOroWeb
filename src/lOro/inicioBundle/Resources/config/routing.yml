@@ -1,28 +1,28 @@
 inicio:
-    pattern: l_oro/index
+    path: l_oro/index
     defaults: { _controller: lOroinicioBundle:Default:index }
 
 _buscar_info_proveedor:
-    pattern: inicio/buscar-info-proveedor
+    path: inicio/buscar-info-proveedor
     defaults: { _controller: lOroinicioBundle:Default:buscarInfoProveedor}
     
 _cierres_del_dia:
-    pattern: /cierres-del-dia
+    path: /cierres-del-dia
     defaults: { _controller: lOroinicioBundle:Default:cierresDelDia }    
 
 
 _homepage_balance_bs:
-    pattern: inicio/homepage-balance-bs
+    path: inicio/homepage-balance-bs
     defaults: { _controller: lOroinicioBundle:Default:balanceBolivares }
 
 _homepage_balance_grams:
-    pattern: inicio/homepage-balance-grams
+    path: inicio/homepage-balance-grams
     defaults: { _controller: lOroinicioBundle:Default:balanceMaterial }
 
 _homepage_balance_by_suppliers:
-    pattern: inicio/homepage-balance-by-suppliers
+    path: inicio/homepage-balance-by-suppliers
     defaults: { _controller: lOroinicioBundle:Default:balanceBySuppliers }
 
 _homepago_balance_by_retail_suppliers:
-    pattern: inicio/homepage-balance-by-retail-suppliers
+    path: inicio/homepage-balance-by-retail-suppliers
     defaults: { _controller: lOroinicioBundle:Default:balanceByRetailSuppliers }    

@@ -50,19 +50,19 @@ empresas-casa_new:
     path:  /empresas-casa-new
     defaults: { _controller: "lOroAdminBundle:EmpresasCasa:new" }    
     
-empresas-casa_edit:
-    path:  /{id}/empresas-casa-edit
-    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:edit" } 
+#empresas-casa_edit:
+#    path:  /{id}/empresas-casa-edit
+#    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:edit" } 
     
-empresas-casa_update:
-    path:  /{id}/empresas-casa-update
-    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:update" }
-    requirements: { methods: post|put }
+#empresas-casa_update:
+#    path:  /{id}/empresas-casa-update
+#    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:update" }
+#    requirements: { methods: post|put }
     
     
-empresas-casa_show:
-    path:  /{id}/empresas-casa-show
-    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:show" }   
+#empresas-casa_show:
+#    path:  /{id}/empresas-casa-show
+#    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:show" }   
     
 empresas-casa_delete:
     path:  /{id}/empresas-casa-delete

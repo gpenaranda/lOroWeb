@@ -1,55 +1,55 @@
 # Pagos a Proveedores Internos Bs
 pagos_proveedores:
-    pattern:  /pagos-proveedores
+    path:  /pagos-proveedores
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:index" }
 
 
 pagos_proveedores_new:
-    pattern:   /pagos-proveedores/new
+    path:   /pagos-proveedores/new
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:new" }
 
 pagos_proveedores_create:
-    pattern:  /pagos-proveedores/create
+    path:  /pagos-proveedores/create
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:create" }
-    requirements: { _method: post }
+    requirements: { methods: post }
     
 pagos_proveedores_edit:
-    pattern:   /pagos-proveedores/{id}/edit
+    path:   /pagos-proveedores/{id}/edit
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:edit" }
 
 pagos_proveedores_update:
-    pattern:   /pagos-proveedores/{id}/update
+    path:   /pagos-proveedores/{id}/update
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
     
 pagos_proveedores_delete:
-    pattern:   /pagos-proveedores/{id}/delete
+    path:   /pagos-proveedores/{id}/delete
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:delete" }
-    #requirements: { _method: post|delete }   
+    #requirements: { methods: post|delete }   
  
 
 pagos_proveedores_show:
-    pattern:  /{id}/show
+    path:  /{id}/show
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:show" }
     
 _buscar_empresas_por_proveedor:
-    pattern:  /pagos-proveedores/empresas-proveedor
+    path:  /pagos-proveedores/empresas-proveedor
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:buscarEmpresasPorProveedor" }    
     
 
 _buscador_pagos_proveedores:
-    pattern:  /buscar-pagos-proveedores
+    path:  /buscar-pagos-proveedores
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:buscarPagosProveedores"} 
 
 _agregar_empresa_por_proveedor:    
-    pattern:  /ajax-agregar-empresa-proveedors
+    path:  /ajax-agregar-empresa-proveedors
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:agregarEmpresaProveedor"}   
 # Pagos a Proveedores Internos Bs
 
 
 
 _ajax_verificar_nro_referencia:
-    pattern:  /ajax-verificar-nro-referencia
+    path:  /ajax-verificar-nro-referencia
     defaults: { _controller: "lOroTransferenciasBundle:PagosProveedores:ajaxVerificarNroReferencia" }
 
 
@@ -57,51 +57,51 @@ _ajax_verificar_nro_referencia:
 
 # Transferencias
 transferencias_list:
-    pattern:  /transferencias
+    path:  /transferencias
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:index" }
     
 transferencias_new:
-    pattern:  /transferencias/new
+    path:  /transferencias/new
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:new" }    
     
 transferencias_create:
-    pattern:  /transferencias/create
+    path:  /transferencias/create
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:create" }        
 
 transferencias_edit:
-    pattern:   /transferencias/{id}/edit
+    path:   /transferencias/{id}/edit
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:edit" }
 
 transferencias_update:
-    pattern:   /transferencias/{id}/update
+    path:   /transferencias/{id}/update
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:update" }
-    requirements: { _method: post|put }
+    requirements: { methods: post|put }
 
 transferencias_show:
-    pattern:  /transferencias/{id}/show
+    path:  /transferencias/{id}/show
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:show" }    
     
 transferencias_delete:
-    pattern:   /transferencias/{id}/delete
+    path:   /transferencias/{id}/delete
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:delete" }    
     
 _datos_transferencia:    
-    pattern:  /datos-transferencia/{id}
+    path:  /datos-transferencia/{id}
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:datosTransferencias" }  
     
 _confirmar_transferencia:    
-    pattern:  /confirmar-transferencia/{id}
+    path:  /confirmar-transferencia/{id}
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:confirmarTransferencias" }    
     
 _devolver_transferencia:
-    pattern:  /devolver-transferencia
+    path:  /devolver-transferencia
     defaults: { _controller: "lOroTransferenciasBundle:Transferencias:devolverTransferencias" }   
     
 #Conversion Transferencias
 conversion_transferencias_new:
-    pattern:  /conversion-transferencias/new
+    path:  /conversion-transferencias/new
     defaults: { _controller: "lOroTransferenciasBundle:ConversionTransferencias:new" }
     
 conversion_transferencias_create:
-    pattern:  /conversion-transferencias/create
+    path:  /conversion-transferencias/create
     defaults: { _controller: "lOroTransferenciasBundle:ConversionTransferencias:create" }    
