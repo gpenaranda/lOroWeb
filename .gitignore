@@ -44,3 +44,7 @@
 
 # Embedded web-server pid file
 #/.web-server-pid
+
+
+/web/crear_relaciones_piezas_cierres.php
+/web/crear_relaciones_piezas_cierres_proveedores.php
