@@ -23,11 +23,11 @@
 !bin/symfony_requirements
 
 # Assets and user uploads
-/web/bundles/
-/web/uploads/
-/web/css/
-/web/js/
-/web/images/
+/web/bundles/*
+/web/uploads/*
+/web/css/*
+/web/js/*
+/web/images/*
 
 # Third Party Assets
 /web/assets/vendor/

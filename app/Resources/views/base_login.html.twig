@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     
     <title>Textiles Lolo | Login</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
 
-    {%  stylesheets 'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
-                        'assets/vendor/bootstrap/dist/css/bootstrap-theme.min.css'
+    {%  stylesheets     'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
+                        'assets/self/css/material.min.css'
+                        'assets/self/css/material-fullpalette.min.css'
+                        'assets/self/css/ripples.min.css'
                         'assets/self/css/login.css'
             filter='cssrewrite' %}
           <link rel="stylesheet" href="{{ asset_url }}" />
@@ -17,18 +21,23 @@
     </head>
     <body>
       <div class="container-fluid">
-      <div class="row">
-          <div class="col-lg-12">
-           {% block body %}{% endblock %}
-          </div>
-        </div>          
-      </div>
+        {% block body %}{% endblock %}
+      </div>          
+    </body>
+      
       {% javascripts  'assets/vendor/jquery/dist/jquery.min.js'
                       'assets/vendor/bootstrap/dist/js/bootstrap.min.js'
                       'assets/self/js/jquery-ui.min.js'
+                      'assets/self/js/material.min.js'
+                      'assets/self/js/ripples.min.js'
        %}
           <script src="{{ asset_url }}"></script>
        {% endjavascripts %}
+       <script>
+            $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+            });
+        </script>
        {% block javascripts %}{% endblock %}
-    </body>
 </html>

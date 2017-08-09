@@ -1,12 +1,11 @@
-@import "bourbon";
-
 body {
-	background: #eee !important;	
+	background: #E7E7E7 !important;	
+	font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif !important;
+    font-weight: bold !important;
 }
 
 .wrapper {	
-	margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 80px;
 }
 
 .form-signin {

@@ -10,6 +10,8 @@ use lOro\TransferenciasBundle\Form\TransferenciasType;
 use lOro\EntityBundle\Entity\Banco;
 use lOro\EntityBundle\Entity\Balances;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -200,13 +202,13 @@ class TransferenciasController extends Controller
     */
     private function createCreateForm(Transferencias $entity)
     {
-        $form = $this->createForm(new TransferenciasType(), $entity, array(
+        $form = $this->createForm(TransferenciasType::class, $entity, array(
             'action' => $this->generateUrl('transferencias_create'),
             'method' => 'POST',
             'attr' => array('id' => 'form-transferencias-hc')
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Agregar',
+        $form->add('submit', SubmitType::class, array('label' => 'Agregar',
                                              'attr' => array('class' => 'btn btn-lg btn-success')));
 
         return $form;

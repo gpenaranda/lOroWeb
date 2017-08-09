@@ -4,8 +4,14 @@ namespace lOro\TransferenciasBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
+
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 class TransferenciasType extends AbstractType
 {
@@ -24,93 +30,98 @@ class TransferenciasType extends AbstractType
        
        
         $builder
-            ->add('feTransferencia','date',array(
+            ->add('feTransferencia',DateType::class,array(
                   'label' => 'Fecha de la transferencia',
                   'widget' => 'single_text',
                   'format' => 'dd-MM-yyyy',
                   'data' => new \ DateTime('now'),
                   'attr' => array('class' => 'form-control')))
-            ->add('tipoTransaccion','entity',array('label' => 'Tipo de Transacción',
+            ->add('tipoTransaccion',EntityType::class,array('label' => 'Tipo de Transacción',
                                                           'mapped' => true,
                                                           'class' => 'lOroEntityBundle:TipoTransaccion',
-                                                           'property' => 'nbTransaccion',
-                                                           'empty_value' => $this->empty_value,
+                                                           'choice_label' => 'nbTransaccion',
+                                                           'placeholder' => $this->empty_value,
                                                            'attr' => array('class' => 'form-control')))                       
-            ->add('nroReferencia','text',array('label' => 'Nro de Referencia',
+            ->add('nroReferencia',TextType::class,array('label' => 'Nro de Referencia',
                                                      'attr' => array('class' => 'form-control'))) 
                 
-            ->add('montoTransferencia','text',array('label' => 'Monto de la Transferencia',
+            ->add('montoTransferencia',TextType::class,array('label' => 'Monto de la Transferencia',
                                                      'attr' => array('class' => 'form-control')))
                 
-            ->add('beneficiario','entity',array(            'label' => $labelProveedor,
+            ->add('beneficiario',EntityType::class,array(            'label' => $labelProveedor,
             'class' => 'lOroEntityBundle:Proveedores',
             'query_builder' => function(EntityRepository $er) use ($compradorDolares) {
               return $er->createQueryBuilder('u')
                         ->where('u.compraDolares = :compradorDolares')
                         ->setParameter('compradorDolares',$compradorDolares);
             },
-            'property' => 'nbProveedor',
-            'empty_value' => 'Seleccione una Opción',
+            'choice_label' => 'nbProveedor',
+            'placeholder' => 'Seleccione una Opción',
             'attr' => array('class' => 'form-control',
             'style' => 'margin-bottom:10px;'),
             'mapped'        => true))
                     
-            ->add('estatus','choice',array('label' => 'Estatus de la Transferencia',
-                                         'choices' => array('N' => 'No Enviada a HC','C' => 'Confirmada','P' => 'Pendiente'),
-                                         'empty_value' => $this->empty_value,
+            ->add('estatus',ChoiceType::class,array( 'label' => 'Wired Transfer Status',
+                                                     'choices_as_values' => true,
+                                                     'choices' => array('No Enviada a HC' => 'N',
+                                                                        'Confirmada' => 'C',
+                                                                        'Pendiente' => 'P'),
+                                                     'placeholder' => $this->empty_value,
+                                                     'mapped' => true,
+                                                     'attr' => array('class' => 'form-control')
+                                                    ))  
+                    
+            ->add('empresa',TextType::class,array('label' => 'Empresa',
                                          'mapped' => true,
                                          'attr' => array('class' => 'form-control')))  
                     
-            ->add('empresa','text',array('label' => 'Empresa',
-                                         'mapped' => true,
-                                         'attr' => array('class' => 'form-control')))  
                     
                     
-                    
-            ->add('tipoMonedaConversion','entity',array('label' => 'Moneda de Origen (A descontar)',
+            ->add('tipoMonedaConversion',EntityType::class,array('label' => 'Moneda de Origen (A descontar)',
                                               'class' => 'lOroEntityBundle:TiposMoneda',
                                               'query_builder' => function(EntityRepository $er) {
                                                     return $er->createQueryBuilder('u')
                                                               ->where('u.id NOT IN (:monedaExcluida)')
                                                               ->setParameter('monedaExcluida',array(1));
                                               },
-                                                'property' => 'nbMoneda',
-                                                'empty_value' => 'Seleccione una Opción',
+                                                'choice_label' => 'nbMoneda',
+                                                'placeholder' => $this->empty_value,
                                                 'attr' => array('class' => 'form-control',
                                                 'style' => 'margin-bottom:10px;'),
                                                 'mapped'        => true,
                                                 'required' => false))
                                                       
-            ->add('montoAConvertir','text',array('label' => 'Monto a Convertir',
+            ->add('montoAConvertir',TextType::class,array('label' => 'Monto a Convertir',
                                                  'mapped' => 'true',
                                                  'required' => false,
                                                  'attr' => array('class' => 'form-control')))                                                      
                     
-            ->add('esConversion','choice',array('label' => 'Es una conversion de dinero?',
-                                                            'choices' => array(1 => 'Si', 0 => 'No'),
-                'multiple' => false,
-                'expanded' => true,
-                'mapped' => 'true'
-                ))                    
-            ->add('cotizacionReferencia','text',array('label' => 'Cotizacion de la Divisa',
+            ->add('esConversion',ChoiceType::class,array( 'label' => 'Es una conversion de dinero?',
+                                                          'choices_as_values' => true,
+                                                          'choices' => array('Si' => 1, 'No' => 0),
+                                                          'multiple' => false,
+                                                          'expanded' => true,
+                                                          'mapped' => 'true'
+                                                        ))                    
+            ->add('cotizacionReferencia',TextType::class,array('label' => 'Cotizacion de la Divisa',
                                                       'required' => false,
                                                       'mapped' => 'true',
                                                      'attr' => array('class' => 'form-control')))       
                                                       
-            ->add('tipoMonedaTransf','entity',array('label' => 'Tipo de Moneda del Destino (De la Transferencia)',
+            ->add('tipoMonedaTransf',EntityType::class,array('label' => 'Tipo de Moneda del Destino (De la Transferencia)',
                                               'class' => 'lOroEntityBundle:TiposMoneda',
                                               'query_builder' => function(EntityRepository $er) {
                                                     return $er->createQueryBuilder('u')
                                                               ->where('u.id NOT IN (:monedaExcluida)')
                                                               ->setParameter('monedaExcluida',array(1));
                                               },
-                                                'property' => 'nbMoneda',
-                                                'empty_value' => 'Seleccione una Opción',
+                                                'choice_label' => 'nbMoneda',
+                                                'placeholder' => $this->empty_value,
                                                 'attr' => array('class' => 'form-control',
                                                 'style' => 'margin-bottom:10px;'),
                                                 'mapped'        => true))      
                                                       
-            ->add('descripcion','text',array('label' => 'Descripcion',
+            ->add('descripcion',TextType::class,array('label' => 'Descripcion',
                                              'mapped' => 'true',
                                                      'attr' => array('class' => 'form-control')))                                                        
         ;
@@ -119,7 +130,7 @@ class TransferenciasType extends AbstractType
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'lOro\EntityBundle\Entity\Transferencias'
@@ -129,7 +140,7 @@ class TransferenciasType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'loro_entitybundle_transferencias';
     }

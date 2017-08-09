@@ -48,7 +48,7 @@ class PagosVariosType extends AbstractType
             ->add('tipoPago',ChoiceType::class,array('label' => 'Tipo de Pago',
                                                           'mapped' => true,
                                                           'choices_as_values' => true,
-                                                          'choices' => array('B' => 'Bolivares', 'E' => 'Euros'),
+                                                          'choices' => array('Bolivares' => 'B', 'Euros' => 'E'),
                                                            'placeholder' => $this->empty_value,
                                                            'attr' => array('class' => 'form-control')))                
             ->add('descripcionPago',TextType::class,array('label' => 'Descripción del Pago',
