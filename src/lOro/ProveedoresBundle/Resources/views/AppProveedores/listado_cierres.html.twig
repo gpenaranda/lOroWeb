@@ -1,59 +1,54 @@
 {% extends('::gen_base.html.twig') %}
-
 {% block title %}Cierres{% endblock %}
 
-{% block body %}
-<div class="page-header">
-  <h1 style="font-size: 40pt;">Cierres</h1>
+{% block body -%}
+<div class="title_left">
+    <h1>Cierres <small>Listado</small></h1>
 </div>
+<div class="clearfix"></div>
 
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
+<div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
+    {% if cierresProveedor %}
 
-{% if cierresProveedor %}
-
-<div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
-        <thead>
-            <tr >
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha de Cierre</th>
-                <th style="text-align:center;">Peso Total</th>
-                <th style="text-align:center;">Cierre realizado en</th>
-                <th style="text-align:center;">Pagado por Gramo</th>
-                <th style="text-align:center;">Monto Total</th>
-            </tr>
-        </thead>
-        <tbody class="data-tabla">
-        {% for entity in cierresProveedor if entity.id != 99996 %}
-            <tr>
-                <td style="text-align:center;">{{ entity.id }}</td>
-                <td style="text-align:center;">{% if entity.feVenta %}{{ entity.feVenta|date('Y-m-d') }}{% endif %}</td>
-                <td style="text-align:center;">{{ entity.cantidadTotalVenta  | number_format(2,',','.')}} Grs</td>
-                <td style="text-align:center;">{{ entity.tipoMonedaCierre.nbMoneda }}</td>                
-                <th style="text-align:center;">{{ entity.montoBsCierrePorGramo | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }} / Grs</th>                
-                <td style="text-align:center;">{{ entity.montoBsCierre | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-   {% else %}
-
-
-    <div class="row alerta-busqueda" style="margin: 220px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se encontraron registros
-      </div>
-    </div>
-    </div>
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+        <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%"  >
+            <thead>
+                <tr >
+                    <th style="text-align:center;">ID</th>
+                    <th style="text-align:center;">Fecha de Cierre</th>
+                    <th style="text-align:center;">Peso Total</th>
+                    <th style="text-align:center;">Cierre realizado en</th>
+                    <th style="text-align:center;">Pagado por Gramo</th>
+                    <th style="text-align:center;">Monto Total</th>
+                </tr>
+            </thead>
+            <tbody class="data-tabla">
+                {% for entity in cierresProveedor if entity.id != 99996 %}
+                <tr>
+                    <td style="text-align:center;">{{ entity.id }}</td>
+                    <td style="text-align:center;">{% if entity.feVenta %}{{ entity.feVenta|date('Y-m-d') }}{% endif %}</td>
+                    <td style="text-align:center;">{{ entity.cantidadTotalVenta  | number_format(2,',','.')}} Grs</td>
+                    <td style="text-align:center;">{{ entity.tipoMonedaCierre.nbMoneda }}</td>                
+                    <th style="text-align:center;">{{ entity.montoBsCierrePorGramo | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }} / Grs</th>                
+                    <td style="text-align:center;">{{ entity.montoBsCierre | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="row alerta-busqueda" style="margin: 220px 10% 0 10%;">
+            <div class="alert alert-danger">No se encontraron registros</div>
+        </div>
 	{% endif %}
-    
+    </div>
+</div>
 {% endblock %}
 
 
-
-{% block javascripts %}
-           
+{% block javascripts %}    
 <script>
 var _globales = {
       titulosNoFiltrados: '[0,1,2,3,4,5]',
@@ -62,6 +57,7 @@ var _globales = {
 };
 </script>
 <script>
+
 $(document).ready( function () {
 
     
@@ -75,8 +71,6 @@ $(document).ready( function () {
    
         initComplete: function () {
             var api = this.api();
-            
-     
             
             api.columns().indexes().flatten().each( function ( i ) {
                 
