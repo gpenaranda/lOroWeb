@@ -1,51 +1,49 @@
 {% extends('::gen_base.html.twig') %}
-
 {% block title %}Entregas{% endblock %}
 
-{% block body %}
-<div class="page-header">
-  <h1 style="font-size: 40pt;">Entregas</h1>
+{% block body -%}
+<div class="title_left">
+    <h1>Entregas <small>Listado</small></h1>
 </div>
+<div class="clearfix"></div>
 
-
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
-
+<div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
     <!-- LLamado del twig con el modal de Ver Entrega -->
-    {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' %}
+    {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' with {'app_cliente': true } only %}
 
 
     <div class="col-lg-offset-1 col-lg-10">
-<table id="listado-entregas" class="display">
-        <thead>
-            <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha de entrega</th>
-                <th style="text-align:center;">Peso total de la entrega</th>
-                <th style="text-align:center;">Piezas Entregadas</th>
-                <th style="text-align:center;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="data-entregas">
-        {% for entity in entregas %}
-            <tr>
-                <td style="text-align:center;">{{ entity.id }}</td>
-                <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
-                <td style="text-align:center;">{{ entity.pesoPuroEntrega | number_format('3',',','.') }} Grs.</td>
-                <td style="text-align:center;">{{ entity.piezasEntregadas | length }}</td>
-                <td style="text-align:center;">
-                  <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" data-target="#modalVerEntrega"  class="open-ver-entrega" style="text-decoration: none;" href="#">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %}
-                  </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">ID</th>
+                    <th style="text-align:center;">Fecha de entrega</th>
+                    <th style="text-align:center;">Peso total de la entrega</th>
+                    <th style="text-align:center;">Piezas Entregadas</th>
+                    <th style="text-align:center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="data-entregas">
+            {% for entity in entregas %}
+                <tr>
+                    <td style="text-align:center;">{{ entity.id }}</td>
+                    <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
+                    <td style="text-align:center;">{{ entity.pesoPuroEntrega | number_format('3',',','.') }} Grs.</td>
+                    <td style="text-align:center;">{{ entity.piezasEntregadas | length }}</td>
+                    <td style="text-align:center;">
+                        <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" data-target="#modalVerEntrega"  class="open-ver-entrega" style="text-decoration: none;" href="#">
+                            <i class="fa fa-eye fa-4" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-
 
 
 {% endblock %}
@@ -115,6 +113,10 @@ $('#cargando-reg').hide();
   
 <script>
 $(document).on("click", ".open-ver-entrega", function () {
+    $('.data-entrega').hide(0)
+    $('.data-piezas').hide(0)
+    $('#loading-square-closed-deals-show').show(0);
+
      _globales.idEntrega = $(this).data('id');
      $("#modalVerEntrega .id-entrega").text( _globales.idEntrega );
      
@@ -164,6 +166,9 @@ $(document).on("click", ".open-ver-entrega", function () {
           
           $('.data-entrega').html(htmlEntrega);
           $('.data-piezas').html(htmlPiezas);
+          $('.data-entrega').delay( 900 ).show(0);
+          $('.data-piezas').delay( 900 ).show(0);
+          $('#loading-square-closed-deals-show').delay( 1000 ).hide(0);
         }
       });
 });     

@@ -30,7 +30,7 @@
       {% include 'lOroEntregasBundle:Entregas/extensiones:modal_nueva_entrega_inicial.html.twig' %}
 
       <!-- LLamado del twig con el modal de Ver Entrega -->
-      {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' %}
+      {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' with {'app_cliente': false } only %}
 
       
       <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
