@@ -1,0 +1,76 @@
+<div class="col-md-3 left_col menu_fixed">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="{{ path('pagina_inicial') }}" class="site_title"><i class="fa fa-ravelry"></i> <span>TextilesLolo</span></a>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <br />
+
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li>
+                    <a href="{{ path('home_proveedores') }}"><i class="fa fa-home"></i> Inicio</span></a>
+                  </li>
+                  <li>
+                    <a><i class="fa fa-handshake-o" aria-hidden="true"></i> Cierres <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a target="_blank" href="{{ path('app_prov_cierres') }}">Listado de Cierres</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a><i class="fa fa-exchange" aria-hidden="true"></i> Entregas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a target="_blank" href="{{ path('app_prov_entregas') }}">Listado de Entregas</a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                  
+                    <li><a><i class="fa fa-money"></i>Pagos y Transferencias<span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{{ path('app_prov_pagos') }}">Listado de Pagos</a></li>
+                      </ul>
+                    </li>
+                </ul>
+              </div>
+
+              <div class="menu_section">
+                <h3>Administraci&oacute;n</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-user"></i> Usuario <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="{{ path('cambiar_contrasena') }}">Cambiar Contraseña</a></li>
+                    </ul>
+                  </li>                                    
+                  <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out"></i>Salir</a></li>
+                </ul>
+              </div>
+
+        </div>
+        <!-- /sidebar menu -->
+    </div>
+</div>
+
+<!-- top navigation -->
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav>
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="{{ path('logout') }}">Salir</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- /top navigation -->

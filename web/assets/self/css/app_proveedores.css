@@ -1,0 +1,25 @@
+/* CSS used here will be applied after bootstrap.css */
+/* Custom panel-heading colors in the panel components*/
+.panel-default > .panel-heading-euro{
+    background-image: none;
+    background-color: #C58293;
+    color: #ffffff;
+}
+
+.panel-default > .panel-heading-dolar{
+    background-image: none;
+    background-color: #a6cc70;
+    color: #ffffff;
+}
+
+.panel-default > .panel-heading-bolivar{
+    background-image: none;
+    background-color: #c7942e;
+    color: #ffffff;
+}
+
+.panel-default > .panel-heading-material{
+    background-image: none;
+    background-color: #cfcc04;
+    color: #ffffff;
+}

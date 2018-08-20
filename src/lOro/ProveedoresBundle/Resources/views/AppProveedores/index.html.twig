@@ -1,4 +1,4 @@
-{% extends('::base.html.twig') %}
+{% extends('::gen_base.html.twig') %}
 
 {% block title %}Inicio{% endblock %}
 
@@ -9,14 +9,15 @@
 </div>
 
 
+<!-- MENSAJES FLASH DEL SISTEMA -->
 {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
 
 <div class="row">
     <div class="col-lg-offset-2 col-lg-8">
         <div class="col-lg-6 col-xs-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
+            <div class="panel panel-default">
+                <div class="panel-heading-material">
                     <div class="row">
                         <div class="col-md-offset-1 col-lg-10 text-center">
                             <div>Material en Deuda</div>
@@ -28,8 +29,8 @@
         </div>
     
         <div class="col-lg-6 col-xs-12 pull-right">
-            <div class="panel panel-info">
-                <div class="panel-heading">
+            <div class="panel panel-default">
+                <div class="panel-heading-dolar">
                     <div class="row">
                         <div class="col-md-offset-1 col-lg-10 text-center">
                             <div>Dolares Restantes</div>
@@ -44,8 +45,8 @@
 
         <div class="col-lg-offset-2 col-lg-8">
         <div class="col-lg-6 col-xs-12">
-            <div class="panel panel-warning">
-                <div class="panel-heading">
+            <div class="panel panel-default">
+                <div class="panel-heading-bolivar">
                     <div class="row">
                         <div class="col-md-offset-1 col-lg-10 text-center">
                             <div>Bolivares Restantes</div>
@@ -57,8 +58,8 @@
         </div>
     
         <div class="col-lg-6 col-xs-12 pull-right">
-            <div class="panel panel-success">
-                <div class="panel-heading">
+            <div class="panel panel-default">
+                <div class="panel-heading-euro">
                     <div class="row">
                         <div class="col-md-offset-1 col-lg-10 text-center">
                             <div>Euros Restantes</div>
@@ -84,7 +85,7 @@
                             <div class="list-group">
                                 
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> 
+                                    <i class="fa fa-dot-circle-o fa-fw"></i> 
                                     <span class="text-muted" style="font-size:1em;">Ultimo Cierre Realizado</span>
                                     <span style="font-size:1.5em;">
                                         {% if ultimoCierreProveedor %}
@@ -95,7 +96,7 @@
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">
-                                    <i class="fa fa-twitter fa-fw"></i>
+                                    <i class="fa fa-dot-circle-o fa-fw"></i>
                                     <span class="text-muted" style="font-size:1em;">Ultima Entrega Realizada</span>
                                     <span style="font-size:1.5em;">{{ ultimaEntregaProveedor.feEntrega | date('d/m/Y') }} - (Puro) {{ ultimaEntregaProveedor.pesoPuroEntrega }} Grs - {{ ultimaEntregaProveedor.piezasEntregadas | length }} Pieza(s)
                                     </span>

@@ -5,6 +5,12 @@ body {
 }
 
 
+.site_title i {
+    border: none !important;
+    padding: none !important;
+    border-radius: none !important;
+}
+
 #navegationMenu,
 #login-alert {
   font-size: 14pt !important;    
