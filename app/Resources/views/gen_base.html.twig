@@ -15,7 +15,7 @@
                     'assets/self/css/roboto.min.css'
                     'assets/self/css/layout.css'
                     'assets/self/css/ripples.min.css'
-                    
+                    'assets/self/css/app_proveedores.css'
                     'assets/self/formvalidation/css/formValidation.min.css'
                     'assets/vendor/bootstrap-combobox/css/bootstrap-combobox.css'
                     'assets/self/css/general/general.css'
@@ -41,7 +41,7 @@
 
         <!-- Main menu (depends of the user) -->
         {% if is_granted('ROLE_PROVEEDOR') %}
-          {% include '::menu_proveedores.html.twig' %}
+          {% include '::gen_menu_proveedores.html.twig' %}
         {% else %}
           {% include '::gen_main_menu.html.twig' %}         
         {% endif %}
