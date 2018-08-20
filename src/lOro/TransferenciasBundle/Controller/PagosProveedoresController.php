@@ -350,7 +350,7 @@ class PagosProveedoresController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Agregar',
-                                             'attr' => array('class' => 'btn btn-lg btn-success')));
+                                             'attr' => array('class' => 'btn btn-success')));
 
         return $form;
     }
@@ -483,7 +483,7 @@ class PagosProveedoresController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Actualizar',
-                                             'attr' => array('class' => 'btn btn-lg btn-success')));
+                                             'attr' => array('class' => 'btn btn-success')));
 
         return $form;
     }

@@ -103,17 +103,37 @@ class DebitosController extends Controller
     
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+$id = $_POST['id'];
+      $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('lOroEntityBundle:Debitos')->find($id);
+      $entity = $em->getRepository('lOroEntityBundle:Debitos')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Debitos entity.');
-        }
+      if (!$entity):
+       $dataResponse = 'vacio';
+      else:
+        $dataResponse['id'] = $entity->getId();
+        $date = $entity->getFeDebito();
+        $dataResponse['feDebito'] = $date->format('d-m-Y');
+        $dataResponse['tipoTransaccion'] = $entity->getTipoTransaccion()->getNbTransaccion();
+        
+        if($entity->getTipoPago() == 'B'):
+          $tipoPago = 'Bolivares';
+          $simboloMoneda = 'Bs';
+        elseif($entity->getTipoPago() == 'D'):
+          $tipoPago = 'Dolares';
+          $simboloMoneda = '$';
+        else:
+          $tipoPago = 'Euros';
+          $simboloMoneda = '€';
+        endif;
+        $dataResponse['tipoPago'] = $tipoPago;
+        $dataResponse['monto'] = number_format($entity->getMonto(),'2',',','.').' '.$simboloMoneda;
+        $dataResponse['descripcion'] = $entity->getDescripcion();
 
-        return $this->render('lOroTransferenciasBundle:Debitos:show.html.twig', array(
-                             'entity' => $entity
-                            ));
+      endif;
+
+
+      return new JsonResponse($dataResponse);
     }    
     
     public function deleteAction(Request $request, $id)

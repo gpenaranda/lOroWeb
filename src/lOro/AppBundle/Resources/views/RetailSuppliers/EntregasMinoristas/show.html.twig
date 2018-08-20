@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>EntregasMinoristas</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Feentrega</th>
+                <td>{{ entity.feEntrega|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Pesobrutoentrega</th>
+                <td>{{ entity.pesoBrutoEntrega }}</td>
+            </tr>
+            <tr>
+                <th>Ley</th>
+                <td>{{ entity.ley }}</td>
+            </tr>
+            <tr>
+                <th>Pesopuroentrega</th>
+                <td>{{ entity.pesoPuroEntrega }}</td>
+            </tr>
+            <tr>
+                <th>Ubicacionfisicaentrega</th>
+                <td>{{ entity.ubicacionFisicaEntrega }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('entregas') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('entregas_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

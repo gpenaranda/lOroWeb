@@ -30,7 +30,6 @@ class AppKernel extends Kernel
             new lOro\PagosBundle\lOroPagosBundle(),
             new lOro\AppBundle\lOroAppBundle(),
             new lOro\ProveedoresBundle\lOroProveedoresBundle(),
-            new Ali\DatatableBundle\AliDatatableBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

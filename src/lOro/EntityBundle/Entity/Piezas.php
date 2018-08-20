@@ -77,7 +77,7 @@ class Piezas
     private $entrega;
  
    /**
-     * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\EntregasMinoristas", mappedBy="pieza")
+     * @ORM\OneToMany(targetEntity="\lOro\AppBundle\Entity\EntregasMinoristas", mappedBy="pieza")
      */
     private $entregasMinoristas;   
     
@@ -293,10 +293,10 @@ class Piezas
     /**
      * Add entregasMinoristas
      *
-     * @param \lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas
+     * @param \lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas
      * @return Piezas
      */
-    public function addEntregasMinorista(\lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas)
+    public function addEntregasMinorista(\lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas)
     {
         $this->entregasMinoristas[] = $entregasMinoristas;
 
@@ -306,9 +306,9 @@ class Piezas
     /**
      * Remove entregasMinoristas
      *
-     * @param \lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas
+     * @param \lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas
      */
-    public function removeEntregasMinorista(\lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas)
+    public function removeEntregasMinorista(\lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas)
     {
         $this->entregasMinoristas->removeElement($entregasMinoristas);
     }

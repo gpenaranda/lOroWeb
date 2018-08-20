@@ -1,0 +1,152 @@
+{% extends '::gen_base.html.twig' %}
+{% block title %}Cierres Minoristas{% endblock %}
+{% block body -%}
+
+<!-- LLamado del twig con los flash del sistema -->
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+<div class="title_left">
+  <h1>Cierres de Minoristas <small>Listado</small></h1>
+</div>
+
+<div class="clearfix"></div>
+
+
+<div class="row">
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+  <div class="clearfix"></div>
+
+  <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+    <a href="{{ path(('retail_supplier_closed_deals_new')) }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+  </div>   
+
+  <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+    <table id="rsuppliers-closed-deals-list" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+      <thead>
+        <tr >
+          <th style="text-align:center;">ID</th>
+          <th style="text-align:center;">Fecha de Cierre</th>
+          <th style="text-align:center;">Cerrado en</th>
+          <th style="text-align:center;">Peso Bruto</th>
+          <th style="text-align:center;">Ley</th>
+          <th style="text-align:center;">Peso Puro</th>
+          <th style="text-align:center;">Proveedor</th>
+          <th style="text-align:center;">Acciones</th>
+        </tr>
+      </thead>
+      
+      <tbody class="data-tabla">
+        {% for closedDeal in retailSuppliersClosedDeals if retailSuppliersClosedDeals %}
+        <tr>
+          <td style="text-align:center;">{{ closedDeal.id }}</td>
+          <td style="text-align:center;">{% if closedDeal.feCierre %}{{ closedDeal.feCierre | date('Y-m-d') }}{% endif %}</td>
+          <td style="text-align:center;">{{ closedDeal.tipoMonedaCierre.nbMoneda }}</td>
+          <td style="text-align:center;">{{ closedDeal.pesoBrutoCierre  | number_format(2,',','.') }} Grs</td>
+          <td style="text-align:center;">{{ closedDeal.ley | number_format(2,',','.') }}</td>
+          <td style="text-align:center;">{{ closedDeal.pesoPuroCierre | number_format(2,',','.') }}</td>
+          <td style="text-align:center;">{{ closedDeal.minorista.nbProveedor }}</td>
+          <td style="text-align:center;">
+            <a title="Ver" data-toggle="modal" data-target="#showClosedDealModal" data-id="{{ closedDeal.id }}" data-path="{{ path('retail_supplier_closed_deals_show') }}" style="text-decoration: none;" href='#'>
+              <i class="fa fa-eye fa-4" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- Calling of the Show Closed Deal Modal -->
+{% include 'lOroAppBundle:RetailSuppliers/ClosedDeals/ext/modals:show.html.twig' %}
+
+
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+    var _globales = {
+        titulosNoFiltrados: '[0,1,3,4,5,7]',
+        idListado: 'rsuppliers-closed-deals-list',
+        urlDatatableLang: '{{ asset('lang.txt') }}',
+        deletePath: "{{ path('retail_supplier_closed_deals_delete') }}",
+        editPath: "{{ path('retail_supplier_closed_deals_edit',{ 'id' : ':suppClosedDealId' }) }}"
+    };
+  </script>
+
+<script>
+
+$('#showClosedDealModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget);
+  var closedDealId = button.data('id');
+  var viewPath = button.data('path') 
+  var modal = $(this);
+
+  $('#loading-square-closed-deals-show').show();
+  $('#table-show-closed-deals').hide();
+  $.ajax({
+    type: "POST",
+    url: viewPath,
+    data: {'id': closedDealId
+          },
+    success: function(data) {
+      
+
+      if(data != 'vacio') {
+
+        var editUrl = _globales.editPath;
+        editUrl = editUrl.replace(':suppClosedDealId',closedDealId);
+
+        modal.find('.modal-title').text('Cierre Minorista N° ' + data.id);
+
+        modal.find('.modal-body #closed-deal-id').text(data.id);
+        modal.find('.modal-body #date').text(data.date);
+        modal.find('.modal-body #fcurrency-prom-ref').text(data.fCurrencyPromRef);
+        modal.find('.modal-body #oz-day-ref').text(data.ozValue);
+        modal.find('.modal-body #currency-type-closed-deal').text(data.currencyTypeClosedDeal);
+        modal.find('.modal-body #raw-mass-weight').text(data.rawMassWeight);
+        modal.find('.modal-body #fineness').text(data.fineness);
+        modal.find('.modal-body #pure-mass-weight').text(data.pureMassWeight);
+        modal.find('.modal-body #payed-by-gram').text(data.payedByGram);
+        modal.find('.modal-body #total-payed').text(data.totalPayed);
+        modal.find('.modal-body #retail-supplier').text(data.retailSupplier);
+        
+
+        var footerHtml = '<a title="Editar" class="btn btn-info" href="'+editUrl+'">Editar</a>';
+        footerHtml += '<a onClick="deleteClosedDealRSupplier('+data.id+');" href="javascript:void();" class="btn btn-danger">Eliminar</a>';
+        
+        modal.find('.modal-footer div').html(footerHtml);
+
+        $('#table-show-closed-deals').delay( 800 ).show(0);
+        $('#loading-square-closed-deals-show').delay( 800 ).hide(0);
+      }
+    }
+  });  
+
+  
+});
+
+function deleteClosedDealRSupplier(closedDealId) {
+ $.ajax({
+    type: "POST",
+    url: _globales.deletePath,
+    data: {'id': closedDealId
+          },
+    success: function(data) {
+      console.log(data);
+      
+      if(data != 'vacio') {
+        window.location.reload(true);
+      }
+    }
+  });
+}
+</script>
+
+
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/closed_deals_retail_app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}

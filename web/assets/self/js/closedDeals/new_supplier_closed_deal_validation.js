@@ -1,7 +1,7 @@
 $(function(){
 	$('#'+_globales.formId).formValidation({
       onSuccess: function(e) {
-        undoNumberFormatForRegister();
+       // undoNumberFormatForRegister();
       },
       framework: 'bootstrap',
       icon: {
@@ -30,9 +30,7 @@ $(function(){
               message: 'Debe ingresar un monto.'
             },
             numeric: {
-              message: 'El valor no es un numero válido.',
-              thousandsSeparator: '.',
-              decimalSeparator: ','
+              message: 'El valor no es un numero válido.'
             },
             regexp: {
               regexp: /^[+]?\d+([.]\d+)?$/,
@@ -51,9 +49,7 @@ $(function(){
               message: 'Debe ingresar un monto.'
             },
             numeric: {
-              message: 'El valor no es un numero válido.',
-              thousandsSeparator: '.',
-              decimalSeparator: ','
+              message: 'El valor no es un numero válido.'
             },
             regexp: {
               regexp: /^[+]?\d+([.]\d+)?$/,
@@ -80,9 +76,7 @@ $(function(){
               message: 'Debe ingresar un monto.'
             },
             numeric: {
-              message: 'El valor no es un numero válido.',
-              thousandsSeparator: '.',
-              decimalSeparator: ','
+              message: 'El valor no es un numero válido.'
             },
             regexp: {
               regexp: /^[+]?\d+([.]\d+)?$/,
@@ -101,9 +95,7 @@ $(function(){
               message: 'Debe ingresar un monto.'
             },
             numeric: {
-              message: 'El valor no es un numero válido.',
-              thousandsSeparator: '.',
-              decimalSeparator: ','
+              message: 'El valor no es un numero válido.'
             },
             regexp: {
               regexp: /^[+]?\d+([.]\d+)?$/,

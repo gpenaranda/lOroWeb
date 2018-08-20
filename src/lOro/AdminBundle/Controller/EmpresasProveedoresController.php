@@ -47,6 +47,7 @@ class EmpresasProveedoresController extends Controller
             $em = $this->getDoctrine()->getManager();
             
             $entity->setEsEmpresaCasa(0);
+            $entity->setIsWorker(0);
             $em->persist($entity);
             $em->flush();
 
@@ -69,6 +70,7 @@ class EmpresasProveedoresController extends Controller
     private function createCreateForm(EmpresasProveedores $entity)
     {
         $form = $this->createForm(new EmpresasProveedoresType(), $entity, array(
+            'attr' => array('id' => 'empresa-proveedor-form'),
             'action' => $this->generateUrl('empresas-proveedores_create'),
             'method' => 'POST',
         ));

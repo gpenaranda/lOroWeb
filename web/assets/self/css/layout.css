@@ -482,3 +482,9 @@ a.tip2:hover span:after {
     color: #6E366C;
 }
 
+
+#listado-cierres thead tr th,
+#listado-cierres tbody tr td {
+  text-align: center !important;
+}
+

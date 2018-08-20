@@ -231,15 +231,15 @@ class EntregasRepository extends EntityRepository
        
       }
       
-      public function buscarPorMesIdMensual() {
+      public function buscarPorMesIdMensual($arrayIdProvPermitidos = null) {
       
       $conn = $this->getEntityManager()->getConnection();
       
       $config = $this->getEntityManager()->getConfiguration();
       $config->addCustomNumericFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
       
-      return $this->getEntityManager()
-            ->createQuery('SELECT e.id,
+      if($arrayIdProvPermitidos != NULL):
+        $q = 'SELECT e.id,
                                   e.idMensual,
                                   e.feEntrega,
                                   e.pesoPuroEntrega,
@@ -250,7 +250,23 @@ class EntregasRepository extends EntityRepository
                            FROM lOroEntityBundle:Entregas AS e
                            LEFT JOIN e.proveedor AS p
                            LEFT JOIN e.tipoMonedaEntrega AS tme
-                           ORDER BY mes_entrega DESC, e.idMensual ASC'
-            )->getResult();            
+                           WHERE e.proveedor IN ('.$arrayIdProvPermitidos.')
+                           ORDER BY mes_entrega DESC, e.idMensual ASC';
+      else:
+        $q = 'SELECT e.id,
+                                  e.idMensual,
+                                  e.feEntrega,
+                                  e.pesoPuroEntrega,
+                                  tme.nbMoneda,
+                                  p.nbProveedor,
+                                  (SELECT COUNT(pe.id) FROM lOroEntityBundle:Piezas AS pe WHERE IDENTITY(pe.entrega) = e.id) AS piezasEntregadas,
+                                  MONTH(e.feEntrega) AS mes_entrega
+                           FROM lOroEntityBundle:Entregas AS e
+                           LEFT JOIN e.proveedor AS p
+                           LEFT JOIN e.tipoMonedaEntrega AS tme
+                           ORDER BY mes_entrega DESC, e.idMensual ASC';
+      endif;
+
+      return $this->getEntityManager()->createQuery($q)->getResult();            
       }
 }

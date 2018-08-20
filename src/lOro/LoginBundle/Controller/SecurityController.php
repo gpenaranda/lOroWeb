@@ -119,6 +119,7 @@ class SecurityController extends Controller
 
     protected function cambiarContrasenaForm() {
         $form = $this->createForm(CambiarContrasenaType::class,null, array(
+            'attr' => array('id' => 'cambia-contrasena-form'),
             'action' => $this->generateUrl('cambiar_contrasena'),
             'method' => 'POST',
         ));

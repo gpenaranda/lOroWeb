@@ -1,86 +1,74 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Transferencias Aupanas/HC{% endblock %}
 
 {% block body -%}
-<div class="page-header">
-  <h1>Transferencias Aupanas/HC<small>Listado</small>
-  </h1>
-</div>
-  {% if not transferenciasHc %}
-    <div class="row" style="margin:0px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se poseen transferencias de Aupanas / HC registradas actualmente
-      </div>
-    </div>   
-  {% endif %}
-  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a style="float:right;" href="{{ path('transferencias_new') }}" class="btn btn-lg btn-success">Agregar Nueva Transferencia</a>
+  <div class="title_left">
+    <h1>Transferencias Aupanas/HC<small>Listado</small></h1>
   </div>
-  {% if transferenciasHc %}
-    <div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
-        <thead>
-            <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha</th>
-                <th style="text-align:center;">Beneficiario</th>
-                <th style="text-align:center;">Empresa Beneficiaria</th>                
-                <th style="text-align:center;">Monto de la Transferencia</th>
-                <th style="text-align:center;">Estatus</th>
-                <th style="text-align:center;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities if entity.id != 9999 %}
-            <tr>
-                <td>{{ entity.id }}</td>
-                <td>{% if entity.feTransferencia %}{{ entity.feTransferencia | date('Y-m-d') }}{% endif %}</td>
-                <td>{% if entity.beneficiario %}{{ entity.beneficiario.nbProveedor }}{% endif %}</td>
-                <td>{% if entity.empresa %}{{ entity.empresa }}{% endif %}</td>                
-                <td>{{ entity.montoTransferencia | number_format('2',',','.')}}  {% if entity.tipoMonedaTransf %} {{ entity.tipoMonedaTransf.simboloMoneda }} {% endif %}</td>
-                <td id="estatus-{{ entity.id }}">{% if entity.estatus == 'P' %}Pendiente{% elseif entity.estatus == 'D' %}Devuelta{% elseif entity.estatus == 'N' %}No enviada a HC{% else %}Confirmada{% endif %}
-                </td> 
-                <td>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('transferencias_show', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %}                    
-                  </a>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('transferencias_edit', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/editar.png' %}
-                      <img src="{{ asset_url }}" alt="Editar" />
-                    {% endimage %}
-                  </a>
-                 {% if entity.estatus != 'C'  and entity.estatus != 'D'%}
-                  <a title="Confirmar Transferencia" data-toggle="modal" data-id="{{ entity.id }}" id="confirmar-{{ entity.id }}" class="open-confirm-transferencia" data-target="#modalConfirmarTransferencia" style="text-decoration: none;" href="#">
-                    {% image 'assets/self/images/validar.png' %}
-                      <img src="{{ asset_url }}" alt="Validar" />
-                    {% endimage %}
-                  </a>
-                 {% endif %}                  
-                 {% if entity.estatus != 'D' %}
-                  <a title="Devolver Transferencia" data-toggle="modal" data-id="{{ entity.id }}" id="devolver-{{ entity.id }}" class="open-devolver-transferencia" data-target="#modalDevolverTransferencia" style="text-decoration: none;" href="#">
-                    {% image 'assets/self/images/eliminar.png' %}
-                      <img src="{{ asset_url }}" alt="Eliminar" />
-                    {% endimage %}
-                  </a>
-                 {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="clearfix"></div>
+
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a style="float:right;" href="{{ path('transferencias_new') }}" class="btn btn-lg btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
     </div>
-    <!-- LLamado del twig con el modal de Nueva Entrega -->
-    {% include 'lOroTransferenciasBundle:Transferencias/Extensiones:modal_confirmar_transferencia.html.twig' %}
-    
   
-    
-    
-    <!-- LLamado del twig con el modal de Devolver Transferencia -->
-    {% include 'lOroTransferenciasBundle:Transferencias/Extensiones:modal_devolver_transferencia.html.twig' %}  
-    
-    {% endif %}
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+      <table id="listado-cierres" class="text-center table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Beneficiario</th>
+                  <th>Empresa Beneficiaria</th>                
+                  <th>Monto de la Transferencia</th>
+                  <th>Estatus</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for entity in entities if entity.id != 9999 %}
+              <tr>
+                  <td>{{ entity.id }}</td>
+                  <td>{% if entity.feTransferencia %}{{ entity.feTransferencia | date('Y-m-d') }}{% endif %}</td>
+                  <td>{% if entity.beneficiario %}{{ entity.beneficiario.nbProveedor }}{% endif %}</td>
+                  <td>{% if entity.empresa %}{{ entity.empresa }}{% endif %}</td>                
+                  <td>{{ entity.montoTransferencia | number_format('2',',','.')}}  {% if entity.tipoMonedaTransf %} {{ entity.tipoMonedaTransf.simboloMoneda }} {% endif %}</td>
+                  <td id="estatus-{{ entity.id }}">{% if entity.estatus == 'P' %}Pendiente{% elseif entity.estatus == 'D' %}Devuelta{% elseif entity.estatus == 'N' %}No enviada a HC{% else %}Confirmada{% endif %}
+                  </td> 
+                  <td>
+                    <a title="Ver" style="text-decoration: none;" href="{{ path('transferencias_show', { 'id': entity.id }) }}">
+                      <i class="fa fa-eye fa-4" aria-hidden="true"></i>                  
+                    </a>
+                    {% if entity.estatus != 'C'  and entity.estatus != 'D'%}
+                    <a title="Confirmar Transferencia" data-toggle="modal" data-id="{{ entity.id }}" id="confirmar-{{ entity.id }}" class="open-confirm-transferencia" data-target="#modalConfirmarTransferencia" style="text-decoration: none;" href="#">
+                      <i class="fa fa-check fa-4" aria-hidden="true"></i>
+                    </a>
+                   {% endif %}                  
+                   {% if entity.estatus != 'D' %}
+                    <a title="Devolver Transferencia" data-toggle="modal" data-id="{{ entity.id }}" id="devolver-{{ entity.id }}" class="open-devolver-transferencia" data-target="#modalDevolverTransferencia" style="text-decoration: none;" href="#">
+                      <i class="fa fa-times fa-4" aria-hidden="true"></i>
+                    </a>
+                   {% endif %}
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- LLamado del twig con el modal de Nueva Entrega -->
+      {% include 'lOroTransferenciasBundle:Transferencias/Extensiones:modal_confirmar_transferencia.html.twig' %}
+      
+      <!-- LLamado del twig con el modal de Devolver Transferencia -->
+      {% include 'lOroTransferenciasBundle:Transferencias/Extensiones:modal_devolver_transferencia.html.twig' %}  
+  </div>
+
+  <div class="clearfix"></div>
+
 {% endblock %}
 {% block javascripts %}
 <script>
@@ -89,7 +77,7 @@
       urlBuscarDatosTransferencia: '{{ path('_datos_transferencia', { 'id': ':idTransferencia' }) }}',
       urlConfirmarTransferencia: '{{ path('_confirmar_transferencia', { 'id': ':idTransferencia' }) }}',
       urlDevolverTransferencia: '{{ path('_devolver_transferencia') }}',
-      titulosNoFiltrados: '[0,1,4,6]',
+      titulosNoFiltrados: '[0,1,3,4,6]',
       idListado: 'listado-cierres',
       urlDatatableLang: '{{ asset('lang.txt') }}'
 };
@@ -102,7 +90,7 @@ $(document).ready( function () {
     
     var table = $('#'+_globales.idListado).DataTable(
     {
-      responsive: true,
+      responsive: false,
       "order": [[ 1, "desc" ]],
       "oLanguage": {
         "sUrl": _globales.urlDatatableLang

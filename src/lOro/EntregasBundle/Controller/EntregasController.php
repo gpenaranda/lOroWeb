@@ -39,8 +39,25 @@ class EntregasController extends Controller
       $em = $this->getDoctrine()->getManager();
       $piezasInicialesForm = $this->createEntregaInicialForm(new Entregas());
 
+      if($this->get('security.authorization_checker')->isGranted('ROLE_REGISTRADOR_CIERRES')):
+        $proveedoresPorUsuario = $em->getRepository('lOroEntityBundle:ProveedoresUsuarios')->findBy(array('user' => $this->getUser()->getId()));
+
+        $arrayIdProvPermitidos = '';
+        $cantItems = count($proveedoresPorUsuario);
+        $i = 0;
+        foreach($proveedoresPorUsuario as $k => $provUser):
+          if(++$i === $cantItems):
+            $arrayIdProvPermitidos .= $provUser->getProveedor()->getId();
+          else:
+            $arrayIdProvPermitidos .= $provUser->getProveedor()->getId().',';
+          endif;
+        endforeach;
+      else:
+        $arrayIdProvPermitidos = NULL;
+      endif;
+
       
-      $entities = $em->getRepository('lOroEntityBundle:Entregas')->buscarPorMesIdMensual();
+      $entities = $em->getRepository('lOroEntityBundle:Entregas')->buscarPorMesIdMensual($arrayIdProvPermitidos);
       
       
       return $this->render('lOroEntregasBundle:Entregas:index.html.twig', array(
@@ -349,6 +366,9 @@ class EntregasController extends Controller
           $em->persist($entity);
           $em->flush();
 
+
+          $this->get('session')->getFlashBag()->set('success', 'La entrega N° '.$entity->getId().' ha sido actualizada satisfactoriamente.'); 
+          return $this->redirect($this->generateUrl('entregas'));
         endif;
 
         return $this->render('lOroEntregasBundle:Entregas:edit.html.twig', array(

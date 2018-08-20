@@ -1,0 +1,128 @@
+{% extends '::gen_base.html.twig' %}
+{% block title %}Entregas de Minoristas{% endblock %}
+{% block stylesheets %}
+  <style type="text/css">
+    #entregas-form .form-control-feedback {
+    right: 14px;
+    top: 22px;
+  }
+
+  i[data-fv-icon-for="loro_appbundle_entregasminoristas[minorista]"] {
+    right: 44px !important;
+  }
+
+  #ui-datepicker-div {
+    z-index: 100 !important;
+  }
+  </style>
+{% endblock stylesheets %}
+
+{% block body -%}
+<div class="title_left">
+  <h1>Entregas de Minoristas <small>Agregar</small></h1>
+</div>
+<div class="clearfix"></div>
+
+<div class="row">
+  <div class="col-md-11">
+    {{ form_start(form) }}
+
+      <div class="form-group">
+        <div class="col-xs-12 col-md-offset-3 col-md-6">
+        {{ form_label(form.feEntrega) }}
+        {{ form_widget(form.feEntrega) }}
+        {{ form_errors(form.feEntrega) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-12 col-md-offset-3 col-md-6">
+          {{ form_label(form.pesoBrutoEntrega) }}
+          {{ form_widget(form.pesoBrutoEntrega) }}
+          {{ form_errors(form.pesoBrutoEntrega) }}          
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-12 col-md-offset-3 col-md-6">
+          {{ form_label(form.ley) }}
+          {{ form_widget(form.ley) }}
+          {{ form_errors(form.ley) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-12 col-md-offset-3 col-md-6">
+          {{ form_label(form.pesoPuroEntrega) }}
+          {{ form_widget(form.pesoPuroEntrega) }}
+          {{ form_errors(form.pesoPuroEntrega) }}        
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-12 col-md-offset-3 col-md-6">
+          {{ form_label(form.minorista) }}
+          {{ form_widget(form.minorista) }}
+          {{ form_errors(form.minorista) }}  
+        </div>
+      </div>        
+
+      <div class="form-group">
+        <div class="col-xs-4 col-md-offset-8 col-md-3">
+          {{ form_widget(form.submit) }}
+        </div>
+      </div>
+      
+    {{ form_end(form) }} 
+  </div> 
+</div>
+
+{% endblock %}
+{% block javascripts %}
+<script>
+  var _globales = { feEntrega: $( "#loro_appbundle_entregasminoristas_feEntrega" ),
+                    arregloOpcionesDP: { changeMonth: false,
+                                         changeYear: false,
+                                         buttonImageOnly: false,
+                                         dateFormat: 'dd-mm-yy' },
+                    pesoBrutoEntrega: $('#loro_appbundle_entregasminoristas_pesoBrutoEntrega'),
+                    ley: $('#loro_appbundle_entregasminoristas_ley'),
+                    pesoPuroEntrega: $('#loro_appbundle_entregasminoristas_pesoPuroEntrega'),
+                    formId: 'entregas-form',
+                    formBaseName: 'loro_appbundle_entregasminoristas_'
+  };
+
+
+
+  _globales.ley.number( true, 2,',','.' );
+  _globales.pesoBrutoEntrega.number( true, 2,',','.' );
+  
+  _globales.pesoBrutoEntrega.keyup(function(){
+    var pesoBrutoXLey = _globales.pesoBrutoEntrega.val() * _globales.ley.val();
+    
+    var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+    _globales.pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));     
+  });  
+
+  _globales.ley.keyup(function(){
+    var pesoBrutoXLey = _globales.pesoBrutoEntrega.val() * _globales.ley.val();
+    
+    var resultadoPesoPuro = parseFloat(pesoBrutoXLey /parseInt(1000));
+      
+    _globales.pesoPuroEntrega.val($.number(resultadoPesoPuro, 2,',','.' ));     
+  });    
+  
+  
+
+  _globales.feEntrega.datepicker(_globales.arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+</script>
+
+  {% javascripts  'assets/self/js/retailSuppliers/deliveries_validation.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+  <script>
+    $("#"+_globales.formBaseName+"minorista").combobox();
+  </script>
+{% endblock %}

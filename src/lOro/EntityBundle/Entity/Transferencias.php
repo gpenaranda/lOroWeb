@@ -83,14 +83,14 @@ class Transferencias
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fe_confirmacion", type="date")
+     * @ORM\Column(name="fe_confirmacion", type="date", nullable=true)
      */
     private $feConfirmacion;
     
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fe_devolucion", type="date")
+     * @ORM\Column(name="fe_devolucion", type="date", nullable=true)
      */
     private $feDevolucion;    
 
@@ -105,14 +105,14 @@ class Transferencias
     /**
      * @var decimal
      *
-     * @ORM\Column(name="monto_a_convertir", type="decimal",precision=10, scale=2)
+     * @ORM\Column(name="monto_a_convertir", type="decimal",precision=14, scale=2, nullable=true)
      */
     private $montoAConvertir;    
     
     /**
      * @var integer
      *
-     * @ORM\Column(name="es_conversion", type="integer", length=1)
+     * @ORM\Column(name="es_conversion", type="integer", length=1, nullable=true)
      */
     private $esConversion; 
     

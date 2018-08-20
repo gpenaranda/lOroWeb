@@ -1,0 +1,55 @@
+# CLOSED DEALS
+retail_supplier_closed_deals_index:
+    path: /cierres/
+    defaults: {_controller: "lOroAppBundle:RetailSuppliers:index" }   
+
+retail_supplier_closed_deals_new:
+    path: /cierres/agregar
+    defaults: {_controller: "lOroAppBundle:RetailSuppliers:new" } 
+
+retail_supplier_closed_deals_edit:
+    path: /cierres/{id}/editar
+    defaults: {_controller: "lOroAppBundle:RetailSuppliers:edit" } 
+
+retail_supplier_closed_deals_show:
+    path: /cierres/ver
+    defaults: {_controller: "lOroAppBundle:RetailSuppliers:show" } 
+
+retail_supplier_closed_deals_delete:
+    path:  /cierres/eliminar
+    defaults: { _controller: "lOroAppBundle:RetailSuppliers:delete" }
+    methods: POST
+
+
+
+
+# DELIVERIES
+retail_supplier_deliveries_index:
+    path:     /entregas/
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:index" }
+
+retail_supplier_deliveries_show:
+    path:     /entregas/{id}/ver
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:show" }
+
+retail_supplier_deliveries_new:
+    path:     /entregas/agregar
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:new" }
+
+_ajax_retail_supplier_find_actual_location:
+    path:  /_ajax-find-actual-location
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:buscarUbicacionFisicaActual" }
+
+_ajax_retail_supplier_change_actual_location:
+    path:  /_ajax-change-actual-location
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:cambiarUbicacionFisicaEntrega" }
+
+
+retail_supplier_deliveries_edit:
+    path:     /entregas/{id}/editar
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:edit" }
+
+
+retail_supplier_deliveries_delete:
+    path:     /entregas/{id}/eliminar
+    defaults: { _controller: "lOroAppBundle:EntregasMinoristas:delete" }

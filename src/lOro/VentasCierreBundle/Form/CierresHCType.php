@@ -47,7 +47,7 @@ class CierresHCType extends AbstractType
                                                               ->setParameter('monedaExcluida',array(1));
                                               },
                                                 'choice_label' => 'nbMoneda',
-                                                'placeholder' => $this->seleccione_opcion,
+                                                'placeholder' => '',
                                                 'attr' => array('class' => 'form-control',
                                                 'style' => 'margin-bottom:10px;'),
                                                 'mapped'        => true,

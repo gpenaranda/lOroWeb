@@ -1,6 +1,6 @@
 <?php
 
-namespace lOro\EntityBundle\Entity;
+namespace lOro\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * EntregasMinoristas
  *
  * @ORM\Table(name="entregas_minoristas")
- * @ORM\Entity(repositoryClass="lOro\EntityBundle\Entity\Repository\EntregasMinoristasRepository")
+ * @ORM\Entity(repositoryClass="lOro\AppBundle\Entity\Repository\EntregasMinoristasRepository")
  */
 class EntregasMinoristas
 {
@@ -57,53 +57,30 @@ class EntregasMinoristas
      */
     private $minorista;
     
-    
+
+        
+
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_bs_por_gramo", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $montoBsPorGramo; 
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="valor_onza", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $valorOnza;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dolar_referencia_dia", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $dolarReferenciaDia;    
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="ubicacion_fisica_entrega", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ubicacion_fisica_entrega", type="string", length=1, nullable=true)
      */
     private $ubicacionFisicaEntrega;    
     
+
     /**
-     * @var string
-     *
-     * @ORM\Column(name="total_monto_bs", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $totalMontoBs;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Piezas", inversedBy="entregasMinoristas")
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Piezas", inversedBy="entregasMinoristas")
      * @ORM\JoinColumn(name="pieza_id", referencedColumnName="id",nullable=true)
      */
     private $pieza;    
    
 
+ 
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -114,6 +91,7 @@ class EntregasMinoristas
      * Set feEntrega
      *
      * @param \DateTime $feEntrega
+     *
      * @return EntregasMinoristas
      */
     public function setFeEntrega($feEntrega)
@@ -126,41 +104,18 @@ class EntregasMinoristas
     /**
      * Get feEntrega
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFeEntrega()
     {
         return $this->feEntrega;
     }
 
-        
-    /**
-     * Set ubicacionFisicaEntrega
-     *
-     * @param string $ubicacionFisicaEntrega
-     * @return EntregasMinoristas
-     */
-    public function setUbicacionFisicaEntrega($ubicacionFisicaEntrega)
-    {
-        $this->ubicacionFisicaEntrega = $ubicacionFisicaEntrega;
-
-        return $this;
-    }
-
-    /**
-     * Get pesoBrutoEntrega
-     *
-     * @return string 
-     */
-    public function getUbicacionFisicaEntrega()
-    {
-        return $this->ubicacionFisicaEntrega;
-    }
-    
     /**
      * Set pesoBrutoEntrega
      *
      * @param string $pesoBrutoEntrega
+     *
      * @return EntregasMinoristas
      */
     public function setPesoBrutoEntrega($pesoBrutoEntrega)
@@ -173,7 +128,7 @@ class EntregasMinoristas
     /**
      * Get pesoBrutoEntrega
      *
-     * @return string 
+     * @return string
      */
     public function getPesoBrutoEntrega()
     {
@@ -184,6 +139,7 @@ class EntregasMinoristas
      * Set ley
      *
      * @param string $ley
+     *
      * @return EntregasMinoristas
      */
     public function setLey($ley)
@@ -196,7 +152,7 @@ class EntregasMinoristas
     /**
      * Get ley
      *
-     * @return string 
+     * @return string
      */
     public function getLey()
     {
@@ -207,6 +163,7 @@ class EntregasMinoristas
      * Set pesoPuroEntrega
      *
      * @param string $pesoPuroEntrega
+     *
      * @return EntregasMinoristas
      */
     public function setPesoPuroEntrega($pesoPuroEntrega)
@@ -219,109 +176,44 @@ class EntregasMinoristas
     /**
      * Get pesoPuroEntrega
      *
-     * @return string 
+     * @return string
      */
     public function getPesoPuroEntrega()
     {
         return $this->pesoPuroEntrega;
     }
 
+
     /**
-     * Set montoBsPorGramo
+     * Set ubicacionFisicaEntrega
      *
-     * @param string $montoBsPorGramo
+     * @param string $ubicacionFisicaEntrega
+     *
      * @return EntregasMinoristas
      */
-    public function setMontoBsPorGramo($montoBsPorGramo)
+    public function setUbicacionFisicaEntrega($ubicacionFisicaEntrega)
     {
-        $this->montoBsPorGramo = $montoBsPorGramo;
+        $this->ubicacionFisicaEntrega = $ubicacionFisicaEntrega;
 
         return $this;
     }
 
     /**
-     * Get montoBsPorGramo
+     * Get ubicacionFisicaEntrega
      *
-     * @return string 
+     * @return string
      */
-    public function getMontoBsPorGramo()
+    public function getUbicacionFisicaEntrega()
     {
-        return $this->montoBsPorGramo;
+        return $this->ubicacionFisicaEntrega;
     }
 
-    /**
-     * Set valorOnza
-     *
-     * @param string $valorOnza
-     * @return EntregasMinoristas
-     */
-    public function setValorOnza($valorOnza)
-    {
-        $this->valorOnza = $valorOnza;
-
-        return $this;
-    }
-
-    /**
-     * Get valorOnza
-     *
-     * @return string 
-     */
-    public function getValorOnza()
-    {
-        return $this->valorOnza;
-    }
-
-    /**
-     * Set dolarReferenciaDia
-     *
-     * @param string $dolarReferenciaDia
-     * @return EntregasMinoristas
-     */
-    public function setDolarReferenciaDia($dolarReferenciaDia)
-    {
-        $this->dolarReferenciaDia = $dolarReferenciaDia;
-
-        return $this;
-    }
-
-    /**
-     * Get dolarReferenciaDia
-     *
-     * @return string 
-     */
-    public function getDolarReferenciaDia()
-    {
-        return $this->dolarReferenciaDia;
-    }
-
-    /**
-     * Set totalMontoBs
-     *
-     * @param string $totalMontoBs
-     * @return EntregasMinoristas
-     */
-    public function setTotalMontoBs($totalMontoBs)
-    {
-        $this->totalMontoBs = $totalMontoBs;
-
-        return $this;
-    }
-
-    /**
-     * Get totalMontoBs
-     *
-     * @return string 
-     */
-    public function getTotalMontoBs()
-    {
-        return $this->totalMontoBs;
-    }
 
     /**
      * Set minorista
      *
      * @param \lOro\EntityBundle\Entity\Proveedores $minorista
+     *
      * @return EntregasMinoristas
      */
     public function setMinorista(\lOro\EntityBundle\Entity\Proveedores $minorista = null)
@@ -334,7 +226,7 @@ class EntregasMinoristas
     /**
      * Get minorista
      *
-     * @return \lOro\EntityBundle\Entity\Proveedores 
+     * @return \lOro\EntityBundle\Entity\Proveedores
      */
     public function getMinorista()
     {
@@ -345,6 +237,7 @@ class EntregasMinoristas
      * Set pieza
      *
      * @param \lOro\EntityBundle\Entity\Piezas $pieza
+     *
      * @return EntregasMinoristas
      */
     public function setPieza(\lOro\EntityBundle\Entity\Piezas $pieza = null)
@@ -357,7 +250,7 @@ class EntregasMinoristas
     /**
      * Get pieza
      *
-     * @return \lOro\EntityBundle\Entity\Piezas 
+     * @return \lOro\EntityBundle\Entity\Piezas
      */
     public function getPieza()
     {

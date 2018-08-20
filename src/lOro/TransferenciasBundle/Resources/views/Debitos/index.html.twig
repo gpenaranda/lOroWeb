@@ -1,61 +1,55 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 
 {% block title %}Debitos{% endblock %}
 
 {% block body -%}
-    {% include "lOroTransferenciasBundle:Debitos:base_deb.html.twig" %}
+<div class="title_left">
+  <h1>Debitos <small>Listado</small></h1>
+</div>
+    
+  <div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
+    <div class="clearfix"></div>
 
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a href="{{ path('debitos_new') }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+    </div>   
     
 
+      <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+      <table id="listado-cierres" class="display" >
+          <thead>
+              <tr>
+                  <th style="text-align:center;">ID</th>
+                  <th style="text-align:center;">Fecha</th>
+                  <th style="text-align:center;">Monto del Debito</th>
+                  <th style="text-align:center;">Pagado en</th> 
+                  <th style="text-align:center;">Acciones</th>  
+              </tr>
+          </thead>
+          <tbody>
+          {% for entity in entities %}
+              <tr>
+                  <td>{{ entity.id }}</td>
+                  <td width="160">{{ entity.feDebito | date('Y-m-d') }}</td>
+                  <td width="170">{{ entity.monto | number_format('2',',','.')}} {% if entity.tipoPago == 'B' %}Bs.{% elseif entity.tipoPago == 'D' %}${% else %}€{% endif %}</td>
+                  <td>{% if entity.tipoPago == 'B' %}Bolivares{% elseif entity.tipoPago == 'D' %}Dolares{% else %}Euros{% endif %}</td>    
+                  <td>
+                    <a title="Ver" data-toggle="modal" data-target="#showAbonoModal" data-id="{{ entity.id }}" data-path="{{ path('debitos_show', { 'id': entity.id }) }}" style="text-decoration: none;" href='#'>
+                      <i class="fa fa-eye fa-4" aria-hidden="true"></i>
+                    </a>
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+      </div>
+ </div>
 
-  
-  
-  <div class="col-md-offset-1 col-md-10" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a  href="{{ path('debitos_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Debito</a>
-  </div>
-  
-
-
-  <!-- Select y Text Input para el Buscador -->
-    <div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
-    <table id="listado-cierres" class="display" >
-        <thead>
-            <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha</th>
-                <th style="text-align:center;">Monto del Debito</th>
-                <th style="text-align:center;">Pagado en</th>
-                <th style="text-align:center;">Descripción del Debito</th>   
-                <th style="text-align:center;">Acciones</th>  
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.id }}</td>
-                <td width="160">{% if entity.feDebito %}{{ entity.feDebito | date('Y-m-d') }}{% endif %}</td>
-                <td width="170">{{ entity.monto | number_format('2',',','.')}}  {{ entity.tipoPago == 'B' ? 'Bs.' : '$' }}</td>
-                <td>{{ entity.tipoPago == 'B' ? 'Bolivares' : 'Verdes' }}</td>
-                <td>{{ entity.descripcion }}</td>     
-                <td>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('debitos_show', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %}
-                  </a>
-                  <a title="Editar" style="text-decoration: none;" href="{{ path('debitos_edit', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/editar.png' %}
-                      <img src="{{ asset_url }}" alt="Editar" />
-                    {% endimage %}
-                  </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    </div>
- 
+<!-- Calling of the Show Modal -->
+{% include 'lOroTransferenciasBundle:Debitos/ext/modals:show_debito_modal.html.twig' %}
 
 {% endblock %}
   {% block javascripts %}
@@ -63,9 +57,63 @@
   var _globales = {
       titulosNoFiltrados: '[0,1,2,4,5]',
       idListado: 'listado-cierres',
-      urlDatatableLang: '{{ asset('lang.txt') }}'
+      urlDatatableLang: '{{ asset('lang.txt') }}',
+      editPath: "{{ path('debitos_edit', { 'id': 'abono_id' }) }}",
+      deletePath: "{{ path('debitos_delete', { 'id': 'abono_id' }) }}"
 };
 </script>
+
+<script>
+
+$('#showAbonoModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget);
+  var id = button.data('id');
+  var viewPath = button.data('path') 
+  var modal = $(this);
+
+console.log(viewPath);
+  
+  $('#loading-square-closed-deals-show').show();
+  $('#table-show-closed-deals').hide();
+  $.ajax({
+    type: "POST",
+    url: viewPath,
+    data: {'id': id },
+    success: function(data) {
+      
+      if(data != 'vacio') {
+        var editPath = _globales.editPath;
+        var newEditPath= editPath.replace('abono_id',data.id);
+
+        var deletePath = _globales.deletePath;
+        var newDeletePath = deletePath.replace('abono_id',data.id);
+
+
+        modal.find('.modal-title').text('Debito N° ' + data.id);
+
+        modal.find('.modal-body #debito-id').text(data.id);
+        modal.find('.modal-body #debito-fecha').text(data.feDebito);
+        modal.find('.modal-body #debito-tipo-transaccion').text(data.tipoTransaccion);
+        modal.find('.modal-body #debito-tipo-pago').text(data.tipoPago);
+        modal.find('.modal-body #debito-monto').text(data.monto);
+        modal.find('.modal-body #debito-descripcion').text(data.descripcion);
+        
+
+
+        modal.find('.modal-footer #debito-edit-button').attr('href',newEditPath);
+        modal.find('.modal-footer #debito-delete-button').attr('href',newDeletePath);
+
+        $('#table-show-closed-deals').delay( 800 ).show(0);
+        $('#loading-square-closed-deals-show').delay( 800 ).hide(0);
+      }
+    }
+  });  
+
+  
+});
+</script>
+
+
 
   {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
     <script src="{{ asset_url }}"></script>

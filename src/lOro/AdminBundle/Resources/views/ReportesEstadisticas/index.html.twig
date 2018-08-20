@@ -1,10 +1,10 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
 {% block body -%}
 <div class="page-header">
   <h1>Reportes y Estadisticas</h1>
 </div>
-<div class="col-lg-4 col-lg-offset-2">
+<div class="col-lg-4 col-lg-offset-2 col-xs-6">
     <div class="list-group">
       <h4 style="text-align: center;">Reportes de Proveedores</h4>
       <a class="list-group-item" href="{{ path('reporte_tiempo_cierres_entregas_proveedor') }}">
@@ -25,7 +25,7 @@
       </a>           
     </div>
 </div>
-<div class="col-lg-4 ">
+<div class="col-lg-4 col-xs-6">
     <div class="list-group">
       <h4 style="text-align: center;">Reportes Generales</h4>  
       <!--a class="list-group-item" href="{{ path('reporte_balance_general_por_meses') }}">

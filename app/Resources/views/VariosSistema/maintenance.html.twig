@@ -1,0 +1,20 @@
+{% extends '::base_login.html.twig' %}
+{% block title %}Mantenimiento{% endblock %}
+
+{% block body %}
+<div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3 col-xs-12">
+			<h1 style="text-align: center;"><i class="material-icons">build</i> Sistema en Mantenimiento <i class="material-icons">build</i></h1>
+			<hr>
+			<p style="text-align: center;">
+			<strong>El sistema se encuentra actualmente en mantenimiento</strong><br />
+			El mismo debe permanecer fuera de servicio mientras se realizan los procesos de actualización y mantenimiento.<br />
+			{% if maintenanceUntil is not empty %} 
+				El servicio estara fuera de linea hasta {{ maintenanceUntil }}. 
+			{% endif %}
+			</p>
+		</div>
+	</div>
+</div>
+{% endblock body %}

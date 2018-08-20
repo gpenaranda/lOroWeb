@@ -1,31 +1,49 @@
 {% extends '::base_login.html.twig' %}
+{% block title %}Login{% endblock %}
 {% block body %}
-<div class="col-xs-12 col-md-offset-1 col-md-10 wrapper">
 
-  <form action="{{ path('login_check') }}" method="post" id="loginform" role="form"  class="form-signin">
-    {% if error %}
-    <div id="login-alert" class="alert alert-danger col-xs-12">
-      <i class="glyphicon glyphicon-warning-sign"></i>
-      &nbsp; 
-      {{ error.message | trans }}
-    </div>
-   {% endif %}  
+<div class="login_wrapper">
+  <div class="animate form login_form">
+    <section class="login_content">
 
-      <h2 class="form-signin-heading">TextilesLolo {{ app.environment == 'dev' ? '- Dev' : '' }}</h2>
+    <form action="{{ path('login_check') }}" method="post" id="loginform" role="form" novalidate>
+      <h1>TextilesLolo {{ app.environment == 'dev' ? '- Dev' : '' }}</h1>
+    
+      {% if error %}
+      <div class="alert alert-danger" style="color:white; text-shadow:none;">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        &nbsp; 
+        {{ error.message | trans }}
+      </div>
+      {% endif %}  
 
-      <div style="margin-bottom: 25px" class="input-group">
-                              <span class="input-group-addon"><i class="material-icons">account_box</i></span>
-      <input type="text" class="form-control" name="_username" placeholder="Usuario"   value="{{ last_username }}" required="" autofocus=""/>
+      <div>
+        <input type="text" class="form-control" name="_username" placeholder="Usuario"   value="{{ last_username }}" required="" autofocus=""/>
       </div>
 
-      <div style="margin-bottom: 25px" class="input-group">
-                              <span class="input-group-addon"><i class="material-icons">lock</i></span>
-      <input type="password" class="form-control" name="_password" placeholder="Clave" required="" />    
+      <div>
+        <input type="password" class="form-control" name="_password" placeholder="Clave" required="" />    
+      </div>
+      <div>
+        <button type="submit" id="btn-login" class="btn btn-primary submit">Ingresar</button>
       </div>
       
+      <div class="clearfix"></div>
 
-      <button type="submit" id="btn-login" class="btn btn-lg btn-primary btn-block">Ingresar</button>
+      <div class="separator">
+        <br />
+        <div>
+          <p>©2017 Textileslolo - Orotex</p>
+        </div>
+      </div>
+
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+      
     </form>
+    </section>
+  </div>
+
+
 </div>
 
 {% endblock %}

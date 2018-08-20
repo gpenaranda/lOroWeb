@@ -1,74 +1,66 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 
 {% block title %}Pagos Varios{% endblock %}
 
 {% block body -%}
-<div class="page-header">
-  <h1>Pagos Varios <small>Listado</small>
-  </h1>
+<div class="title_left">
+  <h1>Pagos Varios <small>Listado</small></h1>
 </div>
-{% if not entities %}
-    <div class="row" style="margin:0px 10% 0 10%;"> 
-      <div class="alert alert-danger">
-        No se poseen pagos varios registrados actualmente
-      </div>
-    </div>   
-  {% endif %}
+<div class="clearfix"></div>
+
+<div class="row">
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+  <div class="clearfix"></div>
 
   
   
-  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a  href="{{ path('pagos-varios_new') }}"  style="float:right;" class="btn btn-lg btn-success">Agregar Nuevo Pago</a>
-  </div>
+  <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a href="{{ path('pagos-varios_new') }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+  </div>  
   
-  {% if entities %}
-
-  <!-- Select y Text Input para el Buscador -->
-    <div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
+   <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="text-center table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha</th>
-                <th style="text-align:center;">Monto del Pago</th>
-                <th style="text-align:center;">Pagado en</th>
-                <th style="text-align:center;">Pagado Por</th>
-                <th style="text-align:center;">Tipo de Pago</th>
-                <th style="text-align:center;">Descripción del Pago</th>   
-                <th style="text-align:center;">Acciones</th>  
+                <td>ID</td>
+                <td>Fecha</td>
+                <td>Monto del Pago</td>
+                <td>Pagado en</td>
+                <td>Pagado Por</td>
+                <td>Tipo de Pago</td>
+                <td>Descripción del Pago</td>   
+                <td>Acciones</td>  
             </tr>
         </thead>
         <tbody class="data-entregas">
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
-                <td width="160">{% if entity.fePago %}{{ entity.fePago | date('Y-m-d') }}{% endif %}</td>
-                <td width="170">{{ entity.montoPago | number_format('2',',','.')}}  {{ entity.tipoPago == 'B' ? 'Bs.' : '€' }}</td>
+                <td>{% if entity.fePago %}{{ entity.fePago | date('Y-m-d') }}{% endif %}</td>
+                <td>{{ entity.montoPago | number_format('2',',','.')}}  {{ entity.tipoPago == 'B' ? 'Bs.' : '€' }}</td>
                 <td>{{ entity.tipoPago == 'B' ? 'Bolivares' : 'Verdes' }}</td>
                 <td>{{ entity.empresaCasa.nombreEmpresa }}</td>
                 <td>{{ entity.tipoPagoVario.descripcion }}</td>    
                 <td>{{ entity.descripcionPago }}</td>     
                 <td>
                   <a title="Ver" style="text-decoration: none;" href="{{ path('pagos-varios_show', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %}
+                    <i class="fa fa-eye fa-4" aria-hidden="true"></i>
                   </a>
                   <a title="Editar" style="text-decoration: none;" href="{{ path('pagos-varios_edit', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/editar.png' %}
-                      <img src="{{ asset_url }}" alt="Editar" />
-                    {% endimage %}
+                    <i class="fa fa-edit fa-4" aria-hidden="true"></i>
                   </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+  </div>
+</div>
+{% endblock body %}
 
-    </div>
-    {% endif %}
-    {% endblock %}
-  {% block javascripts %}
+{% block javascripts %}
 <script>
 var _globales = {
       titulosNoFiltrados: '[0,1,2,6,7]',

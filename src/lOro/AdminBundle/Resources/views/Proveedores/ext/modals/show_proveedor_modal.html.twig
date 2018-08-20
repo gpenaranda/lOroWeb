@@ -1,0 +1,44 @@
+<div class="modal fade" id="showViewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+        <h4 class="modal-title" id="myModalLabel"></h4>
+      </div>
+      <div class="modal-body" id="body-modal-ver-cierres-dia">
+
+        <table class="table table-bordered table-striped" id="table-show-closed-deals">
+          <colgroup>
+            <col class="col-xs-offset-2">
+            <col class="col-xs-10">
+          </colgroup>
+          <thead></thead>
+          <tbody>
+            <tr>
+              <td class="text-right">ID</td>
+              <td id="proveedor-id"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Nombre</td>
+              <td id="proveedor-nombre"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Tipo de Proveedor</td>
+              <td id="proveedor-tipo-proveedor"></td>
+            </tr>
+            
+          </tbody>
+        </table>
+        <div class="text-center" id="loading-square-closed-deals-show">
+          <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+          <span class="sr-only">Loading...</span>
+        </div>  
+        
+      </div>
+      <div class="modal-footer">
+        <a href="#" id="proveedor-edit-button" class="btn btn-primary">Editar</a>
+        <a href="#" id="proveedor-delete-button" class="btn btn-danger">Eliminar</a>
+      </div>
+    </div> 
+  </div>
+</div>

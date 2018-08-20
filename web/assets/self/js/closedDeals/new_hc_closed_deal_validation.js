@@ -1,7 +1,7 @@
 $(function(){
     $('#'+_globales.formId).formValidation({
       onSuccess: function(e) {
-        undoNumberFormatForRegister();
+        //undoNumberFormatForRegister();
       },
       framework: 'bootstrap',
       icon: {
@@ -41,9 +41,7 @@ $(function(){
               message: 'Debe ingresar un monto.'
             },
             numeric: {
-              message: 'El valor no es un numero válido.',
-              thousandsSeparator: '.',
-              decimalSeparator: ','
+              message: 'El valor no es un numero válido.'
             }
           }
         },
@@ -54,19 +52,17 @@ $(function(){
               message: 'Debe ingresar un monto.'
             },
             numeric: {
-              message: 'El valor no es un numero válido.',
-              thousandsSeparator: '.',
-              decimalSeparator: ','
+              message: 'El valor no es un numero válido.'
             }
           }
         },     
       }
     }).find('[name="loro_entitybundle_cierres_hc[feVenta]"]')
-            .datepicker({
-                onSelect: function(date, inst) {
-                    /* Revalidate the field when choosing it from the datepicker */
-                    $('#'+_globales.formId).formValidation('revalidateField', 'loro_entitybundle_cierres_hc[feVenta]');
-                },
-                dateFormat: 'dd-mm-yy'
-            });
+      .datepicker({
+        onSelect: function(date, inst) {
+          /* Revalidate the field when choosing it from the datepicker */
+          $('#'+_globales.formId).formValidation('revalidateField', 'loro_entitybundle_cierres_hc[feVenta]');
+        },
+        dateFormat: 'dd-mm-yy'
+      });
 });

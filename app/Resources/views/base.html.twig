@@ -19,7 +19,7 @@
                         'assets/self/formvalidation/css/formValidation.min.css'
                         'assets/vendor/bootstrap-combobox/css/bootstrap-combobox.css'
                         'assets/self/css/general/general.css'
-            filter='?uglifycss' filter='cssrewrite' output='css/compiled/app.css' %}
+            filter='?uglifycss' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
         {% block stylesheets %}{% endblock %}
@@ -58,12 +58,11 @@
                       'assets/self/formvalidation/js/language/es_ES.js'
                       'assets/vendor/bootstrap-combobox/js/bootstrap-combobox.js' 
           filter='?uglifyjs2'
-          output='js/compiled/app.js' %}
+      %}
           <script src="{{ asset_url }}"></script>
        {% endjavascripts %}
         <script>
             $(document).ready(function() {
-                // This command is used to initialize some elements and make them work properly
                 $.material.init();
             });
         </script>

@@ -12,27 +12,10 @@ $(function(){
     $('#'+_globales.formName+'empresaCasa').change(function() { _myFunctions.findOwnAccNumbersByCompany(this); });  
 
     /* CREATION OF THE FIRST COMBOBOX IN THE INSTRUCTIONS SECTION */
+    $('#empresasProveedor_1').combobox();
+    $('#nroCuenta_1').combobox();
     $("#proveedor_1").combobox().change(function() { 
-                                                
-                                                
        var numId = _myFunctions.buscarEmpresasProveedor($(this)); 
-        //var t = "$('#empresasProveedor_"+numId[1]+"').combobox().change(function() { _myFunctions.findAccNumbersByCompany($(this));});";
-        //          eval(t);
-
-
-
-        //var t = "var select = $('#empresasProveedor_"+numId[1]+"').combobox(); select.combobox().refresh(); select.combobox().clearElement(); select.combobox().clearTarget(); select.combobox().change(function() { _myFunctions.findAccNumbersByCompany($(this));});";
-        //          eval(t);
-
-
-
-
-        //console.log(numId);
-        //$('#empresasProveedor_'+numId).combobox();
-        //$('#empresasProveedor_'+numId).combobox().refresh();
-                                               // $(this).combobox().clearElement(); //Make the Xs go away
-                                               // $(this).combobox().clearTarget(); //Clear the field of its value
-
     });
 
     
@@ -168,9 +151,9 @@ $(function(){
                 .find('[name="proveedor"]')         .attr('name', 'loro_pagos_carga_masiva[proveedor][' + paymentIndex + ']')
                                                     .attr('id','proveedor_'+paymentIndex).end()
                 .find('[name="empresasProveedor"]') .attr('name', 'loro_pagos_carga_masiva[empresasProveedor][' + paymentIndex + ']')
-                                                    .attr('id','empresasProveedor_'+paymentIndex).end()
+                                                    .attr('id','empresasProveedor_'+paymentIndex).combobox().end()
                 .find('[name="nroCuenta"]')         .attr('name', 'loro_pagos_carga_masiva[nroCuenta][' + paymentIndex + ']')
-                                                    .attr('id','nroCuenta_'+paymentIndex).end()
+                                                    .attr('id','nroCuenta_'+paymentIndex).combobox().end()
                 .find('[name="cantidadAEnviar"]')   .attr('name', 'loro_pagos_carga_masiva[cantidadAEnviar][' + paymentIndex + ']')
                                                     .attr('id','cantidadAEnviar_' + paymentIndex).end();
 
@@ -235,6 +218,8 @@ _myFunctions = {
         var supplierVal = self.value;
         var numId = self.id.split('_');
         var inputsEmpresas = null;
+
+
 
         if(!!supplierVal.trim()) {
             $.ajax({
@@ -314,6 +299,9 @@ _myFunctions = {
                 } 
                 
                 $('#'+_globales.formName+'nrosCuenta').html(inputsNrosCuenta);
+                var s = "var select = $('#'+_globales.formName+'nrosCuenta'); select.combobox('refresh');  select.combobox('clearElement');  select.combobox('clearTarget');";
+
+                eval(s);
               }  
             }
         });

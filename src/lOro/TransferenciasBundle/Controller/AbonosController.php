@@ -3,11 +3,14 @@
 namespace lOro\TransferenciasBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use lOro\EntityBundle\Entity\Abonos;
 use lOro\TransferenciasBundle\Form\AbonosType;
 
-use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Abonos controller.
@@ -100,17 +103,37 @@ class AbonosController extends Controller
 
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+      $id = $_POST['id'];
+      $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('lOroEntityBundle:Abonos')->find($id);
+      $entity = $em->getRepository('lOroEntityBundle:Abonos')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Abonos entity.');
-        }
+      if (!$entity):
+       $dataResponse = 'vacio';
+      else:
+        $dataResponse['id'] = $entity->getId();
+        $date = $entity->getFeAbono();
+        $dataResponse['feAbono'] = $date->format('d-m-Y');
+        $dataResponse['tipoTransaccion'] = $entity->getTipoTransaccion()->getNbTransaccion();
+        
+        if($entity->getTipoPago() == 'B'):
+          $tipoPago = 'Bolivares';
+          $simboloMoneda = 'Bs';
+        elseif($entity->getTipoPago() == 'D'):
+          $tipoPago = 'Dolares';
+          $simboloMoneda = '$';
+        else:
+          $tipoPago = 'Euros';
+          $simboloMoneda = '€';
+        endif;
+        $dataResponse['tipoPago'] = $tipoPago;
+        $dataResponse['monto'] = number_format($entity->getMonto(),'2',',','.').' '.$simboloMoneda;
+        $dataResponse['descripcion'] = $entity->getDescripcion();
 
-        return $this->render('lOroTransferenciasBundle:Abonos:show.html.twig', array(
-                             'entity' => $entity
-                            ));
+      endif;
+
+
+      return new JsonResponse($dataResponse);
     }    
     
 

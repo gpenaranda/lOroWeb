@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Administraci&oacute;n - Empresas Casa{% endblock %}
 {% block body -%}
 <div class="page-header">
@@ -6,52 +6,60 @@
   </h1>
 </div>
 
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+  <div class="clearfix"></div>
+  
+  <div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="clearfix"></div>
 
 
-  <div class="col-md-offset-1 col-md-10" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a style="float:right;" href="{{ path('empresas-casa_new') }}" class="btn btn-lg btn-success">Agregar Nueva Empresa</a>
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a href="{{ path('empresas-casa_new') }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+    </div>  
+
+
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+      <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de la Empresa</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>              
+                    <td>{{ entity.nombreEmpresa }}</td>  
+                    <td>
+                      <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_show', { 'id': entity.id }) }}">
+                          {% image 'assets/self/images/ver.png' %}
+                            <img src="{{ asset_url }}" alt="Ver" />
+                          {% endimage %}
+                      </a>
+                      <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_edit', { 'id': entity.id }) }}">
+                          {% image 'assets/self/images/editar.png' %}
+                            <img src="{{ asset_url }}" alt="Editar" />
+                          {% endimage %}
+                      </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
   </div>
-
-  <div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
-  <table id="house-companies-list" class="table table-hover table-condensed" style="margin-bottom: 0px;">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre de la Empresa</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.id }}</td>              
-                <td>{{ entity.nombreEmpresa }}</td>  
-                <td>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_show', { 'id': entity.id }) }}">
-                      {% image 'assets/self/images/ver.png' %}
-                        <img src="{{ asset_url }}" alt="Ver" />
-                      {% endimage %}
-                  </a>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_edit', { 'id': entity.id }) }}">
-                      {% image 'assets/self/images/editar.png' %}
-                        <img src="{{ asset_url }}" alt="Editar" />
-                      {% endimage %}
-                  </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-  </div>
-
 {% endblock %}
 
 {% block javascripts %}
   <script>
     var _globales = {
         titulosNoFiltrados: '[0,1,2]',
-        idListado: 'house-companies-list',
+        idListado: 'listado-cierres',
         urlDatatableLang: '{{ asset('lang.txt') }}'
   };
   </script>

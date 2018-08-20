@@ -41,12 +41,25 @@ class VentasCierresController extends Controller
 
       $arregloFiltrosCierres['tipoCierre'] = ($lugar == 'proveedores' ? 'proveedor' : 'hc');
       
-      
-      $data['entities'] = $em->getRepository('lOroEntityBundle:VentasCierres')->findBy($arregloFiltrosCierres,array('feVenta' => 'DESC'));
-      $data['entity'] = $entity;
-      $data['ganancia'] = $em->getRepository('lOroEntityBundle:MargenesGanancias')->findOneBy($arregloFiltrosGanancia);
-      $data['onzaTroyGramos'] = $em->getRepository('lOroEntityBundle:Parametros')->find(1);
+      if($this->get('security.authorization_checker')->isGranted('ROLE_REGISTRADOR_CIERRES')):
+        $proveedoresPorUsuario = $em->getRepository('lOroEntityBundle:ProveedoresUsuarios')->findBy(array('user' => $this->getUser()->getId()));
 
+        $arrayIdProvPermitidos = '';
+        $cantItems = count($proveedoresPorUsuario);
+        $i = 0;
+        foreach($proveedoresPorUsuario as $k => $provUser):
+          if(++$i === $cantItems):
+            $arrayIdProvPermitidos .= $provUser->getProveedor()->getId();
+          else:
+            $arrayIdProvPermitidos .= $provUser->getProveedor()->getId().',';
+          endif;
+        endforeach;
+      else:
+        $arrayIdProvPermitidos = NULL;
+      endif; 
+
+      $data['entities'] = $em->getRepository('lOroEntityBundle:VentasCierres')->getCierresPorMesAnioEnCurso($arregloFiltrosCierres,$arrayIdProvPermitidos);
+      
       return $this->render('lOroVentasCierreBundle:VentasCierres:index.html.twig',$data);
     }
     
@@ -140,7 +153,7 @@ class VentasCierresController extends Controller
           
           
 
-   
+          $this->get('session')->getFlashBag()->set('success', 'El cierre N° '.$entity->getId().' ha sido creado satisfactoriamente.'); 
           return $this->redirect($this->generateUrl(($lugar == 'proveedores' ? 'ventas_cierres_proveedores' : 'ventas_cierres_hc')));
         endif;
 
@@ -215,7 +228,7 @@ class VentasCierresController extends Controller
 
 
         $form->add('submit',SubmitType::class, array('label' => 'Editar',
-                                             'attr' => array('class' =>'btn btn-success')
+                                             'attr' => array('class' =>'btn btn-success btn-lg')
                                             ));
 
         return $form;
@@ -349,6 +362,7 @@ class VentasCierresController extends Controller
       $em = $this->getDoctrine()->getManager();
       $entity = $em->getRepository('lOroEntityBundle:VentasCierres')->find($id);
       $lugar = $this->getRequest()->get('lugar');
+
             
       if (!$entity) {
         throw $this->createNotFoundException('Unable to find VentasCierres entity.');
@@ -357,6 +371,7 @@ class VentasCierresController extends Controller
       $em->remove($entity);
       $em->flush();
         
+      $this->get('session')->getFlashBag()->set('error', 'El cierre N° '.$id.' ha sido eliminado del sistema.');  
       return $this->redirect($this->generateUrl(($lugar == 'proveedores' ? 'ventas_cierres_proveedores' : 'ventas_cierres_hc')));
     }
 

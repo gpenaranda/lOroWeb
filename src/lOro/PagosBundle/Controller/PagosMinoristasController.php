@@ -149,7 +149,7 @@ class PagosMinoristasController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Agregar',
-                                             'attr' => array('class' => 'btn btn-lg btn-success')));
+                                             'attr' => array('class' => 'btn btn-success')));
 
         return $form;
     } 

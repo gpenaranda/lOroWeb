@@ -1,80 +1,99 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 
-{% block title %}Pagos Proveedores{% endblock %}
+{% block title %}Pagos Varios{% endblock %}
 
 {% block body -%}
-<div class="page-header">
-  <h1>Pago Vario<small>Editar</small>
-  </h1>
+<div class="title_left">
+  <h1>Pagos Varios <small>Editar</small></h1>
 </div>
-<div class="col-md-11 contenedor-formularios">
-    {{ form_start(edit_form) }}
-    
-    {{ form_label(edit_form.fePago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.fePago) }}
-    </div>
-    {{ form_errors(edit_form.fePago) }}
-        
-    {{ form_label(edit_form.tipoPagoVario) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.tipoPagoVario) }}
-    </div>
-    {{ form_errors(edit_form.tipoPagoVario) }} 
-    
-    {{ form_label(edit_form.tipoTransaccion) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.tipoTransaccion) }}
-    </div>
-    {{ form_errors(edit_form.tipoTransaccion) }}
+<div class="clearfix"></div>
 
-    {{ form_label(edit_form.tipoPago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.tipoPago) }}
-    </div>
-    {{ form_errors(edit_form.tipoPago) }}    
-    
-    <div class="campos-ocultos">
-      {{ form_label(edit_form.nroReferencia) }}
-      <div class="input-group input-group-lg">
-        <span class="input-group-addon">N°</span>
-        {{ form_widget(edit_form.nroReferencia) }}
+<div class="row">
+
+  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+      {{ form_start(edit_form) }}
+      
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">  
+        {{ form_label(edit_form.fePago) }}
+        {{ form_widget(edit_form.fePago) }}
+        {{ form_errors(edit_form.fePago) }}
       </div>
-      {{ form_errors(edit_form.nroReferencia) }}        
     </div>
-       
-    {{ form_label(edit_form.empresaCasa) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.empresaCasa) }}
-    </div>
-    {{ form_errors(edit_form.empresaCasa) }}
-        
-    {{ form_label(edit_form.montoPago) }}
-    <div class="input-group input-group-lg">
-      <span class="input-group-addon">Bs.</span>
-      {{ form_widget(edit_form.montoPago) }}
-    </div>
-    {{ form_errors(edit_form.montoPago) }}
     
-    {{ form_label(edit_form.descripcionPago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.descripcionPago) }}
-    </div>
-    {{ form_errors(edit_form.descripcionPago) }}        
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.tipoPagoVario) }}
+        {{ form_widget(edit_form.tipoPagoVario) }}
+        {{ form_errors(edit_form.tipoPagoVario) }}
+        </div>
+      </div>
 
-  <div style='margin-top:12px;'>
-    {{ form_widget(edit_form.submit) }}
-    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('pagos-varios') }}">Volver</a>  
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.tipoTransaccion) }}
+        {{ form_widget(edit_form.tipoTransaccion) }}
+        {{ form_errors(edit_form.tipoTransaccion) }}
+        </div>
+      </div>
+
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.tipoPago) }}
+        {{ form_widget(edit_form.tipoPago) }}
+        {{ form_errors(edit_form.tipoPago) }}    
+        </div>
+      </div>
+
+        <div class="campos-ocultos">
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9"> 
+          {{ form_label(edit_form.nroReferencia) }}
+          {{ form_widget(edit_form.nroReferencia) }}
+          {{ form_errors(edit_form.nroReferencia) }}
+          </div>
+        </div>
+        </div> 
+
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+            {{ form_label(edit_form.empresaCasa) }}
+            {{ form_widget(edit_form.empresaCasa) }}
+            {{ form_errors(edit_form.empresaCasa) }}
+          </div>
+        </div>
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+            {{ form_label(edit_form.montoPago) }}
+            {{ form_widget(edit_form.montoPago) }}
+            {{ form_errors(edit_form.montoPago) }}
+          </div>
+        </div>
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+            {{ form_label(edit_form.descripcionPago) }}
+            {{ form_widget(edit_form.descripcionPago) }}
+            {{ form_errors(edit_form.descripcionPago) }}
+          </div>
+        </div>
+
+      </div>
+
+<div class="clearfix"></div>
+  <br />             
+  <div class="form-group">
+    <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-9 col-md-3">
+      {{ form_widget(edit_form.submit) }}
+    </div>
   </div>
 
-    {{ form_end(edit_form)}}
-</div>
+      {{ form_end(edit_form)}}
+  </div>
+<div class="clearfix"></div>
 {% endblock %}
 {% block javascripts %}
     <script>

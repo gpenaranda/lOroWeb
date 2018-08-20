@@ -453,37 +453,65 @@ class DatosGenerales {
     /**
      * @author Gabriel E. Peñaranda G. <gabriel.e.p.gonzalez@gmail.com>
      * 
-     * @param object $em  - Objeto utilizado por Symfony para el manejo de las Entidades
+     * @param object $proveedoresPorUsuario  - Objeto que posee cuales proveedores puede ver el usuario que ingreso al sistema
      * @param array $data - Arreglo que posee los parametros que seran pasados a la vista
      */   
-    public function getBalanceProveedoresGeneral() {
+    public function getBalanceProveedoresGeneral($proveedoresPorUsuario = null) {
       $em = $this->em;
       $arregloProveedor = array();
 
-      $stringBalanceProveedores = $em->getRepository('lOroEntityBundle:Balances')->balanceProveedoresGeneral();
 
-      $expListadoBProv = explode('>',$stringBalanceProveedores['listado_proveedores']);
+      if($proveedoresPorUsuario != NULL):
+        $stringBalanceProveedores = $em->getRepository('lOroEntityBundle:Balances')->balanceProveedoresGeneral();
 
-      
-      foreach($expListadoBProv as $row):
-        $expCantProv = explode('/',$row);
+        $expListadoBProv = explode('>',$stringBalanceProveedores['listado_proveedores']);
 
-        if($expCantProv[0] != null):
-          $datosProv['idProv'] = $expCantProv[0];
-          $datosProv['nbProveedor'] = $expCantProv[1];
-          $datosProv['rawDebtMat'] = $expCantProv[2];
-          $datosProv['rawDebtBs'] = $expCantProv[3];
-          $datosProv['rawDebtDol'] = $expCantProv[4];
-          $datosProv['rawDebtEu'] = $expCantProv[5];
-          $datosProv['matAdeudado'] = number_format($expCantProv[2],'2',',','.')." Grs.";
-          $datosProv['deudaTotalBs'] = number_format($expCantProv[3],'2',',','.')." Bs.";
-          $datosProv['deudaTotalDol'] = number_format($expCantProv[4],'2',',','.')." $";
-          $datosProv['deudaTotalEu'] = number_format($expCantProv[5],'2',',','.')." €";
+        
+        foreach($expListadoBProv as $row):
+          $expCantProv = explode('/',$row);
+          if($expCantProv[0] != null):
+            foreach($proveedoresPorUsuario as $provUser):
+              if($provUser->getProveedor()->getId() == $expCantProv[0]):
+                $datosProv['idProv'] = $expCantProv[0];
+                $datosProv['nbProveedor'] = $expCantProv[1];
+                $datosProv['rawDebtMat'] = $expCantProv[2];
+                $datosProv['rawDebtBs'] = $expCantProv[3];
+                $datosProv['rawDebtDol'] = $expCantProv[4];
+                $datosProv['rawDebtEu'] = $expCantProv[5];
+                $datosProv['matAdeudado'] = number_format($expCantProv[2],'2',',','.')." Grs.";
+                $datosProv['deudaTotalBs'] = number_format($expCantProv[3],'2',',','.')." Bs.";
+                $datosProv['deudaTotalDol'] = number_format($expCantProv[4],'2',',','.')." $";
+                $datosProv['deudaTotalEu'] = number_format($expCantProv[5],'2',',','.')." €";
 
-          $arregloProveedor[] = $datosProv;
-        endif;
-       endforeach;
+                $arregloProveedor[] = $datosProv;
+              endif;
+            endforeach;
+          endif;
+         endforeach;
+      else:
+        $stringBalanceProveedores = $em->getRepository('lOroEntityBundle:Balances')->balanceProveedoresGeneral();
 
+        $expListadoBProv = explode('>',$stringBalanceProveedores['listado_proveedores']);
+
+        
+        foreach($expListadoBProv as $row):
+          $expCantProv = explode('/',$row);
+          if($expCantProv[0] != null):
+                $datosProv['idProv'] = $expCantProv[0];
+                $datosProv['nbProveedor'] = $expCantProv[1];
+                $datosProv['rawDebtMat'] = $expCantProv[2];
+                $datosProv['rawDebtBs'] = $expCantProv[3];
+                $datosProv['rawDebtDol'] = $expCantProv[4];
+                $datosProv['rawDebtEu'] = $expCantProv[5];
+                $datosProv['matAdeudado'] = number_format($expCantProv[2],'2',',','.')." Grs.";
+                $datosProv['deudaTotalBs'] = number_format($expCantProv[3],'2',',','.')." Bs.";
+                $datosProv['deudaTotalDol'] = number_format($expCantProv[4],'2',',','.')." $";
+                $datosProv['deudaTotalEu'] = number_format($expCantProv[5],'2',',','.')." €";
+
+                $arregloProveedor[] = $datosProv;
+          endif;
+         endforeach;
+      endif;
 
       return $arregloProveedor;
     }    

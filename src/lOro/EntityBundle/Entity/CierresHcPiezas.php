@@ -15,20 +15,17 @@ class CierresHcPiezas
   
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\VentasCierres", inversedBy="piezasCierresHc")
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\VentasCierres")
      * @ORM\JoinColumn(name="cierre_hc_id", referencedColumnName="id")
      */
     private $cierreHc;
     
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Piezas", inversedBy="cierresHcPiezas")
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Piezas")
      * @ORM\JoinColumn(name="pieza_id", referencedColumnName="id")
      */
     private $pieza;
-    
-    
-
     
     
     /**

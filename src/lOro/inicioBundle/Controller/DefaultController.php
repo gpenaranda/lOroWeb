@@ -11,14 +11,19 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     
+    public function __construct() {
+      ini_set('memory_limit', '2048M');
+    }
+
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
         $data = array();
         $fechaActual = new \ DateTime('now');
       
-        ini_set('memory_limit', '2048M');
         
+         ini_set('memory_limit', '2048M');
+
                          
         /* Servicio para sacar el promedio de los dolares de referencia */
         $data['averageReferenceCurrency'] = $this->get('loro_datos_generales')->generarPromDolaresReferencia();
@@ -34,7 +39,7 @@ class DefaultController extends Controller
         
 
         
-        return $this->render('lOroinicioBundle:Default:index.html.twig',$data);
+        return $this->render('lOroinicioBundle:Default:gen_index.html.twig',$data);
     }
     
 
@@ -93,7 +98,13 @@ class DefaultController extends Controller
      Function that allows generate and display the data of each Supplier as a Balance
     */
     public function balanceBySuppliersAction() {
-      $suppliersArray['balanceData'] = $this->get('loro_datos_generales')->getBalanceProveedoresGeneral();
+      $em = $this->getDoctrine()->getManager();
+      
+      $proveedoresPorUsuario = $em->getRepository('lOroEntityBundle:ProveedoresUsuarios')->findBy(array('user' => $this->getUser()->getId()));
+
+
+
+      $suppliersArray['balanceData'] = $this->get('loro_datos_generales')->getBalanceProveedoresGeneral($proveedoresPorUsuario);
 
 
       $totalsData = array();
@@ -102,12 +113,14 @@ class DefaultController extends Controller
       $totalsData['totalDol'] = 0;
       $totalsData['totalEu'] = 0;
 
-      foreach($this->get('loro_datos_generales')->getBalanceProveedoresGeneral() as $supplierBalance):
+      foreach($this->get('loro_datos_generales')->getBalanceProveedoresGeneral($proveedoresPorUsuario) as $supplierBalance):
         $totalsData['totalMat'] += $supplierBalance['rawDebtMat'];
         $totalsData['totalBs'] += $supplierBalance['rawDebtBs'];
         $totalsData['totalDol'] += $supplierBalance['rawDebtDol'];
         $totalsData['totalEu'] += $supplierBalance['rawDebtEu'];
       endforeach;
+
+
 
         $totalsData['totalMat'] = number_format($totalsData['totalMat'],'2',',','.')." Grs.";
         $totalsData['totalBs'] = number_format($totalsData['totalBs'],'2',',','.')." Bs.";
@@ -134,25 +147,58 @@ class DefaultController extends Controller
       $em = $this->getDoctrine()->getManager();
       
       $cierresDelDia = $em->getRepository('lOroEntityBundle:VentasCierres')->traerCierresDelDiaProveedores();
-      
+      $proveedores = $em->getRepository('lOroEntityBundle:Proveedores')->findAll();
+
+
       if($cierresDelDia):
-        $response = array();
-        foreach($cierresDelDia as $row):
-          $feVenta = $row->getFeVenta();
-          $dataResponse['feVenta'] = $feVenta->format('d/m/y');
-          $dataResponse['proveedor'] = $row->getProveedorCierre()->getNbProveedor();
-          $dataResponse['cantidadTotalVenta'] = number_format($row->getCantidadTotalVenta(),2,',','.');
-          $dataResponse['montoBsCierrePorGramo'] = number_format($row->getMontoBsCierrePorGramo(),2,',','.');
-          $dataResponse['valorOnza'] = number_format($row->getValorOnza(),2,',','.');
-          $dataResponse['dolarReferencia'] = number_format($row->getDolarReferencia(),2,',','.');
-          
-          $response[] = $dataResponse;
-        endforeach;    
+        $cierresPorProveedores = array();
+        foreach($proveedores as $proveedor):
+          foreach($cierresDelDia as $row):
+            
+            
+            if($row['proveedor_id'] == $proveedor->getId()):
+              $cierresPorProveedores[$row['proveedor_id']]['nombre'] = $row['nb_proveedor'];
+              
+              
+              if(!array_key_exists('cierresId', $cierresPorProveedores[$row['proveedor_id']])):
+                $cierresPorProveedores[$row['proveedor_id']]['cierresId'] = $row['cierre_id'];
+                $cierresPorProveedores[$row['proveedor_id']]['grsTotales'] = $row['raw_cantidad_total_venta'];
+              else: 
+                $cierresPorProveedores[$row['proveedor_id']]['cierresId'] .= ','.$row['cierre_id'];
+                $cierresPorProveedores[$row['proveedor_id']]['grsTotales'] += $row['raw_cantidad_total_venta'];
+              endif;
+            endif;
+          endforeach;  
+        endforeach;
+
+        
+
+        foreach($cierresPorProveedores as $cierrePorProveedor):
+          $cierres = explode(',', $cierrePorProveedor['cierresId']);
+
+          $arregloCierresPorProveedor = array();
+          foreach($cierres as $cierre):
+            foreach($cierresDelDia as $row):
+              if($cierre == $row['cierre_id']):
+                $dataResponse['feVenta'] = $row['fe_venta'];
+                $dataResponse['proveedor'] = $row['nb_proveedor'];
+                $dataResponse['cantidadTotalVenta'] = $row['cantidad_total_venta'];
+                $dataResponse['montoBsCierrePorGramo'] = $row['monto_bs_cierre_por_gramo'];
+                $dataResponse['montoBsCierre'] = $row['monto_bs_cierre'];
+                $dataResponse['valorOnza'] = $row['valor_onza'];
+
+                $arregloCierresPorProveedor[] = $dataResponse;
+                $cierresPorProveedores[$row['proveedor_id']]['arregloCierres'] = $arregloCierresPorProveedor;
+              endif;
+            endforeach;
+          endforeach;
+        endforeach;
+
       else:
-        $response = 'vacio';
+        $cierresPorProveedores = 'vacio';
       endif;
       
-      return new JsonResponse($response);
+      return new JsonResponse($cierresPorProveedores);
     }    
     
     public function buscarInfoProveedorAction() {

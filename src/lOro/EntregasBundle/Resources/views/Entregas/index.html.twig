@@ -1,72 +1,72 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Entregas{% endblock %}
 {% block stylesheets %}
   <style type="text/css">
     #initial-delivery-form .form-control-feedback {
-    right: 17px;
+    right: 12px;
   }
   </style>
 {% endblock %}
 {% block body -%}
-<div class="page-header">
+<div class="title_left">
   <h1>Entregas <small>Listado</small></h1>
 </div>
-    <!-- LLamado del twig con los flash del sistema -->
-    {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
-    <div class="col-md-11 col-xs-10" style="padding:0 0 3em 0; margin-left: -5px;">
-      <button style="float:right;" class="btn btn-primary btn-fab btn-raised mdi-content-add" data-toggle="modal" data-target="#modalAgregarEntregas">
-      </button>
-    </div>
+<div class="clearfix"></div>
 
-    
-    <!-- LLamado del twig con el modal de Nueva Entrega Inicial -->
-    {% include 'lOroEntregasBundle:Entregas/extensiones:modal_nueva_entrega_inicial.html.twig' %}
+<div class="row">
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
-    <!-- LLamado del twig con el modal de Ver Entrega -->
-    {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' %}
+  <div class="clearfix"></div>
 
-    
-    <div class="col-xs-10 col-md-offset-1 col-md-10">
-    <table id="listado-entregas" class="display responsive nowrap" cellspacing="0">
-        <thead>
-            <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha de entrega</th>
-                <th style="text-align:center;">Peso total de la entrega</th>
-                <th style="text-align:center;">Entrega realizada por</th>
-                <th style="text-align:center;">Piezas Entregadas</th>
-                <th style="text-align:center;">Entrega para Acreditar</th>
-                <th style="text-align:center;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="data-entregas">
-        {% for entity in entities %}
-            <tr>
-                <td style="text-align:center;">{{ entity.idMensual }}</td>
-                <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
-                <td style="text-align:center;">{{ entity.pesoPuroEntrega | number_format('3',',','.') }} Grs.</td>
-                <td style="text-align:center;">{{ entity.nbProveedor }}</td>
-                <td style="text-align:center;">{{ entity.piezasEntregadas }}</td>
-                <td style="text-align:center;">{{ entity.nbMoneda }}</td>
-                <td style="text-align:center;">
-                  <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" data-target="#modalVerEntrega"  class="open-ver-entrega" style="text-decoration: none;" href="#">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %}
-                  </a>
-                  <a title="Editar" style="text-decoration: none;" href="{{ path('entregas_edit', { 'id': entity.id }) }}">
-                  {% image 'assets/self/images/editar.png' %}
-                    <img src="{{ asset_url }}" alt="Editar" />
-                  {% endimage %}
-                  </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    </div>
+
+      <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+        <a href="#" style="float:right;" class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarEntregas"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+      </div>
+
       
+      <!-- LLamado del twig con el modal de Nueva Entrega Inicial -->
+      {% include 'lOroEntregasBundle:Entregas/extensiones:modal_nueva_entrega_inicial.html.twig' %}
+
+      <!-- LLamado del twig con el modal de Ver Entrega -->
+      {% include 'lOroEntregasBundle:Entregas/extensiones:modal_ver_entrega.html.twig' %}
+
+      
+      <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+        <table id="listado-entregas" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">ID</th>
+                    <th style="text-align:center;">Fecha de entrega</th>
+                    <th style="text-align:center;">Peso total de la entrega</th>
+                    <th style="text-align:center;">Entrega realizada por</th>
+                    <th style="text-align:center;">Piezas Entregadas</th>
+                    <th style="text-align:center;">Entrega para Acreditar</th>
+                    <th style="text-align:center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="data-entregas">
+            {% for entity in entities %}
+                <tr>
+                    <td style="text-align:center;">{{ entity.idMensual }}</td>
+                    <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
+                    <td style="text-align:center;">{{ entity.pesoPuroEntrega | number_format('3',',','.') }} Grs.</td>
+                    <td style="text-align:center;">{{ entity.nbProveedor }}</td>
+                    <td style="text-align:center;">{{ entity.piezasEntregadas }}</td>
+                    <td style="text-align:center;">{{ entity.nbMoneda }}</td>
+                    <td style="text-align:center;">
+                      <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" data-target="#modalVerEntrega"  class="open-ver-entrega" style="text-decoration: none;" href="#">
+                        <i class="fa fa-eye fa-4" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+      </div>
+</div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -76,7 +76,8 @@ var _globales = {
       urlVerEntrega: '{{ path('entregas_show', { 'id': ':idEntrega' }) }}',
       urlEliminarEntrega: '{{ path('entregas_delete', { 'id': ':idEntrega' }) }}',
       urlEliminarPieza: '{{ path('piezas_delete', { 'id': ':idPieza' }) }}',
-      titulosNoFiltrados: [0,1,2,4,5],
+      urlEditarEntrega: '{{ path('entregas_edit', { 'id': ':idEntrega' }) }}',
+      titulosNoFiltrados: [0,1,2,4,5,6],
       idListado: 'listado-entregas',
       formId: 'initial-delivery-form',
       urlDatatableLang: '{{ asset('lang.txt') }}'
@@ -134,7 +135,7 @@ $(document).ready( function () {
 });
 </script>
 
-{% javascripts  'assets/self/js/deliveries/initial_delivery_validation.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+{% javascripts  'assets/self/js/deliveries/initial_delivery_validation.js' %}
   <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
@@ -183,6 +184,10 @@ $('#loro_entrega_inicial_submit').click(function (e) {
 <!-- JavaScript y Jquery para el Modal de Ver Entregas -->
 <script>
 $(document).on("click", ".open-ver-entrega", function () {
+    $('.data-entrega').hide(0)
+    $('.data-piezas').hide(0)
+    $('#loading-square-closed-deals-show').show(0);
+
      _globales.idEntrega = $(this).data('id');
      $("#modalVerEntrega .id-entrega").text( _globales.idEntrega );
      
@@ -200,16 +205,24 @@ $(document).on("click", ".open-ver-entrega", function () {
           /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
           var urlEliminarEntrega = _globales.urlEliminarEntrega;
           urlEliminarEntrega = urlEliminarEntrega.replace(':idEntrega',_globales.idEntrega);
+
+          var urlEditarEntrega = _globales.urlEditarEntrega;
+          urlEditarEntrega = urlEditarEntrega.replace(':idEntrega',_globales.idEntrega);
      
+          var pesoBrutoEntrega = $.number(entrega.pesoBrutoEntrega, 2,',','.' );
+          var promLeyEntrega = $.number(entrega.promLeyEntrega, 2,',','.' );
+          var pesoPuroEntrega = $.number(entrega.pesoPuroEntrega, 2,',','.' );
+          var footerHtml = '';
+
           var htmlEntrega = '<tr>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.id+'</td>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.feEntrega+'</td>';
-              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoBrutoEntrega+'</td>';
-              htmlEntrega += '<td style="text-align:center;">'+entrega.promLeyEntrega+'</td>';
-              htmlEntrega += '<td style="text-align:center;">'+entrega.pesoPuroEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+pesoBrutoEntrega+' Grs.</td>';
+              htmlEntrega += '<td style="text-align:center;">'+promLeyEntrega+'</td>';
+              htmlEntrega += '<td style="text-align:center;">'+pesoPuroEntrega+' Grs.</td>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.proveedorEntrega+'</td>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.cantPiezasEntregadas+'</td>';
-              htmlEntrega += '<td style="text-align:center;"><a class="btn btn-danger" href="'+urlEliminarEntrega+'">Eliminar Entrega</a></td>';
+              htmlEntrega += '';
               htmlEntrega += '</tr>';
            
           var piezas = entrega.piezasEntregadas;
@@ -220,21 +233,33 @@ $(document).on("click", ".open-ver-entrega", function () {
             
             var htmlPiezas = '';
             for(var row in piezas) {
+                var pesoBrutoPieza = $.number(piezas[row].pesoBrutoPieza, 2,',','.' );
+                var leyPieza = $.number(piezas[row].leyPieza, 2,',','.' );
+                var pesoPuroPieza = $.number(piezas[row].pesoPuroPieza, 2,',','.' );
+
                 htmlPiezas += '<tr id="'+piezas[row].id+'">';
                 htmlPiezas += '<td style="text-align:center;">'+piezas[row].codPieza+'</td>';
-                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoBrutoPieza+'</td>';
-                htmlPiezas += '<td style="text-align:center;">'+piezas[row].leyPieza+'</td>';
-                htmlPiezas += '<td style="text-align:center;">'+piezas[row].pesoPuroPieza+'</td>';
-                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\',\''+entrega.id+'\');" class="btn btn-danger">Eliminar Pieza</a></td>';
+                htmlPiezas += '<td style="text-align:center;">'+pesoBrutoPieza+' Grs.</td>';
+                htmlPiezas += '<td style="text-align:center;">'+leyPieza+'</td>';
+                htmlPiezas += '<td style="text-align:center;">'+pesoPuroPieza+' Grs.</td>';
+                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\',\''+entrega.id+'\');" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i> Eliminar Pieza</a></td>';
                 htmlPiezas += '</tr>';                
             }
+
           } else {
+            
             $('#tabla-datos-piezas').hide(); 
             $('#alerta-piezas').show();    
           }
           
           $('.data-entrega').html(htmlEntrega);
           $('.data-piezas').html(htmlPiezas);
+          $('#modalVerEntrega div.modal-footer #supplier-delivery-delete-button').attr('href',urlEliminarEntrega);
+          $('#modalVerEntrega div.modal-footer #supplier-delivery-edit-button').attr('href',urlEditarEntrega);
+
+          $('.data-entrega').delay( 900 ).show(0);
+          $('.data-piezas').delay( 900 ).show(0);
+          $('#loading-square-closed-deals-show').delay( 1000 ).hide(0);
         }
       });
 });     

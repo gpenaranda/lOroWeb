@@ -1,3 +1,8 @@
+proveedores_grid:
+    path:  /dt_grid_prov
+    defaults: { _controller: "lOroAdminBundle:Proveedores:grid" }
+
+
 proveedores:
     path:  /
     defaults: { _controller: "lOroAdminBundle:Proveedores:index" }

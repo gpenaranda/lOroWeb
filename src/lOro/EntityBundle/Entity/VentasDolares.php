@@ -64,7 +64,7 @@ class VentasDolares
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_venta_bolivares", type="decimal",precision=10, scale=2)
+     * @ORM\Column(name="monto_venta_bolivares", type="decimal",precision=14, scale=2)
      */
     private $montoVentaBolivares;   
     
@@ -91,7 +91,7 @@ class VentasDolares
     /**
      * @var string
      *
-     * @ORM\Column(name="cotizacion_referencia", type="decimal",precision=10,scale=2,nullable=true)
+     * @ORM\Column(name="cotizacion_referencia", type="decimal",precision=14,scale=2,nullable=true)
      */
     private $cotizacionReferencia;      
     

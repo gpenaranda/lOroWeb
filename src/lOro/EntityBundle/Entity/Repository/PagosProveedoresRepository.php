@@ -20,12 +20,13 @@ class PagosProveedoresRepository extends EntityRepository
         $conn = $this->getEntityManager()->getConnection();
       
         $config = $this->getEntityManager()->getConfiguration();
-        $config->addCustomNumericFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');       
+        $config->addCustomNumericFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');   
+        $config->addCustomNumericFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');    
          
         $fechaActual = new \ DateTime('now');
         
 
-        $queryWhere = ($proveedorId ? 'proveedor_id = '.$proveedorId : 'MONTH(vpp.fe_pago) = MONTH(CURRENT_TIMESTAMP())');
+        $queryWhere = ($proveedorId ? 'proveedor_id = '.$proveedorId : 'MONTH(vpp.fe_pago) = MONTH(CURRENT_TIMESTAMP()) AND YEAR(vpp.fe_pago) = YEAR(CURRENT_TIMESTAMP())');
 
         $queryMensual = "SELECT vpp. *
                          FROM v_listado_pagos_proveedores AS vpp

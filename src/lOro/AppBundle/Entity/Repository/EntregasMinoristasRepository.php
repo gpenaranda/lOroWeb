@@ -1,6 +1,6 @@
 <?php
 
-namespace lOro\EntityBundle\Entity\Repository;
+namespace lOro\AppBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -23,8 +23,8 @@ class EntregasMinoristasRepository extends EntityRepository
                  em.minorista_id AS minoristaId,
                  m.nb_proveedor AS nbMinorista,
                  em.peso_bruto_entrega AS pesoBrutoEntrega,
-                 em.monto_bs_por_gramo AS montoBsPorGramo,
-                 em.total_monto_bs AS totalMontoBs,
+                 em.ley AS leyAproximada,
+                 em.peso_puro_entrega AS pesoPuroEntrega,
                  em.ubicacion_fisica_entrega AS ubicacionFisicaEntrega
           FROM entregas_minoristas AS em
           JOIN proveedores AS m ON (m.id = em.minorista_id)

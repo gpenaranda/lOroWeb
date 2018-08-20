@@ -43,6 +43,7 @@ class EmpresasCasaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            
             $em = $this->getDoctrine()->getManager();
             
             $entity->setEsEmpresaCasa(1);
@@ -68,6 +69,7 @@ class EmpresasCasaController extends Controller
     private function createCreateForm(EmpresasProveedores $entity, $esEmpresaCasa = null)
     {
         $form = $this->createForm(new EmpresasProveedoresType($esEmpresaCasa), $entity, array(
+            'attr' => array('id' => 'empresas-casa-form'),
             'action' => $this->generateUrl('empresas-casa_create'),
             'method' => 'POST',
         ));

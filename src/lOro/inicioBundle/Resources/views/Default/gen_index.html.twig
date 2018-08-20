@@ -1,0 +1,609 @@
+{% extends '::gen_base.html.twig' %}
+{% block title %}Inicio{% endblock %}
+
+{% block stylesheets %}
+<style>
+.mat-and-bs-content p 
+{
+color:black;font-weight:bold;
+}
+
+.loading-img i.fa-spinner,
+#loading-square-money-balance i.fa-spinner,
+#loading-square-supp-mat-balance i.fa-spinner,
+#loading-square-hc-mat-balance i.fa-spinner,
+#loading-square-suppliers i.fa-spinner,
+#loading-square-retail-suppliers i.fa-spinner {
+  color: #2A3F54;
+}
+</style>
+{% endblock stylesheets %}
+
+{% block body -%}
+
+<!-- MENSAJES FLASH DEL SISTEMA -->
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+<!-- LLamado del twig con el modal de Cierres del Dia -->
+{% include 'lOroinicioBundle:Default/extensiones/modales:cierres_del_dia.html.twig' %}
+
+
+
+          <!-- top tiles -->
+          <div class="row tile_count">
+            {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+              {% set style2= 'col-md-offset-1 col-md-4 col-sm-4 col-xs-6' %}
+            {% else %}
+              {% set style2= 'col-md-offset-2 col-md-4 col-sm-4 col-xs-6' %}
+            {% endif %}
+            <div class="{{ style2 }} tile_stats_count">
+              <span class="count_top">C&oacute;digo de la Ultima Pieza</span>
+              <div class="count">{{ ultimaPiezaEntregada }}</div>
+              <span class="count_bottom"></span>
+            </div>
+            {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+              {% set style1= 'col-md-3 col-sm-3 col-xs-6' %}
+            {% else %}
+              {% set style1= 'col-md-6 col-sm-6 col-xs-6' %}
+            {% endif %}
+            <div class="{{ style1 }} tile_stats_count">
+              <a id="cierres-del-dia" data-toggle="modal" data-target="#modalVerCierresDelDia" href="#">
+                <span class="count_top">Cierres del dia <i class="fa fa-expand" aria-hidden="true"></i></span>
+                <div class="count">{{ cantCierresDelDia }}</div>
+                <span class="count_bottom"></span>
+              </a>
+            </div>
+            {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+            <div class="col-md-4 col-sm-5 col-xs-12 tile_stats_count">
+              <span class="count_top">Promedio de Referencia</span>
+              <div class="count">{{ averageReferenceCurrency |number_format(2, ',', '.') }} Bs/$</div>
+              <span class="count_bottom"></span>
+            </div>
+            {% endif %}
+          </div>
+          <!-- /top tiles -->
+
+          <!-- Bolivares y Material -->
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel mat-and-bs-content">
+
+                <div class="row x_title">
+                  <div class="col-md-6">
+                    <h3>Bolivares</h3>
+                  </div>
+                </div>
+
+                <div class="x_title">
+                    <h2>General</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                  <div class="text-center" id="loading-square-money-balance">
+                    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                  </div>
+
+                  <div id="content-money-balance" style="display:none;">
+                    <div>
+                      <p><i class="fa fa-plus-square blue" aria-hidden="true"></i> Balance en Caja</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="monto-bs-caja">0,00 Bs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-plus-square blue" aria-hidden="true"></i> Deuda con Proveedores</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="monto-deuda-proveedores">0,00 Bs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-minus-square red" aria-hidden="true"></i> Deuda con Minoristas</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="monto-deuda-minoristas">0,00 Bs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Total (Caja - Adeudado)</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="monto-total-balance">0,00 Bs.</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel mat-and-bs-content">
+
+                <div class="row x_title">
+                  <div class="col-md-6">
+                    <h3>Material</h3>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="x_title">
+                    <h2>Proveedores (Me Deben)</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  
+                  
+                  <div class="text-center" id="loading-square-supp-mat-balance">
+                    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                  </div>
+
+                  <div id="content-supp-mat-balance" style="display:none;">
+                    <div>
+                      <p><i class="fa fa-plus-square blue" aria-hidden="true"></i>  Balance Acumulado</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="data-acummulated-grams-supp">0,00 Grs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-plus-square blue" aria-hidden="true"></i> Pactado / Cierre del Mes:</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="closed-grams-month-supp">0,00 Grs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-minus-square red" aria-hidden="true"></i> Entregado del Mes</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="grams-delivered-mont-supp">0,00 Grs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Balance</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="balance-grams-supp">0,00 Grs.</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="x_title">
+                    <h2>HC (Debo)</h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  
+                  <div class="text-center" id="loading-square-hc-mat-balance">
+                    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                  </div>
+
+                  <div id="content-hc-mat-balance" style="display:none;">
+                    <div>
+                      <p><i class="fa fa-plus-square blue" aria-hidden="true"></i>  Balance Acumulado</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="data-acummulated-grams-hc">0,00 Grs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-plus-square blue" aria-hidden="true"></i> Pactado / Cierre del Mes:</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="closed-grams-month-hc">0,00 Grs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-minus-square red" aria-hidden="true"></i> Entregado del Mes</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="grams-delivered-mont-hc">0,00 Grs.</b>
+                      </div>
+                    </div>
+                    <div>
+                      <p><i class="fa fa-check-square-o" aria-hidden="true"></i> Balance</p>
+                      <div>
+                        <b style="font-size: 16pt;" id="balance-grams-hc">0,00 Grs.</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Bolivares y Material -->
+
+          <br />
+
+          <!-- Balance por Proveedores -->
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+
+              <div class="x_panel">
+                <div class="row x_title">
+                  <div class="col-md-6">
+                    <h3>Balance de Proveedores</h3>
+                  </div>
+                </div>
+              
+                <div class="x_content">
+                  <table id="supplier-condensed-table" class="table table-condensed table-hover text-center">
+                    <thead>
+                      <tr>        
+                        <th></th>
+                        <th class="text-center">Me Deben</th>
+                        <th class="text-center" colspan=3>Debo</th>
+                      </tr>
+                      <tr>        
+                        <th class="text-center green"><b>Proveedor</b></th>
+                        <th class="text-center green"> <b>Material</b></th>
+                        <th class="text-center green"> <b>Bolivares</b></th>
+                        <th class="text-center green"> <b>Dolares</b></th>
+                        <th class="text-center green"> <b>Euros</b></th>
+                      </tr>
+                    </thead>
+                    <tbody id="balance-by-suppliers">
+                    </tbody>
+                    <tfoot id="suppliers-totals-by-column">
+                    </tfoot>
+                  </table>
+                  <div class="text-center" id="loading-square-suppliers">
+                    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Balance por Proveedores -->
+
+          {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+            <!-- Balance por Minoristas -->
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+
+                <div class="x_panel">
+                  <div class="row x_title">
+                    <div class="col-md-6">
+                      <h3>Balance de Minoristas</h3>
+                    </div>
+                  </div>
+                
+                  <div class="x_content">
+                    <table id="retail-supplier-condensed-table" class="table table-condensed table-hover text-center">
+                      <thead>
+                        <tr>        
+                          <th></th>
+                          <th class="text-center">Me Deben</th>
+                          <th class="text-center">Debo</th>
+                        </tr>
+                        <tr>        
+                          <th class="text-center green">Proveedor</th>
+                          <th class="text-center green">Material</th>
+                          <th class="text-center green">Bolivares</th>
+                        </tr>
+                      </thead>
+                      <tbody id="balance-by-retail-suppliers"></tbody>
+                      <tfoot id="totals-by-retail-suppliers"></tfoot>          
+                    </table>
+                    <div class="text-center" id="loading-square-retail-suppliers">
+                      <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                      <span class="sr-only">Loading...</span>
+                    </div>                  
+                  </div>
+
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+            <!-- Balance por Minoristas -->
+          {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+/**
+ * Number.prototype.format(n, x, s, c)
+ * 
+ * @param integer n: length of decimal
+ * @param integer x: length of whole part
+ * @param mixed   s: sections delimiter
+ * @param mixed   c: decimal delimiter
+ */
+Number.prototype.format = function(n, x, s, c) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+        num = this.toFixed(Math.max(0, ~~n));
+
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+};
+ 
+
+  var selectProveedor = $('#loro_balances_proveedores_proveedores');
+  var urlBuscarInfoProveedor = '{{ path('_buscar_info_proveedor') }}';
+  var urlCierresDelDia = '{{ path('_cierres_del_dia') }}';
+ 
+  var _globales = {
+    urlPromRef: '{{ path('_ajax_sacar_prom_ref') }}',
+    urlBalanceBs: '{{ path('_homepage_balance_bs') }}',
+    urlBalanceGrams: '{{ path('_homepage_balance_grams') }}',
+    urlBalanceSupp: '{{ path('_homepage_balance_by_suppliers') }}',
+    urlBalanceRetailSupp: '{{ path('_homepago_balance_by_retail_suppliers') }}'
+  };
+  
+
+  $('#liCierreProveedor').hide();
+  $('#alertaEntregas').hide();
+  $('#alertaCierres').hide();
+</script>
+
+
+
+<script>
+$(document).ready(function(){
+
+  /* Retrieving the data of the Balance in Bs */
+  $.ajax({
+      type: "POST",
+      url: _globales.urlBalanceBs,
+      success: function(dataBalanceBs) {
+        $('#monto-bs-caja').html(dataBalanceBs.balanceAcumuladoBolivares);
+        $('#monto-deuda-proveedores').html(dataBalanceBs.deudaConProveedores);
+        $('#monto-deuda-minoristas').html(dataBalanceBs.deudaConMinoristas);
+        $('#monto-total-balance').html(dataBalanceBs.totalBalance);
+
+        
+        if(dataBalanceBs.balanceAcumuladoBolivares.search("-") == 0) $('#monto-bs-caja').css( "color", "red" );
+        if(dataBalanceBs.deudaConProveedores.search("-") == 0) $('#monto-deuda-proveedores').css( "color", "red" );
+        if(dataBalanceBs.deudaConMinoristas.search("-") == 0) $('#monto-deuda-minoristas').css( "color", "red" );
+        if(dataBalanceBs.totalBalance.search("-") == 0) $('#monto-total-balance').css( "color", "red" );
+          
+        
+
+        $('#loading-square-money-balance').hide();
+        $('#content-money-balance').show();
+      }
+    });
+
+
+  /* Retrieving the data of the Balance in Grams of the Material */
+  $.ajax({
+    type: "POST",
+    url: _globales.urlBalanceGrams,
+    success: function(dataBalanceGrams) {
+        /* Suppliers Balance */
+        $('#data-acummulated-grams-supp').html(dataBalanceGrams.balanceAcummulatedGramsSuppliers);
+        $('#closed-grams-month-supp').html(dataBalanceGrams.closedGramsByMonthSuppliers);
+        $('#grams-delivered-mont-supp').html(dataBalanceGrams.gramsDeliveredByMonthSuppliers);
+        $('#balance-grams-supp').html(dataBalanceGrams.balanceMatSuppliers);
+
+        /* HC Balance */
+        $('#data-acummulated-grams-hc').html(dataBalanceGrams.balanceAcummulatedGramsHc);
+        $('#closed-grams-month-hc').html(dataBalanceGrams.closedGramsByMonthHc);
+        $('#grams-delivered-mont-hc').html(dataBalanceGrams.gramsDeliveredByMonthHc);
+        $('#balance-grams-hc').html(dataBalanceGrams.balanceMatHc);
+
+         $('#loading-square-supp-mat-balance').hide();
+         $('#loading-square-hc-mat-balance').hide();
+         $('#content-supp-mat-balance').show();
+         $('#content-hc-mat-balance').show();  
+    }
+  });
+    
+
+    /* Retrieving the data of the Balance of each Supplier */
+    $.ajax({
+      type: "POST",
+      url: _globales.urlBalanceSupp,
+      success: function(dataBalanceGrams) {
+        var displayHtml = '';
+        var wholeDataSuppliers = dataBalanceGrams.balanceData;
+        var totalsDataSuppliers = dataBalanceGrams.totalsData;
+
+        for(var k in wholeDataSuppliers) {
+          var dataSupplier = wholeDataSuppliers[k];
+
+          displayHtml += '<tr>';
+            displayHtml += '<td><b>'+dataSupplier.nbProveedor+'</b></td>';
+            displayHtml += '<td style="'+(dataSupplier.matAdeudado.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.matAdeudado+'</b></td>';
+            displayHtml += '<td style="'+(dataSupplier.deudaTotalBs.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalBs+'</b></td>';
+            displayHtml += '<td style="'+(dataSupplier.deudaTotalDol.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalDol+'</b></td>';
+            displayHtml += '<td style="'+(dataSupplier.deudaTotalEu.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalEu+'</b></td>';
+          displayHtml += '</tr>';
+        }
+
+         var displayHtmlTotals =  '<tr>';
+             displayHtmlTotals += '<th class="text-center green"><h3>Totales</h3></th>';
+             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalMat.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalMat+'</h3></td>';
+             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalBs.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalBs+'</h3></td>';
+             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalDol.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalDol+'</h3></td>';
+             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalEu.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalEu+'</h3></td>';
+             displayHtmlTotals += '</tr>';
+
+             
+        $('#loading-square-suppliers').hide();
+        $('#suppliers-totals-by-column').html(displayHtmlTotals);
+        $('#balance-by-suppliers').html(displayHtml);
+      }
+    });
+
+  {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+    /* Retrieving the data of the Balance of each Retail Supplier */
+    $.ajax({
+      type: "POST",
+      url: _globales.urlBalanceRetailSupp,
+      success: function(dataBalanceRetailSupp) {
+        var displayHtml = '';
+        var totalDebtMat = 0;
+        var totalDebtBs = 0;
+
+        for(var k in dataBalanceRetailSupp) {
+          var dataRetailSupplier = dataBalanceRetailSupp[k];
+            
+          displayHtml += '<tr>';
+            displayHtml += '<td><b>'+dataRetailSupplier.nbMinorista+'</b></td>';
+            displayHtml += '<td style="'+(dataRetailSupplier.matAdeudado.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataRetailSupplier.matAdeudado+'</b></td>';
+            displayHtml += '<td style="'+(dataRetailSupplier.deudaTotalBs.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataRetailSupplier.deudaTotalBs+'</b></td>';
+          displayHtml += '</tr>';
+
+          totalDebtMat = totalDebtMat + parseFloat(dataRetailSupplier.rawDebtMat);
+          totalDebtBs = totalDebtBs + parseFloat(dataRetailSupplier.rawDebtBs);
+        }
+
+      
+
+      var displayFooterHtml    = '<tr>';
+            displayFooterHtml += '<td class="text-center green"><h3>Totales</h3></td>';
+            displayFooterHtml += '<td style="'+(totalDebtMat < 0 ? "color: red;" : "")+'"><h3>'+totalDebtMat.format(2,3,'.',',')+' Grs.</h3></td>';
+            displayFooterHtml += '<td style="'+(totalDebtBs < 0 ? "color: red;" : "")+'"><h3>'+totalDebtBs.format(2,3,'.',',')+' Bs.</h3></td>';
+          displayFooterHtml += '</tr>';
+
+
+         $('#loading-square-retail-suppliers').hide();
+         $('#totals-by-retail-suppliers').html(displayFooterHtml);
+         $('#balance-by-retail-suppliers').html(displayHtml);      
+      }
+    });
+    /* Retrieving the data of the Balance of each Retail Supplier */
+  {% endif %}
+      
+});
+
+</script>
+
+
+
+<script> 
+$('#cierres-del-dia').click(function(){
+  $('#loading-square-closed-deals-day').show();
+       
+  $.ajax({
+    type: "POST",
+    url: urlCierresDelDia,
+    success: function(data) {
+      $('#loading-square-closed-deals-day').hide();
+      if(data != 'vacio') {
+        var cierresDelDia = data;//jQuery.parseJSON(data);
+            
+        var html = '<div class="text-center">';
+        for(var row in cierresDelDia) {
+          var arregloCierres = cierresDelDia[row].arregloCierres;
+          var grsTotales = $.number(cierresDelDia[row].grsTotales,2,',','.');
+
+          html += '<h3>'+cierresDelDia[row].nombre+' ( '+grsTotales+' Grs. )</h3>';
+          
+
+          for(var cierre in arregloCierres) {
+            html += '<div>';
+            html += '<p><i class="fa fa-circle green" aria-hidden="true"></i> '+arregloCierres[cierre].cantidadTotalVenta+'@'+arregloCierres[cierre].montoBsCierrePorGramo+' <span class="blue">Cerrado a: '+arregloCierres[cierre].valorOnza+'</span></p>';
+            html += '</div>';
+          }
+          
+        }
+        
+        html += '</div><br/><br/>';
+            
+        $('#body-modal-ver-cierres-dia').html(html);            
+      } else {
+          $('#body-modal-ver-cierres-dia').html('<h2 class="text-center red">No existen cierres del dia para mostrar actualmente.</h2>');       
+        }
+    }  
+  });
+});
+  
+/*
+
+$(document).on("click", ".open-Modal-Proveedores", function () {
+var idProveedor = $(this).data('id');
+      $('#myModalProveedorLabel').html('');
+      $('#liCierreProveedor').hide();
+
+$.post(urlBuscarInfoProveedor,{
+      idProveedor: idProveedor
+    },function(data){
+      var balanceProveedor = jQuery.parseJSON(data);
+      var totalAdeudado = $.number(balanceProveedor.totalAdeudado,2,',','.');
+      var arregloDetalleAdeudado = balanceProveedor.arregloDetalleAdeudado;
+      
+      $('#liCierreProveedor').show();
+      $('#myModalProveedorLabel').html('Detalles de Proveedor - '+balanceProveedor.nbProveedor+' - '+totalAdeudado+' Grs.');
+      
+      /* Cierres del Proveedor para compensar lo Adeudado 
+      var html  = '<caption style="font-size:18pt;">Cierres del Proveedor para Compensar lo Adeudado</caption>';
+          html += '<tr>';
+          html += '<th style="text-align:center; font-size: 14pt;">Fecha de Cierre</th>';
+          html += '<th style="text-align:center; font-size: 14pt;">Gramos Cerrados</th>';
+          html += '<th style="text-align:center; font-size: 14pt;">Valor Onza</th>';
+          html += '<th style="text-align:center; font-size: 14pt;">Bs por Gramo</th>';
+          html += '<th style="text-align:center; font-size: 14pt;">Dolar Referencia</th>';
+          html += '<th style="text-align:center; font-size: 14pt;">€ x Grs. (Proveedor)</th>';
+          html += '<th style="text-align:center; font-size: 14pt;">€ x Grs. (HC)</th>';
+          html += '</tr>';
+      
+      /* Detalles de lo Adeudado del Proveedor 
+      var htmlDetalle  = '<caption style="font-size:18pt;">Detalles de lo Adeudado</caption>';
+          htmlDetalle += '<tr>';
+          htmlDetalle += '<th style="text-align:center; font-size: 14pt;">Gramos tomados</th>';
+          htmlDetalle += '<th style="text-align:center; font-size: 14pt;">Dolares adeudados</th>';
+          htmlDetalle += '<th style="text-align:center; font-size: 14pt;">Bolivares que dimos</th>';
+          htmlDetalle += '<th style="text-align:center; font-size: 14pt;">Dolares que daria HC</th>';
+          htmlDetalle += '</tr>';      
+      
+      for(var row in arregloDetalleAdeudado)
+      {
+         var gramosCerrados = $.number(arregloDetalleAdeudado[row].gramosCerrados,2,',','.');
+         var valorOnza = $.number(arregloDetalleAdeudado[row].valorOnza,2,',','.');
+         var bsPorGramo = $.number(arregloDetalleAdeudado[row].bsPorGramo,2,',','.');
+         var dolarReferencia = $.number(arregloDetalleAdeudado[row].dolarReferencia,2,',','.');
+         var dolaresPorGramoProveedor = $.number(arregloDetalleAdeudado[row].dolaresPorGramoProveedor,2,',','.');
+         var dolaresPorGramoHc = $.number(arregloDetalleAdeudado[row].dolaresPorGramoHc,2,',','.');
+         var gramosTomados = $.number(arregloDetalleAdeudado[row].gramosTomados,2,',','.');
+         var dolaresAdeudados = $.number(arregloDetalleAdeudado[row].dolaresAdeudados,2,',','.');
+         var bolivaresQueDimos = $.number(arregloDetalleAdeudado[row].bolivaresQueDimos,2,',','.');
+         var dolaresQueDariaHc = $.number(arregloDetalleAdeudado[row].dolaresQueDariaHc,2,',','.');
+         
+          html += '<tr>';
+          html += '<td style="text-align:center;">'+arregloDetalleAdeudado[row].feCierre+'</td>';
+          html += '<td style="text-align:center;">'+gramosCerrados+' Grs</td>';
+          html += '<td style="text-align:center;">'+valorOnza+' €/Oz</td>';
+          html += '<td style="text-align:center;">'+bsPorGramo+' Bs/Gr</td>';
+          html += '<td style="text-align:center;">'+dolarReferencia+' €/Bs</td>';
+          html += '<td style="text-align:center;">'+dolaresPorGramoProveedor+' Bs. x Grs.</td>';
+          html += '<td style="text-align:center;">'+dolaresPorGramoHc+' Bs. x Grs.</td>';
+          html += '</tr>';
+          
+          htmlDetalle += '<tr>';
+          htmlDetalle += '<td style="text-align:center;">'+gramosTomados+' Grs.</td>';
+          htmlDetalle += '<td style="text-align:center;">'+dolaresAdeudados+' €</td>';
+          htmlDetalle += '<td style="text-align:center;">'+bolivaresQueDimos+' Bs.</td>';
+          htmlDetalle += '<td style="text-align:center;">'+dolaresQueDariaHc+' €</td>';
+          htmlDetalle += '</tr>';          
+       }
+       
+          htmlDetalle += '<tr>';
+          htmlDetalle += '<td style="font-size: 14pt;"></td>';
+          htmlDetalle += '<td style="font-size: 14pt;  color:red; text-align:center;">'+$.number(balanceProveedor.totalDolaresAdeudados,2,',','.')+' €</td>';
+          htmlDetalle += '<td style="font-size: 14pt; color:red; text-align:center;">'+$.number(balanceProveedor.totalBolivaresQueDimos,2,',','.')+' Bs.</td>';
+          htmlDetalle += '<td style="font-size: 14pt;  color:green; text-align:center;">'+$.number(balanceProveedor.totalDolaresQueDariaHc,2,',','.')+' €</td>';
+          htmlDetalle += '</tr>'; 
+ 
+
+        
+       $('#tablaAdeudadoProveedor').show(); 
+       $('#tablaAdeudadoProveedor').html(htmlDetalle);    
+       $('#cierresProveedor').show(); 
+       $('#cierresProveedor').html(html);
+       $('#alertaCierres').hide();
+      
+    });     
+    
+});
+*/
+</script>
+{% endblock %}
+

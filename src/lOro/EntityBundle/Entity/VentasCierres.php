@@ -32,7 +32,7 @@ class VentasCierres
     /**
      * @var string
      *
-     * @ORM\Column(name="cantidad_total_venta", type="decimal", precision=10, scale=2, nullable=false)
+     * @ORM\Column(name="cantidad_total_venta", type="decimal", precision=14, scale=2, nullable=false)
      */
     private $cantidadTotalVenta;
 
@@ -46,42 +46,42 @@ class VentasCierres
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_total_dolar", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="monto_total_dolar", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoTotalDolar;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_bs_formula", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="monto_bs_formula", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoBsFormula;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_bs_cierre", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="monto_bs_cierre", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoBsCierre;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_bs_cierre_por_gramo", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="monto_bs_cierre_por_gramo", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoBsCierrePorGramo;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_bs_formula_por_gramo", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="monto_bs_formula_por_gramo", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoBsFormulaPorGramo;    
     
     /**
      * @var string
      *
-     * @ORM\Column(name="dolar_referencia", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="dolar_referencia", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $dolarReferencia;
     
@@ -177,6 +177,12 @@ class VentasCierres
      */
     private $tipoMonedaCierre; 
     
+    /**
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\TiposMoneda")
+     * @ORM\JoinColumn(name="tipo_moneda_cierre_hc_id", referencedColumnName="id", nullable=true) 
+     */
+    private $tipoMonedaCierreHc; 
+
     /**
      * Constructor
      */
@@ -768,4 +774,28 @@ class VentasCierres
         return $this->tipoMonedaCierre;
     }
 
+
+    /**
+     * Set tipoMonedaCierreHc
+     *
+     * @param \lOro\EntityBundle\Entity\TiposMoneda $tipoMonedaCierreHc
+     *
+     * @return VentasCierres
+     */
+    public function setTipoMonedaCierreHc(\lOro\EntityBundle\Entity\TiposMoneda $tipoMonedaCierreHc = null)
+    {
+        $this->tipoMonedaCierreHc = $tipoMonedaCierreHc;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoMonedaCierreHc
+     *
+     * @return \lOro\EntityBundle\Entity\TiposMoneda
+     */
+    public function getTipoMonedaCierreHc()
+    {
+        return $this->tipoMonedaCierreHc;
+    }
 }

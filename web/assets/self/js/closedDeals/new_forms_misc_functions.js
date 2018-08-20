@@ -1,11 +1,12 @@
+/*
 $(function(){
   $( "#"+_globales.inputBaseName+"feVenta" ).datepicker(_globales.arrayOptDatePic,$.datepicker.regional[ "es" ]);
 
   var pesoTotalVenta = $("#"+_globales.inputBaseName+"cantidadTotalVenta");
   var valorOnza = $("#"+_globales.inputBaseName+"valorOnza");
 
-  pesoTotalVenta.number( true, 2,',','.' );
-  valorOnza.number( true, 2,',','.' );
+  //pesoTotalVenta.number( true, 2);
+  //valorOnza.number( true, 2,'.',',' );
 
   if ( _globales.place == 'proveedores' ) {
     var dolarReferenciaDia = $("#"+_globales.inputBaseName+"dolarReferenciaDia");
@@ -44,7 +45,7 @@ $(function(){
   
 });
 
-/* Function that undo the formating of the jQuery.number after the form is validated and its going to submit */
+/* Function that undo the formating of the jQuery.number after the form is validated and its going to submit 
 function undoNumberFormatForRegister() {
   var valorOnza = $("#"+_globales.inputBaseName+"valorOnza");
   var nuevoValorOnza = $.number(valorOnza.val(), 2,'.','' );
@@ -76,3 +77,5 @@ function undoNumberFormatForRegister() {
         montoTotalDolar.val(nuevoMontoTotalDolar);
   }
 }
+
+*/

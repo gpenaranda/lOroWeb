@@ -1,0 +1,118 @@
+<div class="col-md-3 left_col menu_fixed">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{{ path('pagina_inicial') }}" class="site_title"><i class="fa fa-leaf"></i> <span>TextilesLolo</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li>
+                    <a href="{{ path('pagina_inicial') }}"><i class="fa fa-home"></i> Inicio</span></a>
+                  </li>
+                  <li><a><i class="fa fa-handshake-o" aria-hidden="true"></i> Mayoristas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a target="_blank" href="{{ path('ventas_cierres_proveedores') }}">Cierres con Proveedores</a>
+                      </li>
+                      <li><a target="_blank" href="{{ path('ventas_cierres_hc') }}">Cierres con Aupanas/HC</a></li>
+                      <li><a target="_blank"  href="{{ path('entregas') }}">Entregas de Proveedores</a></li>
+                      {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+                        <li><a href="{{ path('nueva_carga_masiva') }}">Pagos en Carga Masiva</a></li>
+                        <li><a href="{{ path('pagos_proveedores_new') }}">Pagos a Proveedores</a></li>
+                        <li><a href="{{ path('pagos_proveedores') }}">Listado de Pagos a Proveedores</a></li>
+                      {% endif %}
+                    </ul>
+                  </li>
+                  {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+                    <li><a><i class="fa fa-user-o"></i> Minoristas <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{{ path('retail_supplier_closed_deals_index') }}">Cierres</a></li>
+                        <li><a href="{{ path('retail_supplier_deliveries_index') }}">Entregas</a></li>
+                        <!--li><a href="{#{ path('asociar_entregas_minoristas_pieza') }#}">Asociar Chatarra a Piezas</a></li-->
+                        <li><a href="{{ path('pagos_minoristas') }}">Pagos</a></li>
+                      </ul>
+                    </li>
+                  
+                    <li><a><i class="fa fa-money"></i>Pagos y Transferencias<span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{{ path('pagos-varios') }}">Pagos Varios</a></li>
+                        <li><a href="{{ path('new_massive_misc_payments') }}">Registro de Pagos Masivos de Salarios</a></li>
+                        <li><a href="{{ path('transferencias_new') }}">Registro Transferencias</a></li>
+                        <li><a href="{{ path('transferencias_list') }}">De Aupanas/HC</a></li>                     
+                        <li><a href="{{ path('ventas-dolares') }}">Ventas de Divisas</a></li> 
+                        <li><a href="{{ path('abonos') }}">Abonos</a></li>
+                        <li><a href="{{ path('debitos') }}">Debitos</a></li>
+                      </ul>
+                    </li>
+                  {% endif %}
+                  <!--li><a><i class="fa fa-balance-scale"></i> Balance<span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{#{ path('balance') }}">Balance de Caja</a></li>
+                      <li><a href="{{ path('conciliacion-caja') }#}">Conciliaci&oacute;n de Caja</a></li>
+                    </ul>
+                  </li-->
+                </ul>
+              </div>
+
+              <div class="menu_section">
+                <h3>Administraci&oacute;n</h3>
+                <ul class="nav side-menu">
+                  {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
+                    <li><a><i class="fa fa-database"></i> Tablas B&aacute;sicas <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                        <li><a href="{{ path('proveedores') }}">Proveedores</a></li>
+                        <li><a href="{{ path('empresas-proveedores') }}">Empresas por proveedores</a></li>
+                        {% if is_granted('ROLE_SUPERUSER') %}
+                        <li><a href="{{ path('empresas-casa') }}">Empresas Casa</a></li>
+                        <li><a href="{{ path('parametros') }}">Parametros Generales</a></li>
+                        {% endif %}
+                      </ul>
+                    </li>
+                  {% endif %}
+                  {% if is_granted('ROLE_SUPERUSER') %}
+                  <li><a><i class="fa fa-line-chart"></i> Reportes y Estadisticas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ path('reportes_estadisticas') }}">Reportes</a></li>
+                    </ul>
+                  </li>
+                  {% endif %}
+                  <li><a><i class="fa fa-user"></i> Usuario <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="{{ path('cambiar_contrasena') }}">Cambiar Contraseña</a></li>
+                    </ul>
+                  </li>                                    
+                  <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out"></i>Salir</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+          </div>
+        </div>
+
+<!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="{{ path('logout') }}">Salir</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->

@@ -1,95 +1,82 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Ventas de Divisas{% endblock %}
+
 {% block body -%}
-<div class="page-header">
+<div class="title_left">
   <h1>Ventas de Divisas <small>Listado</small></h1>
 </div>
 
-    
-  {% if not entities %}
-    <div class="row" style="margin:0px 10% 0 10%;">
-      <div class="alert alert-danger">
-        No se poseen ventas de euros registradas actualmente
-      </div>
-    </div>   
-  {% endif %}
 
-  
-
+  <div class="row">
     <!-- LLamado del twig con los flash del sistema -->
     {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="clearfix"></div>
     
-<div class="col-md-11" style="padding: 0 0 3em 0; margin-left: -5px;">
-            <a href="{{ path('ventas-dolares_new') }}" style="float:right;" class="btn btn-lg btn-success">
-                Agregar nueva venta
-            </a>
-  </div>   
-{% if entities %}
+
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a href="{{ path('ventas-dolares_new') }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+    </div>  
 
  
-    <div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
-        <thead>
-            <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha de la venta</th>
-                <th style="text-align:center;">Comprador</th>
-                <th style="text-align:center;">Empresa</th>
-                <th style="text-align:center;">Moneda</th>
-                <th style="text-align:center;">Cantidad Comprada</th>
-                <th style="text-align:center;">Cambio de Referencia</th>
-                <th style="text-align:center;">Monto en Bolivares</th>
-                <th style="text-align:center;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities if entity.id != 9999  %}
-            <tr>
-                <td>{{ entity.id }}</td>
-                <td>{% if entity.fechaVenta %}{{ entity.fechaVenta|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ entity.comprador.nbProveedor | title }}</td>
-                <td>{{ entity.empresa | title }}</td>
-                <td>{{ entity.tipoMoneda ? entity.tipoMoneda.nbMoneda : 'N/A' }}</td>
-                <td>{{ entity.cantidadDolaresComprados | number_format('2',',','.') }} {{ entity.tipoMoneda ? entity.tipoMoneda.simboloMoneda : 'N/A' }}</td>
-                <td>{{ entity.dolarReferencia | number_format('2',',','.') }} Bs x {{ entity.tipoMoneda ? entity.tipoMoneda.simboloMoneda : 'N/A' }}</td>
-                <td>{{ entity.montoVentaBolivares | number_format('2',',','.') }} Bs</td>
-                <td>
-                  
-                  <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" class="open-modal-ver" data-target="#modalVer" style="text-decoration: none;" href="#">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %} 
-                  </a>
-                  <a  title="Editar" style="text-decoration: none;" href="{{ path('ventas-dolares_edit', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/editar.png' %}
-                      <img src="{{ asset_url }}" alt="Editar" />
-                    {% endimage %}
-                  </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+
+      <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+          <thead>
+              <tr>
+                  <th class="hidden-md hidden-sm hidden-xs">ID</th>
+                  <th>Fecha de la venta</th>
+                  <th>Comprador</th>
+                  <th>Moneda</th>
+                  <th>Cantidad Comprada</th>
+                  <th>Cambio de Referencia</th>
+                  <th>Monto en Bolivares</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for entity in entities if entity.id != 9999  %}
+              <tr>
+                  <td class="hidden-md hidden-sm hidden-xs">{{ entity.id }}</td>
+                  <td>{% if entity.fechaVenta %}{{ entity.fechaVenta|date('Y-m-d') }}{% endif %}</td>
+                  <td>{{ entity.comprador.nbProveedor | title }}</td>
+                  <td>{{ entity.tipoMoneda ? entity.tipoMoneda.nbMoneda : 'N/A' }}</td>
+                  <td>{{ entity.cantidadDolaresComprados | number_format('2',',','.') }} {{ entity.tipoMoneda ? entity.tipoMoneda.simboloMoneda : 'N/A' }}</td>
+                  <td>{{ entity.dolarReferencia | number_format('2',',','.') }} Bs x {{ entity.tipoMoneda ? entity.tipoMoneda.simboloMoneda : 'N/A' }}</td>
+                  <td>{{ entity.montoVentaBolivares | number_format('2',',','.') }} Bs</td>
+                  <td>
+                    
+                    <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" class="open-modal-ver" data-target="#modalVer" style="text-decoration: none;" href="#">
+                      <i class="fa fa-eye fa-4" aria-hidden="true"></i> 
+                    </a>
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
         
-<!-- LLamado del twig con el modal de Ver Venta Divisa -->
+    <!-- LLamado del twig con el modal de Ver Venta Divisa -->
     {% include 'lOroVentasDolaresBundle:VentasDolares/extensiones:modal_ver_venta_divisa.html.twig' %}
     
         </div>
-{% endif %}
+
+</div>
+
     {% endblock %}
 {% block javascripts %}
 <script>
   var _globales = {
       idEntity: '',
       urlVerAction: '{{ path('ventas-dolares_show', { 'id': ':idEntity' }) }}',  
+      urlEditAction: '{{ path("ventas-dolares_edit", { "id": ":idEntity" }) }}',
       urlEliminarAction: '{{ path('ventas-dolares_delete', { 'id': ':idEntity' }) }}', 
-      titulosNoFiltrados: '[0,1,4,5,6,7]',
+      titulosNoFiltrados: '[0,1,4,5,6,7,8]',
       idListado: 'listado-cierres',
       urlDatatableLang: '{{ asset('lang.txt') }}'
 };
 </script>
 
-  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' %}
     <script src="{{ asset_url }}"></script>
   {% endjavascripts %}
 
@@ -102,6 +89,10 @@ $(document).on("click", ".open-modal-ver", function () {
      /* Reemplaza la el :idEntrega de la URL por el ID que se trae del modal */
      var url = _globales.urlVerAction;
      url = url.replace(':idEntity',_globales.idEntity);
+
+
+     var urlEdit = _globales.urlEditAction;
+     urlEdit = urlEdit.replace(':idEntity',_globales.idEntity);
       
       $.ajax({
         type: 'get',
@@ -138,9 +129,12 @@ $(document).on("click", ".open-modal-ver", function () {
              }
              htmlVer += '</table></td></tr>';
             
-            
-          var htmlButtonEliminar = '<button class="btn btn-lg btn-danger" onclick="eliminarVentaSeleccionada(\''+entity.id+'\')">Eliminar Venta de Divisas</button>';
           
+          var htmlButtonEliminar = '<a  title="Editar" class="btn btn-lg btn-primary" href="'+urlEdit+'">Editar</a>';
+              htmlButtonEliminar += '<button class="btn btn-lg btn-danger" onclick="eliminarVentaSeleccionada(\''+entity.id+'\')">Eliminar</button>';
+              
+          
+
           $('.modal-footer').html(htmlButtonEliminar);
           $('.data-ver-entity').html(htmlVer);
         }

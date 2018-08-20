@@ -122,7 +122,14 @@ class Entregas
      * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\TiposMoneda")
      * @ORM\JoinColumn(name="tipo_moneda_id", referencedColumnName="id", nullable=true) 
      */
-    private $tipoMonedaEntrega;      
+    private $tipoMonedaEntrega;    
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="entrega_realizada_hc", type="boolean", nullable=true)
+     */
+    private $entregaRealizadaHc;       
     
     /**
      * Constructor
@@ -576,5 +583,29 @@ class Entregas
     public function getTipoMonedaEntrega()
     {
         return $this->tipoMonedaEntrega;
+    }
+
+    /**
+     * Set entregaRealizadaHc
+     *
+     * @param boolean $entregaRealizadaHc
+     *
+     * @return Entregas
+     */
+    public function setEntregaRealizadaHc($entregaRealizadaHc)
+    {
+        $this->entregaRealizadaHc = $entregaRealizadaHc;
+
+        return $this;
+    }
+
+    /**
+     * Get entregaRealizadaHc
+     *
+     * @return boolean
+     */
+    public function getEntregaRealizadaHc()
+    {
+        return $this->entregaRealizadaHc;
     }
 }

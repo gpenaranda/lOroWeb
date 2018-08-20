@@ -3,6 +3,8 @@
 namespace lOro\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use lOro\EntityBundle\Entity\Proveedores;
@@ -65,12 +67,13 @@ class ProveedoresController extends Controller
     private function createCreateForm(Proveedores $entity)
     {
         $form = $this->createForm(new ProveedoresType(), $entity, array(
+            'attr' => array('id' => 'proveedores-form'),
             'action' => $this->generateUrl('proveedores_create'),
             'method' => 'POST',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Agregar',
-                                             'attr' => array('class' => 'btn btn-lg btn-success', 'style' => 'margin-top: 10px;')));
+                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
 
         return $form;
     }
@@ -97,18 +100,22 @@ class ProveedoresController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
+        $id = $_POST['id'];
+      
+      
         $entity = $em->getRepository('lOroEntityBundle:Proveedores')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Proveedores entity.');
-        }
 
-        $deleteForm = $this->createDeleteForm($id);
+      if (!$entity):
+       $dataResponse = 'vacio';
+      else:
+        $dataResponse['id'] = $entity->getId();
+        $dataResponse['nbProveedor'] = $entity->getNbProveedor();
+        $dataResponse['tipoProveedor'] = $entity->getTipoProveedor()->getNbTipoProveedor();
+      endif;
 
-        return $this->render('lOroAdminBundle:Proveedores:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+
+      return new JsonResponse($dataResponse);
     }
 
     /**

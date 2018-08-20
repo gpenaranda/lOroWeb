@@ -23,7 +23,6 @@
                 <th style="text-align:center;">Monto del Pago</th>
                 <th style="text-align:center;">Nro Referencia</th>
                 <th style="text-align:center;">Empresa</th>
-                <th style="text-align:center;">Acciones</th>
             </tr>
         </thead>
         <tbody class="data-tabla">
@@ -36,11 +35,6 @@
                 <td style="text-align:center;">{{ entity.montoPagado | number_format('2',',','.')}}  {% if entity.tipoPago == 'Bolivares' %}Bs.{% elseif entity.tipoPago == 'Dolares' %}${% else %}€{% endif%}</td>
                 <td style="text-align:center;">{{ entity.nroReferencia }}</td>
                 <td style="text-align:center;">{{ entity.nombreEmpresa }}</td>                
-                <td style="text-align:center;">                        
-                    <a title="Descargar PDF" href="{{ path('app_download_pdf_prov',{ 'pagoId':entity.id }) }}">    
-                       <img src="{{ asset('bundles/lOroBundle/images/ic_file_download_black_36dp_1x.png') }}" />
-                    </a>
-                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -59,7 +53,7 @@ var _globales = {
       titulosNoFiltrados: '[0,1,4,7,8]',
       idListado: 'listado-cierres',
       montoSumatoria: 0.00,
-      urlTxtLang: "{{ asset('lang.txt') }}"
+      urlDatatableLang: '{{ asset('lang.txt') }}'
 };
 $('#divSumatoria').hide();
 
@@ -91,5 +85,52 @@ function sumarMontos(montoPagado,idPagoProveedor) {
 $('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
 </script>
 </script>
-<script src="{{ asset('bundles/lOroBundle/js/listados/listadoPagosProveedores.js') }}"></script>    
+<script>
+$(document).ready( function () {
+
+    
+    var table = $('#'+_globales.idListado).DataTable(
+    {
+      responsive: true,
+      "order": [[ 1, "desc" ]],
+      "oLanguage": {
+        "sUrl": _globales.urlDatatableLang
+      } , 
+   
+        initComplete: function () {
+            var api = this.api();
+            
+     
+            
+            api.columns().indexes().flatten().each( function ( i ) {
+                
+                if(_globales.titulosNoFiltrados.indexOf(i) === -1) {
+
+               
+                
+                var column = api.column( i );
+                var select = $('<select class="form-control"><option value="">'+$(column.header()).html()+'</option></select>')
+                    .appendTo( $(column.header()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' );
+                } );
+                
+          }
+                  
+          });
+        }
+     }
+   );
+});
+</script> 
 {% endblock %}

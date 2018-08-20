@@ -6,9 +6,9 @@ entregas_minoristas_new:
     path:  /entregas-minoristas-new
     defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:new" }
     
-entregas_minoristas_edit:
-    path:  /entregas-minoristas-edit/{id}
-    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:edit" }
+#entregas_minoristas_edit:
+#    path:  /entregas-minoristas-edit/{id}
+#    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:edit" }
     
     
 asociar_entregas_minoristas_pieza:
@@ -23,9 +23,9 @@ _asociar_chatarra_a_piezas:
     path:  /_asociar-chatarra-a-piezas
     defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:asociarChatarraAPiezas" }
     
-_ajax_buscar_ubicacion_fisica_actual:
-    path:  /_ajax_buscar_ubicacion_fisica_actual
-    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:buscarUbicacionFisicaActual" }
+#_ajax_buscar_ubicacion_fisica_actual:
+#    path:  /_ajax_buscar_ubicacion_fisica_actual
+#    defaults: { _controller: "lOroEntregasBundle:EntregasMinoristas:buscarUbicacionFisicaActual" }
     
 _ajax_cambiar_ubicacion_fisica_entrega:
     path:  /_ajax_cambiar_ubicacion_fisica_entrega

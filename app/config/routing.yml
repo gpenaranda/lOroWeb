@@ -4,7 +4,11 @@ l_oro_proveedores:
 
 l_oro_general_routes:
     resource: "@lOroAppBundle/Resources/config/general_routes.yml"
-    prefix:   /general    
+    prefix:   /general  
+
+l_oro_retail_suppliers:
+    resource: "@lOroAppBundle/Resources/config/retail_suppliers.yml"
+    prefix:   /minoristas    
     
 l_oro_pagos:
     resource: "@lOroPagosBundle/Resources/config/routing.yml"

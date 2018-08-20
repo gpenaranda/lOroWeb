@@ -10,68 +10,70 @@
       <div class="modal-body">
         <div class="row contenedor-grande"> 
 
-          <div class="form-group">
-            <div class="col-xs-11">
-              {{ form_label(piezasInicialesForm.feEntrega) }}
-              {{ form_widget(piezasInicialesForm.feEntrega) }}
-              {{ form_errors(piezasInicialesForm.feEntrega) }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-xs-11">
-              {{ form_label(piezasInicialesForm.tipoMonedaEntrega) }}
-              {{ form_widget(piezasInicialesForm.tipoMonedaEntrega) }}
-              {{ form_errors(piezasInicialesForm.tipoMonedaEntrega) }}   
-            </div>
-          </div>
-
-
-          <div class="form-group">
-            <div class="row">
-              <div class="col-xs-3">
-                {{ form_label(piezasInicialesForm.proveedor) }}
-                {{ form_widget(piezasInicialesForm.proveedor) }}
-                {{ form_errors(piezasInicialesForm.proveedor) }} 
+            <div class="form-group">
+              <div class="col-md-12 col-xs-11">
+                {{ form_label(piezasInicialesForm.feEntrega) }}
+                {{ form_widget(piezasInicialesForm.feEntrega) }}
+                {{ form_errors(piezasInicialesForm.feEntrega) }}
               </div>
-
-              <div class="col-xs-3">
-                {{ form_label(piezasInicialesForm.piezaInicial) }}
-                {{ form_widget(piezasInicialesForm.piezaInicial) }}
-                {{ form_errors(piezasInicialesForm.piezaInicial) }} 
-              </div>
-
-              <div class="col-xs-3">
-                {{ form_label(piezasInicialesForm.piezaFinal) }}
-                {{ form_widget(piezasInicialesForm.piezaFinal) }}
-                {{ form_errors(piezasInicialesForm.piezaFinal) }} 
-              </div>
-              <div class="col-xs-1">
-                  <button type="button" class="btn btn-info addButton"><i class="glyphicon glyphicon glyphicon-plus"></i></button>
-              </div>
-            </div>            
-          </div>
-
-          <!-- The template for adding new field -->
-          <div class="form-group hide" id="piecesTemplate">
-            <div class="row">
-              <div class="col-xs-3">
-                  <select class="form-control" name="proveedor" ></select>
-              </div>
-              <div class="col-xs-3">
-                  <input type="text" class="form-control" name="piezaInicial" />
-              </div>
-              <div class="col-xs-3">
-                  <input type="text" class="form-control" name="piezaFinal" />
-              </div>
-              <div class="col-xs-1">
-                  <button type="button" class="btn btn-danger removeButton"><i class="glyphicon glyphicon glyphicon-minus"></i></button>
+              
+              <div class="col-md-12 col-xs-11">
+                {{ form_label(piezasInicialesForm.tipoMonedaEntrega) }}
+                {{ form_widget(piezasInicialesForm.tipoMonedaEntrega) }}
+                {{ form_errors(piezasInicialesForm.tipoMonedaEntrega) }}   
               </div>
             </div>
-          </div>
 
 
+            <div class="form-group">
+              <div class="col-md-offset-1 col-md-11">
+                <div class="col-xs-3">
+                  {{ form_label(piezasInicialesForm.proveedor) }}
+                  {{ form_widget(piezasInicialesForm.proveedor) }}
+                  {{ form_errors(piezasInicialesForm.proveedor) }} 
+                </div>
 
+                <div class="col-xs-4">
+                  {{ form_label(piezasInicialesForm.piezaInicial) }}
+                  {{ form_widget(piezasInicialesForm.piezaInicial) }}
+                  {{ form_errors(piezasInicialesForm.piezaInicial) }} 
+                </div>
+
+                <div class="col-xs-3">
+                  {{ form_label(piezasInicialesForm.piezaFinal) }}
+                  {{ form_widget(piezasInicialesForm.piezaFinal) }}
+                  {{ form_errors(piezasInicialesForm.piezaFinal) }} 
+                </div>
+              </div>            
+            </div>
+
+            <!-- The template for adding new field -->
+            <div class="form-group hide" id="piecesTemplate">
+              <div class="clearfix"></div>
+              <br />
+
+              <div class="col-md-offset-1 col-md-11">
+                <div class="col-xs-3">
+                    <select class="form-control" name="proveedor" ></select>
+                </div>
+                <div class="col-xs-4">
+                    <input type="text" class="form-control" name="piezaInicial" />
+                </div>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" name="piezaFinal" />
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-danger removeButton"><i class="glyphicon glyphicon glyphicon-minus"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <br />
+
+            <div class="col-md-offset-4 col-md-8 col-xs-1">
+              <button type="button" class="btn btn-info addButton"><i class="glyphicon glyphicon glyphicon-plus"></i> Agregar Pieza</button>
+            </div>
         </div>
 
         <!--div class="row">

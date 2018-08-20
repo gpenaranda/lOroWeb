@@ -35,7 +35,7 @@ class DebitosType extends AbstractType
                                                            'attr' => array('class' => 'form-control')))
             ->add('tipoPago','choice',array('label' => 'Tipo de Debito',
                                                           'mapped' => true,
-                                                          'choices' => array('B' => 'Bolivares', 'E' => 'Euros'),
+                                                          'choices' => array('B' => 'Bolivares', 'D' => 'Dolares', 'E' => 'Euros'),
                                                            'empty_value' => $this->empty_value,
                                                            'attr' => array('class' => 'form-control')))                
             ->add('descripcion','text',array('label' => 'Descripción del Debito',

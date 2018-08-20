@@ -15,7 +15,7 @@ $(function(){
             }
         },
         initialPieceValidators = {
-            row: '.col-xs-3',
+            row: '.col-xs-4',
             validators: {
                 notEmpty: {
                   message: 'El campo no puede estar vacio.'
@@ -89,7 +89,7 @@ $(function(){
             piecesIndex++;
 
             var $options = $("#loro_entrega_inicial_proveedor > option").clone();
-            $("select[name='proveedor']").append($options);  
+            $("select[name='proveedor']").html($options);  
             
             var $template = $('#piecesTemplate'),
                 $clone    = $template

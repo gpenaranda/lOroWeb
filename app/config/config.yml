@@ -30,7 +30,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [lOroVentasDolaresBundle,lOroTransferenciasBundle, lOroinicioBundle,lOroAdminBundle,lOroAppBundle,lOroBalanceBundle,lOroEntregasBundle,lOroVentasCierreBundle,lOroPagosBundle]
+    bundles:        [lOroProveedoresBundle,lOroLoginBundle,lOroVentasDolaresBundle,lOroTransferenciasBundle, lOroinicioBundle,lOroAdminBundle,lOroAppBundle,lOroBalanceBundle,lOroEntregasBundle,lOroVentasCierreBundle,lOroPagosBundle]
     filters:
         uglifyjs2:
             # the path to the uglifyjs executable
@@ -65,7 +65,3 @@ swiftmailer:
     password:   "%mailer_password%"
     encryption: "%mailer_encryption%"
 
-
-ali_datatable:  
-    all: ~
-    js:  ~

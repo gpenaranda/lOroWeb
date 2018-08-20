@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Entregas{% endblock %}
 {% block body -%}
 <div class="page-header">
@@ -30,8 +30,8 @@
                 <th style="text-align:center;">ID</th>
                 <th style="text-align:center;">Fecha de entrega</th>
                 <th style="text-align:center;">Peso bruto de la entrega</th>
-                <th style="text-align:center;">Pagado Bs x Grms</th>
-                <th style="text-align:center;">Total Pagado</th>
+                <th style="text-align:center;">Ley Aprox.</th>
+                <th style="text-align:center;">Peso puro de la entrega</th>
                 <th style="text-align:center;">Entrega realizada por</th>
                 <th style="text-align:center;">Ubicación Fisica de Entrega</th>
                 <th style="text-align:center;">Acciones</th>
@@ -44,8 +44,8 @@
                 <td style="text-align:center;">{{ entity.id }}</td>
                 <td style="text-align:center;">{{ (entity.feEntrega ? entity.feEntrega : '') | date('Y-m-d') }}</td>
                 <td style="text-align:center;">{{ entity.pesoBrutoEntrega | number_format('2',',','.') }} Grs.</td>
-                <td style="text-align:center;">{{ entity.montoBsPorGramo | number_format('2',',','.') }} Grs.</td>
-                <td style="text-align:center;">{{ entity.totalMontoBs | number_format('2',',','.') }} Bs.</td>
+                <td style="text-align:center;">{{ entity.leyAproximada | number_format('2',',','.') }}</td>
+                <td style="text-align:center;">{{ entity.pesoPuroEntrega | number_format('2',',','.') }} Grs.</td>
                 <td style="text-align:center;">{{ entity.nbMinorista }}</td>
                 <td style="text-align:center;">{% if entity.ubicacionFisicaEntrega == 'P' %}
                                                  Con el Proveedor
@@ -89,7 +89,7 @@
 {% block javascripts %}
 <script>
 var _globales = {
-      titulosNoFiltrados: [0,1,2,3,4,6,7],
+      titulosNoFiltrados: [0,1,2,3,4,7,8],
       idListado: 'listado-entregas-minoristas',
       urlDatatableLang: '{{ asset('lang.txt') }}',
       idUbicacionFisicaMat: 'ubicacion-fisica-mat',
@@ -221,5 +221,5 @@ function sumarMontos(montoPagado,idPagoProveedor) {
 $('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
 </script>
 
-<!--script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregasMinoristas.js') }}"></script-->
+<!--script src="{#{ asset('bundles/lOroBundle/js/listados/listadoEntregasMinoristas.js') }#}"></script-->
 {% endblock %}

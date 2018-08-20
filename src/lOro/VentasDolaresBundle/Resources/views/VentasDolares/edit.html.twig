@@ -1,14 +1,97 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
+{% block title %}Ventas de Divisas{% endblock %}
 
 {% block body -%}
-<div class="page-header">
-  <h1>Ventas de Dolares <small>Editar Venta</small></h1> 
-</div>
-<div class="col-md-11 contenedor-formularios">
-    {{ form(edit_form) }}
-</div>
 
+<!-- LLamado del twig con los flash del sistema -->
+{% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+  <div class="title_left">
+    <h1>Ventas de Divisas <small>Editar</small></h1>
+  </div>
+  <div class="clearfix"></div>
+
+
+
+
+
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+      {{ form_start(edit_form) }}
+          
+          
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.fechaVenta) }}
+          {{ form_widget(edit_form.fechaVenta) }}
+          {{ form_errors(edit_form.fechaVenta) }}
+          </div>
+        </div>
+
+
+          <div class="form-group">
+            <div class="col-xs-9 col-md-9">
+            {{ form_label(edit_form.comprador) }}
+            {{ form_widget(edit_form.comprador) }}
+            {{ form_errors(edit_form.comprador) }}
+            </div>
+          </div>
+        
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.tipoMoneda) }}
+          {{ form_widget(edit_form.tipoMoneda) }}
+          {{ form_errors(edit_form.tipoMoneda) }}
+          </div>
+        </div>
+                
+        <div class="form-group">      
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.cotizacionReferencia) }}
+          {{ form_widget(edit_form.cotizacionReferencia) }}
+          {{ form_errors(edit_form.cotizacionReferencia) }} 
+          </div>
+        </div>
+
+        <div class="form-group"> 
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.cantidadDolaresComprados) }}
+          {{ form_widget(edit_form.cantidadDolaresComprados) }}
+          {{ form_errors(edit_form.cantidadDolaresComprados) }}  
+          </div>
+        </div>
+
+        <div class="form-group"> 
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.dolarReferencia) }}
+          {{ form_widget(edit_form.dolarReferencia) }}
+          {{ form_errors(edit_form.dolarReferencia) }}  
+          </div>
+        </div>
+
+        <div class="form-group"> 
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.montoVentaBolivares) }}
+          {{ form_widget(edit_form.montoVentaBolivares) }}
+          {{ form_errors(edit_form.montoVentaBolivares) }}  
+          </div>
+        </div>
+
+        
+        
+        <div class="form-group">
+          <div class="col-sm-offset-7 col-sm-3 col-xs-offset-6 col-xs-3 col-md-offset-8 col-md-3">
+          {{ form_widget(edit_form.submit) }}
+          </div>
+        </div> 
+          
+          {{ form_rest(edit_form) }}
+          
+        {{ form_end(edit_form) }}
+    </div>
+  </div>
 {% endblock %}
+
 {% block javascripts %}
 <script>
  $(function(){
@@ -90,6 +173,9 @@ $("#loro_entitybundle_ventasdolares_comprador").change(function(){
             }
         }
     });  
-});   
+});  
+
+$("#loro_entitybundle_ventasdolares_comprador").combobox(); 
+$("#loro_entitybundle_ventasdolares_tipoMoneda").combobox(); 
 </script> 
 {% endblock %}

@@ -1,110 +1,119 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}}{% endblock %}
 
 {% block stylesheets %}
   <style type="text/css">
     #proveedores-form .form-control-feedback {
-    right: 17px;
+    right: 14px;
+    top: 22px;
+  }
+
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierre]"],
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[proveedorCierre]"] {
+    right: 44px !important;
+  }
+
+  #ui-datepicker-div {
+    z-index: 100 !important;
   }
   </style>
+{% endblock stylesheets %}
 
-{% endblock %}
 {% block body -%}
 
 <!-- LLamado del twig con los flash del sistema -->
 {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
-<div class="page-header">
-  <h1>Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}}</h1>
-</div>
+  <div class="title_left">
+    <h1>Cierres - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}} <small>Editar</small></h1>
+  </div>
+  <div class="clearfix"></div>
 
-<div class="col-md-10 col-md-offset-1 contenedor-formularios">
-  {{ form_start(edit_form) }}
-      
-      
-    <div class="form-group">
-      <div class="col-xs-9">
-      {{ form_label(edit_form.feVenta) }}
-      {{ form_widget(edit_form.feVenta) }}
-      {{ form_errors(edit_form.feVenta) }}
-      </div>
-    </div>
 
-    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+<div class="row">
+  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+    {{ form_start(edit_form) }}
+        
+        
       <div class="form-group">
-        <div class="col-xs-9">
-        {{ form_label(edit_form.dolarReferenciaDia) }}
-        {{ form_widget(edit_form.dolarReferenciaDia) }}
-        {{ form_errors(edit_form.dolarReferenciaDia) }}
+        <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.feVenta) }}
+        {{ form_widget(edit_form.feVenta) }}
+        {{ form_errors(edit_form.feVenta) }}
         </div>
       </div>
-    {% endif %}
-    
-    <div class="form-group">
-      <div class="col-xs-9">
-      {{ form_label(edit_form.tipoMonedaCierre) }}
-      {{ form_widget(edit_form.tipoMonedaCierre) }}
-      {{ form_errors(edit_form.tipoMonedaCierre) }}
-      </div>
-            
-    
-      <div class="col-xs-9">
-      {{ form_label(edit_form.cantidadTotalVenta) }}
-      {{ form_widget(edit_form.cantidadTotalVenta) }}
-      {{ form_errors(edit_form.cantidadTotalVenta) }} 
-      </div>
 
-      <div class="col-xs-9">
-      {{ form_label(edit_form.valorOnza) }}
-      {{ form_widget(edit_form.valorOnza) }}
-      {{ form_errors(edit_form.valorOnza) }}  
-      </div>
-    </div>
-
-    {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
-      <div class="form-group">
-        <div class="col-xs-9">
-        {{ form_label(edit_form.montoTotalDolar) }}
-        {{ form_widget(edit_form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
-        {{ form_errors(edit_form.montoTotalDolar) }}  
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.dolarReferenciaDia) }}
+          {{ form_widget(edit_form.dolarReferenciaDia) }}
+          {{ form_errors(edit_form.dolarReferenciaDia) }}
+          </div>
         </div>
-      </div>
-    {% endif %}
-
-    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-      <div class="form-group">      
-        <div class="col-xs-9">
-        {{ form_label(edit_form.montoBsCierrePorGramo) }}
-        {{ form_widget(edit_form.montoBsCierrePorGramo) }}
-        {{ form_errors(edit_form.montoBsCierrePorGramo) }}
-        </div>
-      </div>
-    {% endif %}
-
-    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-      <div class="form-group">
-        <div class="col-xs-9">
-        {{ form_label(edit_form.proveedorCierre) }}
-        {{ form_widget(edit_form.proveedorCierre) }}
-        {{ form_errors(edit_form.proveedorCierre) }}  
-        </div>
-      </div>
-    {% endif %}
-    
-    <div class="form-group">
-      <div class="col-xs-9">
-      {{ form_widget(edit_form.submit) }}
-      </div>
-    </div> 
+      {% endif %}
       
-      {{ form_rest(edit_form) }}
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.tipoMonedaCierre) }}
+        {{ form_widget(edit_form.tipoMonedaCierre) }}
+        {{ form_errors(edit_form.tipoMonedaCierre) }}
+        </div>
+              
       
-    {{ form_end(edit_form) }}
-</div>
+        <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.cantidadTotalVenta) }}
+        {{ form_widget(edit_form.cantidadTotalVenta) }}
+        {{ form_errors(edit_form.cantidadTotalVenta) }} 
+        </div>
 
+        <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.valorOnza) }}
+        {{ form_widget(edit_form.valorOnza) }}
+        {{ form_errors(edit_form.valorOnza) }}  
+        </div>
+      </div>
 
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.montoTotalDolar) }}
+          {{ form_widget(edit_form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
+          {{ form_errors(edit_form.montoTotalDolar) }}  
+          </div>
+        </div>
+      {% endif %}
 
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+        <div class="form-group">      
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.montoBsCierrePorGramo) }}
+          {{ form_widget(edit_form.montoBsCierrePorGramo) }}
+          {{ form_errors(edit_form.montoBsCierrePorGramo) }}
+          </div>
+        </div>
+      {% endif %}
 
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.proveedorCierre) }}
+          {{ form_widget(edit_form.proveedorCierre) }}
+          {{ form_errors(edit_form.proveedorCierre) }}  
+          </div>
+        </div>
+      {% endif %}
+      
+      <div class="form-group">
+        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-6 col-xs-3 col-md-offset-8 col-md-3">
+        {{ form_widget(edit_form.submit) }}
+        </div>
+      </div> 
+        
+        {{ form_rest(edit_form) }}
+        
+      {{ form_end(edit_form) }}
+  </div>
 </div>
 {% endblock %}
 {% block javascripts %}
@@ -124,26 +133,29 @@
   </script>
   
   {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-    {% javascripts  'assets/self/js/closedDeals/new_supplier_closed_deal_validation.js' filter='?uglifyjs2' %}
+    {% javascripts  'assets/self/js/closedDeals/new_supplier_closed_deal_validation.js' %}
       <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
   {% else %}
-    {% javascripts  'assets/self/js/closedDeals/new_hc_closed_deal_validation.js'  filter='?uglifyjs2' %}
+    {% javascripts  'assets/self/js/closedDeals/new_hc_closed_deal_validation.js' %}
       <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
   {% endif %}
 
-  {% javascripts  'assets/self/js/closedDeals/edit_forms_misc_functions.js'
-                  %}
-    <script src="{{ asset_url }}"></script>
-  {% endjavascripts %}
+  {#% javascripts  'assets/self/js/closedDeals/edit_forms_misc_functions.js' %}
+    <!--script src="{{ asset_url }}"></script-->
+  {% endjavascripts %#}
 
   <script>
   $(function(){
 
     if (_globales.place == 'proveedores') {
       $("#loro_entitybundle_ventascierres_proveedorCierre").combobox();
+      $("#loro_entitybundle_ventascierres_tipoMonedaCierre").combobox();
+    } else {
+      $("#loro_entitybundle_cierres_hc_tipoMonedaCierre").combobox();
     }
+
 
   });
   </script>

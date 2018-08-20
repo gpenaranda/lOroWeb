@@ -58,8 +58,11 @@
                 </table>
             </div>
             <div class="panel-footer">
-    <a  href="{{ path('transferencias_delete',{ 'id' : entity.id}) }}" class="btn btn-lg btn-danger" >Eliminar</a>
-    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('transferencias_list') }}">Volver</a> 
+                <div class="text-right">
+                    <a title="Ver" class="btn btn-lg btn-success" href="{{ path('transferencias_edit', { 'id': entity.id }) }}">Editar</a>
+                    <a style="margin-left: 15px;" href="{{ path('transferencias_delete',{ 'id' : entity.id}) }}" class="btn btn-lg btn-danger" >Eliminar</a>
+                    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('transferencias_list') }}">Volver</a>
+                </div> 
             </div>
 
         </div>

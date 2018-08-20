@@ -31,7 +31,7 @@ class VentasDolaresEmpresasCasa
     /**
      * @var string
      *
-     * @ORM\Column(name="cantidad_transferida", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="cantidad_transferida", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $cantidadTransferida;    
 

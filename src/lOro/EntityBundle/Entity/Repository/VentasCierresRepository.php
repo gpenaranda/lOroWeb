@@ -14,19 +14,46 @@ use Doctrine\ORM\EntityRepository;
 class VentasCierresRepository extends EntityRepository
 {
     
+    
+  public function getCierresPorMesAnioEnCurso($arregloFiltrosCierres,$arrayIdProvPermitidos = NULL) {
+    $config = $this->getEntityManager()->getConfiguration();
+    $config->addCustomNumericFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+    $config->addCustomNumericFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+        
+      if($arrayIdProvPermitidos != NULL):
+        $q = 'SELECT vc
+                 FROM lOroEntityBundle:VentasCierres vc
+                 WHERE vc.tipoCierre = :tipoCierre
+                 AND vc.proveedorCierre IN ('.$arrayIdProvPermitidos.')
+                 ORDER BY vc.id DESC';
+      else:
+        $q = 'SELECT vc
+                 FROM lOroEntityBundle:VentasCierres vc
+                 WHERE MONTH(vc.feVenta) = MONTH(CURRENT_TIMESTAMP())
+                 AND YEAR(vc.feVenta) = YEAR(CURRENT_TIMESTAMP())
+                 AND vc.tipoCierre = :tipoCierre
+                 ORDER BY vc.id DESC';
+      endif;
+
+      $query = $this->getEntityManager()
+                    ->createQuery($q)->setParameter('tipoCierre',$arregloFiltrosCierres['tipoCierre']);
+
+      return $query->getResult();     
+  }
+
     public function traerCierresDelDiaProveedores() {
-        $feActual = new \DateTime('now');
-              
-        return $this->getEntityManager()
-            ->createQuery(
-                'SELECT vc FROM lOroEntityBundle:VentasCierres vc
-                 WHERE vc.feVenta = :feVenta
-                 AND   vc.tipoCierre = :tipoCierre
-                 ORDER BY vc.feVenta ASC'
-            )
-            ->setParameters(array(':feVenta' => $feActual->format('Y-m-d'),
-                                  ':tipoCierre' => 'proveedor'))
-            ->getResult();        
+      $feActual = new \DateTime('now');
+      $formatFeActual = $feActual->format('Y-m-d');
+
+      $conn = $this->getEntityManager()->getConnection();
+
+      $query = "SELECT *
+                FROM v_index_cierres_del_dia AS vcd
+                WHERE vcd.raw_fe_venta = '$formatFeActual';";
+      
+      $stmt = $conn->executeQuery($query);
+        
+      return $stmt->fetchAll();        
     }
     
     public function findVentasCierresPorFecha($proveedorId,$feDesde,$feHasta){

@@ -1,93 +1,106 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 
 {% block title %}Pagos Proveedores{% endblock %}
 
 {% block body -%}
-<div class="page-header">
-  <h1>Pago de Proveedor<small>Editar</small>
-  </h1>
-</div>
-<div class="col-md-11 contenedor-formularios">
-    {{ form_start(edit_form) }}
-    
-    {{ form_label(edit_form.fePago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.fePago) }}
-    </div>
-    {{ form_errors(edit_form.fePago) }}
-        
-    {{ form_label(edit_form.tipoTransaccion) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.tipoTransaccion) }}
-    </div>
-    {{ form_errors(edit_form.tipoTransaccion) }}
-
-    {{ form_label(edit_form.tipoPago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.tipoPago) }}
-    </div>
-    {{ form_errors(edit_form.tipoPago) }}     
-
-    <div class="campos-ocultos">   
-    {{ form_label(edit_form.banco) }}
-    <div class="input-group input-group-lg">
-      <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.banco) }}
-    </div>
-    {{ form_errors(edit_form.banco) }}
-    </div>
-    
-    {{ form_label(edit_form.nroReferencia) }}
-    <div class="input-group input-group-lg">
-      <span class="input-group-addon">N°</span>
-      {{ form_widget(edit_form.nroReferencia) }}
-    </div>
-    {{ form_errors(edit_form.nroReferencia) }}        
-    
-    {{ form_label(edit_form.empresaCasa) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.empresaCasa) }}
-    </div>
-    {{ form_errors(edit_form.empresaCasa) }}
-    
-    {{ form_label(edit_form.montoPagado) }}
-    <div class="input-group input-group-lg">
-      <span class="input-group-addon">Bs.</span>
-      {{ form_widget(edit_form.montoPagado) }}
-    </div>
-    {{ form_errors(edit_form.montoPagado) }}
-    
-    {{ form_label(edit_form.proveedor) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.proveedor) }}
-    </div>
-    {{ form_errors(edit_form.proveedor) }}
-    
-    <div id="inputEmpresasPago">
-    {{ form_label(edit_form.empresaPago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(edit_form.empresaPago) }}
-    </div>
-    {{ form_errors(edit_form.empresaPago) }}
-    </div>
-    <div id="alertaProveedor"  style="margin-top:15px;" class="alert alert-danger mensajes-info">
-        El proveedor seleccionado no posee ninguna empresa asociada, por favor registre una <a href="{{ path('empresas-proveedores_new') }}">Aquí</a>
-    </div>
-
-  <div style='margin-top:12px;'>
-    {{ form_widget(edit_form.submit) }}
-    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('pagos_proveedores') }}">Volver</a>  
+  <div class="title_left">
+    <h1>Pagos a Proveedor <small>Editar</small></h1>
   </div>
+  <div class="clearfix"></div>
 
-    {{ form_end(edit_form)}}
+<div class="row">
+  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+      {{ form_start(edit_form) }}
+      
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">    
+          {{ form_label(edit_form.fePago) }}
+          {{ form_widget(edit_form.fePago) }}
+          {{ form_errors(edit_form.fePago) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.tipoTransaccion) }}
+          {{ form_widget(edit_form.tipoTransaccion) }}
+          {{ form_errors(edit_form.tipoTransaccion) }}
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.tipoPago) }}
+          {{ form_widget(edit_form.tipoPago) }}
+          {{ form_errors(edit_form.tipoPago) }}     
+        </div>
+      </div>
+
+      <div class="campos-ocultos" style="display:none;">   
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+            {{ form_label(edit_form.banco) }}
+            {{ form_widget(edit_form.banco) }}
+            {{ form_errors(edit_form.banco) }}
+          </div>
+        </div>      
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">      
+          {{ form_label(edit_form.nroReferencia) }}
+          {{ form_widget(edit_form.nroReferencia) }}
+          {{ form_errors(edit_form.nroReferencia) }}        
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">      
+          {{ form_label(edit_form.empresaCasa) }}
+          {{ form_widget(edit_form.empresaCasa) }}
+          {{ form_errors(edit_form.empresaCasa) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">      
+          {{ form_label(edit_form.montoPagado) }}
+          {{ form_widget(edit_form.montoPagado) }}
+          {{ form_errors(edit_form.montoPagado) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">      
+          {{ form_label(edit_form.proveedor) }}
+          {{ form_widget(edit_form.proveedor) }}
+          {{ form_errors(edit_form.proveedor) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">  
+          {{ form_label(edit_form.empresaPago) }}
+          {{ form_widget(edit_form.empresaPago) }}
+          {{ form_errors(edit_form.empresaPago) }}
+        </div>
+      </div>
+  </div>
+  
+  <div class="clearfix"></div>
+  <br />
+  <div class="form-group">
+    <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-4">
+        {{ form_widget(edit_form.submit) }}
+        <a style="margin-left: 15px;" class="btn btn-info" href="{{ path('pagos_proveedores') }}">Volver</a>  
+      </div>
+  </div>
+  
+  {{ form_end(edit_form)}}  
 </div>
-{% endblock %}
+<div class="clearfix"></div>
+{% endblock body %}
 {% block javascripts %}
     <script>
         $(function(){
@@ -109,7 +122,6 @@
           
           
          
-          $('#alertaProveedor').hide();
           
           proveedor.change(function(){
                 $.post(urlBuscarEmpresasPorProveedor,

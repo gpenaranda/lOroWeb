@@ -39,7 +39,7 @@ class Proveedores
     private $ventasCierres;
     
     /**
-     * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\EntregasMinoristas", mappedBy="minorista")
+     * @ORM\OneToMany(targetEntity="\lOro\AppBundle\Entity\EntregasMinoristas", mappedBy="minorista")
      */
     private $entregasMinoristas;    
     
@@ -57,11 +57,17 @@ class Proveedores
     
     /**
      * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\TiposProveedores", inversedBy="proveedores")
-     * @ORM\JoinColumn(name="tipo_proveedor_id", referencedColumnName="id") 
+     * @ORM\JoinColumn(name="tipo_proveedor_id", referencedColumnName="id", nullable=true) 
      */
     private $tipoProveedor;     
     
- 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     */
+    private $email;
+
     /**
      * Constructor
      */
@@ -198,10 +204,10 @@ class Proveedores
     /**
      * Add entregasMinoristas
      *
-     * @param \lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas
+     * @param \lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas
      * @return Proveedores
      */
-    public function addEntregasMinorista(\lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas)
+    public function addEntregasMinorista(\lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas)
     {
         $this->entregasMinoristas[] = $entregasMinoristas;
 
@@ -211,9 +217,9 @@ class Proveedores
     /**
      * Remove entregasMinoristas
      *
-     * @param \lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas
+     * @param \lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas
      */
-    public function removeEntregasMinorista(\lOro\EntityBundle\Entity\EntregasMinoristas $entregasMinoristas)
+    public function removeEntregasMinorista(\lOro\AppBundle\Entity\EntregasMinoristas $entregasMinoristas)
     {
         $this->entregasMinoristas->removeElement($entregasMinoristas);
     }
@@ -282,5 +288,29 @@ class Proveedores
     public function getTipoProveedor()
     {
         return $this->tipoProveedor;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Proveedores
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

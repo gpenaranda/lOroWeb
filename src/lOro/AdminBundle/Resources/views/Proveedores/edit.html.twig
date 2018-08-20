@@ -1,29 +1,72 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
+{% block title %}Administraci&oacute;n - Proveedores{% endblock %}
+{% block stylesheets %}
+  <style type="text/css">
+    #proveedores-form .form-control-feedback {
+    right: 17px;
+  }
+  </style>
 
+{% endblock %}
 {% block body -%}
-<div class="page-header">
-  <h1>Proveedores
-      <small>Editar</small>
-  </h1>
-</div>
-<div class="col-md-11 contenedor-formularios">
-   {{ form_start(edit_form) }}
-        
-         {{ form_label(edit_form.nbProveedor) }}
-      {{ form_widget(edit_form.nbProveedor) }}
-      {{ form_errors(edit_form.nbProveedor) }}
-        
-    
-   
-     {{ form_label(edit_form.compraDolares) }}
-     {{ form_widget(edit_form.compraDolares) }}
-     {{ form_errors(edit_form.compraDolares) }}      
-   
-  <div style='margin-top:12px;'>
-    {{ form_widget(edit_form.submit) }}
-    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('proveedores') }}">Volver</a>  
-  </div>    
-        
-    {{ form_end(edit_form) }}
-</div>
+  <div class="title_left">
+    <h1>Proveedores <small>Editar</small></h1>
+  </div>
+  <div class="clearfix"></div>
+
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+
+      {{ form_start(edit_form) }}
+
+      <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.nbProveedor) }}
+          {{ form_widget(edit_form.nbProveedor) }}
+          {{ form_errors(edit_form.nbProveedor) }}
+          </div>
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.compraDolares) }}
+          {{ form_widget(edit_form.compraDolares) }}
+          {{ form_errors(edit_form.compraDolares) }}
+          </div>
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.tipoProveedor) }}
+          {{ form_widget(edit_form.tipoProveedor) }}
+          {{ form_errors(edit_form.tipoProveedor) }}
+          </div>
+        </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
+          {{ form_widget(edit_form.submit) }}
+          </div>
+        </div>
+        {{ form_rest(edit_form) }}       
+        {{ form_end(edit_form) }}
+    </div>
+  </div>
+
+{% endblock %}
+{% block javascripts %}
+  <script>
+  var _globales = {
+    formId: 'proveedores-form',
+    inputBaseName: "loro_entitybundle_proveedores_",
+  };
+
+  </script>
+
+  {% javascripts  'assets/self/js/admin/proveedores_val.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+  <script>
+   $("#"+_globales.inputBaseName+"compraDolares").combobox();
+   $("#"+_globales.inputBaseName+"tipoProveedor").combobox();
+  </script>
 {% endblock %}

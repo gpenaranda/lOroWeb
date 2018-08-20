@@ -35,7 +35,9 @@
                 <td style="text-align:center;">{{ entity.piezasEntregadas | length }}</td>
                 <td style="text-align:center;">
                   <a title="Ver" data-toggle="modal" data-id="{{ entity.id }}" data-target="#modalVerEntrega"  class="open-ver-entrega" style="text-decoration: none;" href="#">
-                    <img src="{{ asset('bundles/lOroBundle/images/ver.png') }}" />
+                    {% image 'assets/self/images/ver.png' %}
+                      <img src="{{ asset_url }}" alt="Ver" />
+                    {% endimage %}
                   </a>
                 </td>
             </tr>
@@ -56,13 +58,61 @@ var _globales = {
       urlEliminarPieza: '{{ path('piezas_delete', { 'id': ':idPieza' }) }}',
       titulosNoFiltrados: [0,1,2,4,5],
       idListado: 'listado-entregas',
-      urlTxtLang: "{{ asset('lang.txt') }}"
+      urlDatatableLang: '{{ asset('lang.txt') }}'
 };
 </script>
-<script src="{{ asset('bundles/lOroBundle/js/listados/listadoEntregas.js') }}"></script>
+<script>
+$(document).ready( function () {
+
+    
+    var table = $('#'+_globales.idListado).DataTable(
+    {
+      responsive: true,
+      "order": [[ 1, "desc" ]],
+      "oLanguage": {
+        "sUrl": _globales.urlDatatableLang
+      } , 
+   
+        initComplete: function () {
+            var api = this.api();
+            
+     
+            
+            api.columns().indexes().flatten().each( function ( i ) {
+                
+                if(_globales.titulosNoFiltrados.indexOf(i) === -1) {
+
+               
+                
+                var column = api.column( i );
+                var select = $('<select class="form-control"><option value="">'+$(column.header()).html()+'</option></select>')
+                    .appendTo( $(column.header()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' );
+                } );
+                
+          }
+                  
+          });
+        }
+     }
+   );
+});
+</script> 
 <script>
 $('#cargando-reg').hide();
-</script>    
+</script>  
+  
 <script>
 $(document).on("click", ".open-ver-entrega", function () {
      _globales.idEntrega = $(this).data('id');

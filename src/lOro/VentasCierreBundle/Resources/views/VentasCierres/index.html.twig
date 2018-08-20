@@ -1,85 +1,89 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}}{% endblock %}
+
+
+
+
 {% block body -%}
-
-<!-- LLamado del twig con los flash del sistema -->
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
-
-
-
-<div class="col-md-12 col-xs-12" style="margin-top:20px;">
-  <div class="page-header">
-    <h1>Listado de Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}}</h1>
+  <div class="title_left">
+    <h1>Cierres - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}} <small>Listado</small></h1>
   </div>
+  <div class="clearfix"></div>
   
-  <div class="col-md-11" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a href="{{ path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_new')) }}" style="float:right;" class="btn btn-primary btn-fab btn-raised mdi-content-add"></a>
-  </div>    
+  <div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="clearfix"></div>
+    
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a href="{{ path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_new')) }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+    </div>    
+              
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+
+      <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+        <thead>
+          <tr >
+            <th class="hidden-md hidden-sm hidden-xs">ID</th>
+            <th>Fecha de Cierre</th>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <th style="text-align:center;">Proveedor</th>
+            {% endif %}
+            <th style="text-align:center;">Peso Total</th>
+            <th class="hidden-md hidden-sm hidden-xs"  style="text-align:center;">Valor de la Onza</th>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <th class="hidden-xs" style="text-align:center;">Pagado por Gramo</th>
+            {% endif %}
+            <th style="text-align:center;">Cierre realizado en</th>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
+            <th style="text-align:center;">Monto Total</th> 
+            {% endif %}
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <th class="hidden-md hidden-sm hidden-xs" style="text-align:center;">Monto Total</th>
+            {% endif %}
+            <th style="text-align:center;">Acciones</th>
+          </tr>
+        </thead>
+        
+        <tbody class="data-tabla">
+          {% for entity in entities %}
+          <tr>
+            <td class="hidden-md hidden-sm hidden-xs" style="text-align:center;">{{ entity.id }}</td>
+            <td style="text-align:center;">{% if entity.feVenta %}{{ entity.feVenta|date('Y-m-d') }}{% endif %}</td>
             
-  <div class="col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="display" >
-      <thead>
-        <tr >
-          <th style="text-align:center;">ID</th>
-          <th style="text-align:center;">Fecha de Cierre</th>
-          <th style="text-align:center;">Peso Total</th>
-          <th style="text-align:center;">Valor de la Onza</th>
-          {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-          <th style="text-align:center;">Pagado por Gramo</th>
-          {% endif %}
-          <th style="text-align:center;">Cierre realizado en</th>
-          {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
-          <th style="text-align:center;">Monto Total</th> 
-          {% endif %}
-          {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-          <th style="text-align:center;">Monto Total</th>
-          <th style="text-align:center;">Proveedor</th>
-          {% endif %}
-          <th style="text-align:center;">Acciones</th>
-        </tr>
-      </thead>
-      
-      <tbody class="data-tabla">
-        {% for entity in entities %}
-        <tr>
-          <td style="text-align:center;">{{ entity.id }}</td>
-          <td style="text-align:center;">{% if entity.feVenta %}{{ entity.feVenta|date('Y-m-d') }}{% endif %}</td>
-          <td style="text-align:center;">{{ entity.cantidadTotalVenta  | number_format(2,',','.')}} Grs</td>
-          <td style="text-align:center;">{{ entity.valorOnza | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }} x Oz</td>
-          {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-          <th style="text-align:center;">{{ entity.montoBsCierrePorGramo | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }} / Grs</th>
-          {% endif %}
-          <td style="text-align:center;">{{ entity.tipoMonedaCierre.nbMoneda }}</td>
-          {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
-          <td style="text-align:center;">{{ entity.montoTotalDolar | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }}</td>
-          {% endif %}
-          {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-          <td style="text-align:center;">{{ entity.montoBsCierre | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }}</td>
-          {% if entity.proveedorCierre %} 
-          <td style="text-align:center;">{{ entity.proveedorCierre.nbProveedor }}</td>
-          {% else %}
-          <td style="text-align:center;">N/A</td>
-          {% endif %}
-          {% endif %}
-          <td style="text-align:center;">
-          {% set viewPath = path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_show'), { 'id': entity.id }) %}
-          <a title="Ver" data-toggle="modal" data-target="#showClosedDealModal" data-id="{{ entity.id }}" data-path="{{ viewPath }}" style="text-decoration: none;" href='#'>
-            {% image 'assets/self/images/ver.png' %}
-              <img src="{{ asset_url }}" alt="Ver" />
-            {% endimage %}
-          </a>
-          <a title="Editar" style="text-decoration: none;" href="{{ path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_edit'), { 'id': entity.id }) }}">
-            {% image 'assets/self/images/editar.png' %}
-              <img src="{{ asset_url }}" alt="Editar" />
-            {% endimage %}
-          </a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+              {% if entity.proveedorCierre %} 
+              <td style="text-align:center;">{{ entity.proveedorCierre.nbProveedor }}</td>
+              {% else %}
+              <td style="text-align:center;">N/A</td>
+              {% endif %}
+            {% endif %}
+            
+            <td style="text-align:center;">{{ entity.cantidadTotalVenta  | number_format(2,',','.')}} Grs</td>
+            <td class="hidden-md hidden-sm hidden-xs"  style="text-align:center;">{{ entity.valorOnza | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }} x Oz</td>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <th class="hidden-xs" style="text-align:center;">{{ entity.montoBsCierrePorGramo | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }} / Grs</th>
+            {% endif %}
+            <td style="text-align:center;">{{ entity.tipoMonedaCierre.nbMoneda }}</td>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
+            <td style="text-align:center;">{{ entity.montoTotalDolar | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }}</td>
+            {% endif %}
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <td class="hidden-md hidden-sm hidden-xs"  style="text-align:center;">{{ entity.montoBsCierre | number_format(2,',','.')}} {{ entity.tipoMonedaCierre.simboloMoneda }}</td>
+            {% endif %}
+            <td style="text-align:center;">
+            {% set viewPath = path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_show'), { 'id': entity.id }) %}
+            <a title="Ver" data-toggle="modal" data-target="#showClosedDealModal" data-id="{{ entity.id }}" data-path="{{ viewPath }}" style="text-decoration: none;" href='#'>
+              <i class="fa fa-eye fa-4" aria-hidden="true"></i>
+            </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
 <!-- Calling of the Show Closed Deal Modal -->
 {% include 'lOroVentasCierreBundle:VentasCierres/ext/modals:show_closed_deal_modal.html.twig' %}
@@ -88,13 +92,17 @@
 {% endblock %}
 
 {% block javascripts %}
+
+
 <script>
 var _globales = {
   idEntrega: '',
-  titulosNoFiltrados: {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? '[0,1,2,3,4,8]' : '[0,1,2,3,5,6]' }},
+  titulosNoFiltrados: {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? '[0,1,3,4,6,7,8]' : '[0,1,2,3,5,6]' }},
   idListado: 'listado-cierres',
   urlDatatableLang: '{{ asset('lang.txt') }}',
-  place: "{{ app.request.attributes.get('_route_params')['lugar'] }}"
+  place: "{{ app.request.attributes.get('_route_params')['lugar'] }}",
+  editPath: "{{ path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_edit'), { 'id': 'closed_deal_id' }) }}",
+  deletePath: "{{ path(('ventas_cierres_' ~ (app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'proveedores' : 'hc') ~ '_delete'), { 'id': 'closed_deal_id' }) }}"
 };
 </script>
 <script>
@@ -154,6 +162,7 @@ $('#showClosedDealModal').on('show.bs.modal', function (event) {
   var viewPath = button.data('path') 
   var modal = $(this);
 
+  
   $('#loading-square-closed-deals-show').show();
   $('#table-show-closed-deals').hide();
   $.ajax({
@@ -165,6 +174,13 @@ $('#showClosedDealModal').on('show.bs.modal', function (event) {
     success: function(data) {
       
       if(data != 'vacio') {
+        var editPath = _globales.editPath;
+        var newEditPath= editPath.replace('closed_deal_id',data.id);
+
+        var deletePath = _globales.deletePath;
+        var newDeletePath = deletePath.replace('closed_deal_id',data.id);
+
+        
 
         modal.find('.modal-title').text('Cierre N° ' + data.id);
 
@@ -181,6 +197,9 @@ $('#showClosedDealModal').on('show.bs.modal', function (event) {
           modal.find('.modal-body #closed-closed-deal-bs-payed').text(data.closedDealBsPayed);
           modal.find('.modal-body #closed-supplier').text(data.supplier);
         }
+
+        modal.find('.modal-footer #closed-deal-edit-button').attr('href',newEditPath);
+        modal.find('.modal-footer #closed-deal-delete-button').attr('href',newDeletePath);
 
         $('#table-show-closed-deals').delay( 800 ).show(0);
         $('#loading-square-closed-deals-show').delay( 800 ).hide(0);

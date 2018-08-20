@@ -1,62 +1,115 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Administraci&oacute;n - Proveedores{% endblock %}
+
+  
 {% block body -%}
-<div class="page-header">
-  <h1>Proveedores<small>Listado</small>
-  </h1>
+  <div class="title_left">
+    <h1>Proveedores <small>Listado</small></h1>
+  </div>
+  <div class="clearfix"></div>
+  
+  <div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
+
+    <div class="clearfix"></div>
+    
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
+      <a href="{{ path('proveedores_new') }}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
+    </div>    
+              
+    <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+
+      <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+           <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Proveedor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>              
+                    <td>{{ entity.nbProveedor }}</td>  
+                    <td>
+                      <a title="Ver" data-toggle="modal" data-target="#showViewModal" data-id="{{ entity.id }}" data-path="{{ path('proveedores_show', { 'id': entity.id }) }}" style="text-decoration: none;" href='#'>
+                        <i class="fa fa-eye fa-4" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+      </table>
+  </div>
 </div>
 
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
+  <!-- Calling of the Show Closed Deal Modal -->
+  {% include 'lOroAdminBundle:Proveedores/ext/modals:show_proveedor_modal.html.twig' %}
 
 
-  <div class="col-md-offset-1 col-md-10" style="padding:0 0 3em 0; margin-left: -5px;">
-    <a style="float:right;" href="{{ path('proveedores_new') }}" class="btn btn-lg btn-success">Agregar Nuevo Proveedor</a>
-  </div>
 
-
-  <div class="col-xs-offset-1 col-xs-11 col-md-offset-1 col-md-9">
-    <table id="suppliers-list" class="table table-hover table-condensed" style="margin-bottom: 0px;">
-          <thead>
-              <tr>
-                  <th>ID</th>
-                  <th>Proveedor</th>
-                  <th>Realiza compra de Dolares</th>
-                  <th>Acciones</th>
-              </tr>
-          </thead>
-          <tbody>
-          {% for entity in entities %}
-              <tr>
-                  <td>{{ entity.id }}</td>              
-                  <td>{{ entity.nbProveedor }}</td>  
-                  <td>{{ entity.compraDolares == 0 ? 'No' : 'Si' }}</td>
-                  <td>
-                    <a title="Ver" style="text-decoration: none;" href="{{ path('proveedores_show', { 'id': entity.id }) }}">
-                      {% image 'assets/self/images/ver.png' %}
-                        <img src="{{ asset_url }}" alt="Ver" />
-                      {% endimage %} 
-                    </a>
-                    <a title="Ver" style="text-decoration: none;" href="{{ path('proveedores_edit', { 'id': entity.id }) }}">
-                      {% image 'assets/self/images/editar.png' %}
-                        <img src="{{ asset_url }}" alt="Editar" />
-                      {% endimage %}
-                    </a>
-                  </td>
-              </tr>
-          {% endfor %}
-          </tbody>
-    </table>
-  </div>
 {% endblock %}
 
 {% block javascripts %}
   <script>
     var _globales = {
-        titulosNoFiltrados: '[0,1,3]',
-        idListado: 'suppliers-list',
-        urlDatatableLang: '{{ asset('lang.txt') }}'
+        titulosNoFiltrados: '[0,1,2]',
+        idListado: 'listado-cierres',
+        urlDatatableLang: '{{ asset('lang.txt') }}',       
+        editPath: "{{ path('proveedores_edit', { 'id': 'entity_id' }) }}",
+        deletePath: "{{ path('proveedores_delete', { 'id':  'entity_id' }) }}"
   };
   </script>
+
+<script>
+
+$('#showViewModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget);
+  var entityId = button.data('id');
+  var viewPath = button.data('path') 
+  var modal = $(this);
+
+  
+  $('#loading-square-closed-deals-show').show();
+  $('#table-show-closed-deals').hide();
+  $.ajax({
+    type: "POST",
+    url: viewPath,
+    data: {'id': entityId
+          },
+    success: function(data) {
+      
+      if(data != 'vacio') {
+        var editPath = _globales.editPath;
+        var newEditPath= editPath.replace('entity_id',data.id);
+
+        var deletePath = _globales.deletePath;
+        var newDeletePath = deletePath.replace('entity_id',data.id);
+
+        
+
+        modal.find('.modal-title').text('Proveedor N° ' + data.id);
+
+        modal.find('.modal-body #proveedor-id').text(data.id);
+        modal.find('.modal-body #proveedor-nombre').text(data.nbProveedor);
+        modal.find('.modal-body #proveedor-tipo-proveedor').text(data.tipoProveedor);
+        
+
+        modal.find('.modal-footer #proveedor-edit-button').attr('href',newEditPath);
+        modal.find('.modal-footer #proveedor-delete-button').attr('href',newDeletePath);
+
+        $('#table-show-closed-deals').delay( 800 ).show(0);
+        $('#loading-square-closed-deals-show').delay( 800 ).hide(0);
+      }
+    }
+  });  
+
+  
+});
+</script>
+
 
   {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
     <script src="{{ asset_url }}"></script>

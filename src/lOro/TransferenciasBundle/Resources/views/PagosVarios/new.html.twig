@@ -1,77 +1,99 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 
 {% block title %}Pagos Varios{% endblock %}
 
 {% block body -%}
-<div class="page-header">
-  <h1>Pagos Varios<small>Registrar</small>
-  </h1>
+<div class="title_left">
+  <h1>Pagos Varios <small>Registrar</small></h1>
 </div>
-<div class="col-xs-11 col-md-offset-2 col-md-10">
-    {{ form_start(form) }}
-    
+<div class="clearfix"></div>
+
+<div class="row">
+
+  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+      {{ form_start(form) }}
+      
     <div class="form-group">
-      <div class="col-xs-9">
+      <div class="col-xs-9 col-md-9">  
         {{ form_label(form.fePago) }}
         {{ form_widget(form.fePago) }}
         {{ form_errors(form.fePago) }}
       </div>
-  
-      <div class="col-xs-9">
-      {{ form_label(form.tipoPagoVario) }}
-      {{ form_widget(form.tipoPagoVario) }}
-      {{ form_errors(form.tipoPagoVario) }}
-      </div>
-
-      <div class="col-xs-9">      
-      {{ form_label(form.tipoTransaccion) }}
-      {{ form_widget(form.tipoTransaccion) }}
-      {{ form_errors(form.tipoTransaccion) }}
-      </div>
-
-      <div class="col-xs-9"> 
-      {{ form_label(form.tipoPago) }}
-      {{ form_widget(form.tipoPago) }}
-      {{ form_errors(form.tipoPago) }}    
-      </div>
-
-      <div class="campos-ocultos">
-        <div class="col-xs-9"> 
-        {{ form_label(form.nroReferencia) }}
-        {{ form_widget(form.nroReferencia) }}
-        {{ form_errors(form.nroReferencia) }}
-        </div>
-      </div> 
-
-
-        <div class="col-xs-9">
-          {{ form_label(form.empresaCasa) }}
-          {{ form_widget(form.empresaCasa) }}
-          {{ form_errors(form.empresaCasa) }}
-        </div>
-
-        <div class="col-xs-9">
-          {{ form_label(form.montoPago) }}
-          {{ form_widget(form.montoPago) }}
-          {{ form_errors(form.montoPago) }}
-        </div>
-
-        <div class="col-xs-9">
-          {{ form_label(form.descripcionPago) }}
-          {{ form_widget(form.descripcionPago) }}
-          {{ form_errors(form.descripcionPago) }}
-        </div>
     </div>
-
-    <div class="row">
-      <div class="form-group">
-        <div class='col-md-offset-7 col-md-4'>
-          {{ form_widget(form.submit) }}  
+    
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+        {{ form_label(form.tipoPagoVario) }}
+        {{ form_widget(form.tipoPagoVario) }}
+        {{ form_errors(form.tipoPagoVario) }}
         </div>
       </div>
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+        {{ form_label(form.tipoTransaccion) }}
+        {{ form_widget(form.tipoTransaccion) }}
+        {{ form_errors(form.tipoTransaccion) }}
+        </div>
+      </div>
+
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+        {{ form_label(form.tipoPago) }}
+        {{ form_widget(form.tipoPago) }}
+        {{ form_errors(form.tipoPago) }}    
+        </div>
+      </div>
+
+        <div class="campos-ocultos">
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9"> 
+          {{ form_label(form.nroReferencia) }}
+          {{ form_widget(form.nroReferencia) }}
+          {{ form_errors(form.nroReferencia) }}
+          </div>
+        </div>
+        </div> 
+
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+            {{ form_label(form.empresaCasa) }}
+            {{ form_widget(form.empresaCasa) }}
+            {{ form_errors(form.empresaCasa) }}
+          </div>
+        </div>
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+            {{ form_label(form.montoPago) }}
+            {{ form_widget(form.montoPago) }}
+            {{ form_errors(form.montoPago) }}
+          </div>
+        </div>
+
+    <div class="form-group">
+      <div class="col-xs-9 col-md-9">
+            {{ form_label(form.descripcionPago) }}
+            {{ form_widget(form.descripcionPago) }}
+            {{ form_errors(form.descripcionPago) }}
+          </div>
+        </div>
+
+      </div>
+
+<div class="clearfix"></div>
+  <br />             
+  <div class="form-group">
+    <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-9 col-md-3">
+      {{ form_widget(form.submit) }}
     </div>
-    {{ form_end(form)}}
-</div>
+  </div>
+
+      {{ form_end(form)}}
+  </div>
+<div class="clearfix"></div>
 
 
 

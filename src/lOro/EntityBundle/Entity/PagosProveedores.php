@@ -31,7 +31,7 @@ class PagosProveedores
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_pagado", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="monto_pagado", type="decimal", precision=14, scale=2)
      */
     private $montoPagado;
     

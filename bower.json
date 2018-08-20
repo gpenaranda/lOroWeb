@@ -21,9 +21,10 @@
     "jquery": "^2.2.0",
     "jquery.maskedinput": "jquery-maskedinput#^1.4.1",
     "jquery.steps": "latest",
-    "font-awesome": "^4.5.0",
+    "font-awesome": "latest",
     "bootstrap": "^3.3.6",
     "blockui": "latest",
-    "bootstrap-combobox": "^1.1.8"
+    "bootstrap-combobox": "^1.1.8",
+    "gentelella": "^1.4.0"
   }
 }

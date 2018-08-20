@@ -24,7 +24,7 @@ class EmpresasProveedores
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_empresa", type="string", length=255)
+     * @ORM\Column(name="nombre_empresa", type="string", length=60, nullable=true)
      */
     private $nombreEmpresa;
 
@@ -37,7 +37,7 @@ class EmpresasProveedores
     /**
      * @var string
      *
-     * @ORM\Column(name="rif", type="string", length=12)
+     * @ORM\Column(name="rif", type="string", length=12, nullable=true)
      */
     private $rif;
     
@@ -96,7 +96,7 @@ class EmpresasProveedores
     /**
      * @var string
      * 
-     * @ORM\Column(name="alias_empresa", type="string",length=10, nullable=true) 
+     * @ORM\Column(name="alias_empresa", type="string",length=40, nullable=true) 
      */
     private $aliasEmpresa;     
     

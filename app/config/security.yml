@@ -13,7 +13,7 @@ security:
 
 
     role_hierarchy:
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_PROVEEDOR, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_SUPERUSER, ROLE_USER, ROLE_PROVEEDOR, ROLE_ALLOWED_TO_SWITCH]
 
 
     firewalls:
@@ -21,22 +21,13 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-#        login:
-#            pattern:  ^/demo/secured/login$
-#            security: false
-
-#        secured_area:
-#             pattern:    ^/
-#             anonymous: ~
-#             form_login:
-#                 check_path: /login/
-#                 login_path: login_check
         login_firewall:
             pattern:   ^/
             form_login:
                 login_path: /login
                 check_path: /login_check
                 success_handler: redirect.after.login
+                csrf_token_generator: security.csrf.token_manager
             anonymous: ~
         relacion_entregas_firewall:
             pattern:   ^/admin/relacionar-entregas-cierres-aupanas-hc$
@@ -47,9 +38,6 @@ security:
             logout:
                 path: /logout
                 target: /
-            #anonymous: /relacionar-entregas-cierres-aupanas-hc
-            #http_basic:
-            #    realm: "Secured Demo Area"
 
     access_control:
          - { path: ^/admin/relacionar-entregas-cierres-aupanas-hc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -58,6 +46,6 @@ security:
          - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/cargar, roles: IS_AUTHENTICATED_ANONYMOUSLY }    
          - { path: ^/app-proveedores/*, roles: ROLE_PROVEEDOR } 
-         - { path: ^/cambio-contrasena, roles: [ROLE_PROVEEDOR, ROLE_USER] }
-         - { path: ^/entregas/[0-9]+/show$, roles: [ROLE_PROVEEDOR, ROLE_USER] }
-         - { path: ^/, roles: ROLE_USER }
+         - { path: ^/cambio-contrasena, roles: [ROLE_PROVEEDOR, ROLE_USER, ROLE_SUPERUSER] }
+         - { path: ^/entregas/[0-9]+/show$, roles: [ROLE_PROVEEDOR, ROLE_USER, ROLE_SUPERUSER,ROLE_REGISTRADOR_CIERRES] }
+         - { path: ^/, roles: [ROLE_USER, ROLE_SUPERUSER,ROLE_REGISTRADOR_CIERRES] }

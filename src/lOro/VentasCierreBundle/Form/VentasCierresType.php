@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -30,7 +31,7 @@ class VentasCierresType extends AbstractType
     {
         $this->em = $options['em']; 
         $this->tipoAccion = $options['tipoAccion'];  
-        $this->promReferencia = number_format($options['promReferencia'],'2',',','.');
+        $this->promReferencia = number_format($options['promReferencia'],'2','.','');
        
 
         $attrFecha['label'] = 'Fecha del Cierre';
@@ -40,13 +41,21 @@ class VentasCierresType extends AbstractType
 
         if($this->tipoAccion):
           $attrDolarRefDia = array('label' => 'Promedio Referencia Día',
-                                    'attr' => array('class' => 'form-control'),
+                                    'attr' => array('class' => 'form-control',
+                                                                'autocomplete' => 'off',
+                                                                'pattern' => '[0-9]*',
+                                                                'step' => 'any',
+                                                                'inputmode' => 'numeric'),
                               );
         else:
           $attrFecha['data'] = new \ DateTime('now');   
-
+         
           $attrDolarRefDia = array('label' => 'Promedio Referencia Día',
-                                    'attr' => array('class' => 'form-control'),
+                                    'attr' => array('class' => 'form-control',
+                                                                'autocomplete' => 'off',
+                                                                'pattern' => '[0-9]*',
+                                                                'step' => 'any',
+                                                                'inputmode' => 'numeric'),
                                     'data' => $this->promReferencia
                               );        
         endif;
@@ -62,16 +71,27 @@ class VentasCierresType extends AbstractType
                                                                 ->where('u.id IN (1,2,3)');
                                                    },
                                                    'choice_label' => 'nbMoneda',
-                                                   'placeholder' => $this->seleccione_opcion,
+                                                   'placeholder' => '',
                                                    'attr' => array('class' => 'form-control',
                                                    'mapped'        => true,
                                                    'style' => 'margin-bottom:10px;')))                
-            ->add('cantidadTotalVenta',TextType::class,array('label' => 'Peso Total (Gr.)',
-                                                     'attr' => array('class' => 'form-control')))
-            ->add('valorOnza',TextType::class,array('label'=> 'Valor de la Onza',
-                                           'attr' => array('class' => 'form-control')))              
-            ->add('montoBsCierrePorGramo',TextType::class,array('label' => 'Monto Pagado x Gr.',
-                                               'attr' => array('class' => 'form-control')))
+            ->add('cantidadTotalVenta',NumberType::class,array('label' => 'Peso Total (Gr.)',
+                                                     'attr' => array('class' => 'form-control',
+                                                                'autocomplete' => 'off',
+                                                                'pattern' => '[0-9]*',
+                                                                'step' => 'any',
+                                                                'inputmode' => 'numeric')))
+            ->add('valorOnza',NumberType::class,array('label'=> 'Valor de la Onza',
+                                           'attr' => array('class' => 'form-control',
+                                                                'autocomplete' => 'off',
+                                                                'pattern' => '[0-9]*',
+                                                                'inputmode' => 'numeric'
+                                                                )))              
+            ->add('montoBsCierrePorGramo',NumberType::class,array('label' => 'Monto Pagado x Gr.',
+                                               'attr' => array('class' => 'form-control',
+                                                                'autocomplete' => 'off',
+                                                                'pattern' => '[0-9]*',
+                                                                'inputmode' => 'numeric')))
             ->add('proveedorCierre',EntityType::class,array('label' => 'Proveedor',
                                                    'class' => 'lOroEntityBundle:Proveedores',
                                                    'query_builder' => function(EntityRepository $er) {

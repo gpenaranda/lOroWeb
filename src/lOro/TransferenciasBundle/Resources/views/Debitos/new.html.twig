@@ -1,64 +1,73 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 
 {% block title %}Debitos{% endblock %}
 
 {% block body -%}
-    {% include "lOroTransferenciasBundle:Debitos:base_deb.html.twig" %}
-    
-<div class="col-md-11 contenedor-formularios">
-    {{ form_start(form) }}
-    
-    {{ form_label(form.feDebito) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(form.feDebito) }}
-    </div>
-    {{ form_errors(form.feDebito) }}
-        
-    {{ form_label(form.tipoTransaccion) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(form.tipoTransaccion) }}
-    </div>
-    {{ form_errors(form.tipoTransaccion) }}
-    
-    {{ form_label(form.tipoPago) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(form.tipoPago) }}
-    </div>
-    {{ form_errors(form.tipoPago) }}    
-
-    <div class="campos-ocultos">
-        {{ form_label(form.nroReferencia) }}
-        <div class="input-group input-group-lg">
-          <span class="input-group-addon">N°</span>
-          {{ form_widget(form.nroReferencia) }}
-        </div>
-        {{ form_errors(form.nroReferencia) }}
-    </div> 
-        
-        
-    {{ form_label(form.monto) }}
-    <div class="input-group input-group-lg">
-      <span class="input-group-addon" id="tipo-moneda"></span>
-      {{ form_widget(form.monto) }}
-    </div>
-    {{ form_errors(form.monto) }}
-    
-    {{ form_label(form.descripcion) }}
-    <div class="input-group input-group-lg">
-        <span class="input-group-addon">&nbsp;&nbsp;</span>
-      {{ form_widget(form.descripcion) }}
-    </div>
-    {{ form_errors(form.descripcion) }}
-   
-<div style='margin-top:12px;'>
-    {{ form_widget(form.submit) }}
-    <a style="margin-left: 15px;" class="btn btn-lg btn-info" href="{{ path('debitos') }}">Volver</a>  
+<div class="title_left">
+  <h1>Debitos <small>Listado</small></h1>
 </div>
+    
+  <div class="row">
+    <!-- LLamado del twig con los flash del sistema -->
+    {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
-    {{ form_end(form)}}
+    <div class="clearfix"></div>
+    
+    <div class="col-md-11 contenedor-formularios">
+        {{ form_start(form) }}
+        
+        {{ form_label(form.feDebito) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+          {{ form_widget(form.feDebito) }}
+        </div>
+        {{ form_errors(form.feDebito) }}
+            
+        {{ form_label(form.tipoTransaccion) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+          {{ form_widget(form.tipoTransaccion) }}
+        </div>
+        {{ form_errors(form.tipoTransaccion) }}
+        
+        {{ form_label(form.tipoPago) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+          {{ form_widget(form.tipoPago) }}
+        </div>
+        {{ form_errors(form.tipoPago) }}    
+
+        <div class="campos-ocultos">
+            {{ form_label(form.nroReferencia) }}
+            <div class="input-group input-group-lg">
+              <span class="input-group-addon">N°</span>
+              {{ form_widget(form.nroReferencia) }}
+            </div>
+            {{ form_errors(form.nroReferencia) }}
+        </div> 
+            
+            
+        {{ form_label(form.monto) }}
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon" id="tipo-moneda"></span>
+          {{ form_widget(form.monto) }}
+        </div>
+        {{ form_errors(form.monto) }}
+        
+        {{ form_label(form.descripcion) }}
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">&nbsp;&nbsp;</span>
+          {{ form_widget(form.descripcion) }}
+        </div>
+        {{ form_errors(form.descripcion) }}
+       
+    <div style='margin-top:12px;'>
+        {{ form_widget(form.submit) }}
+        <a style="margin-left: 15px;" class="btn btn-info" href="{{ path('debitos') }}">Volver</a>  
+    </div>
+
+        {{ form_end(form)}}
+    </div>
 </div>
 {% endblock %}
 {% block javascripts %}

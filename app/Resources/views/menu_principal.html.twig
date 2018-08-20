@@ -26,9 +26,12 @@
               <li class="dropdown">
               <a data-target="#" class="dropdown-toggle" data-toggle="dropdown">Minoristas<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Entregas</li>
-                <li><a href="{{ path('entregas_minoristas') }}">Entregas de Chatarra</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Cierres</li>
+                <li><a href="{{ path('retail_supplier_closed_deals_index') }}">Listado de Cierres</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Entregas</li>
+                <li><a href="{{ path('retail_supplier_deliveries_index') }}">Listado de Entregas</a></li>
                 <li><a href="{{ path('asociar_entregas_minoristas_pieza') }}">Asociar Chatarra a Piezas</a></li>
                   <li class="divider"></li>
                   <li class="dropdown-header">Pagos</li>
@@ -77,7 +80,7 @@
                 <li><a href="{{ path('empresas-casa') }}">Empresas Casa</a></li>
                 <li><a href="{{ path('parametros') }}">Parametros Generales</a></li>
                 <li class="divider"></li>
-                <li class="dropdown-header">Reportes y Estadisticas</li>
+                <li class="dropdown-header">Reportes</li>
                 <li><a href="{{ path('reportes_estadisticas') }}">Reportes</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Usuario</li>

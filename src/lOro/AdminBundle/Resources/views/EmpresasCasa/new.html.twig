@@ -1,12 +1,79 @@
-{% extends '::base.html.twig' %}
-{% block title %}Administraci&oacute;n - Empresas por Proveedores{% endblock %}
+{% extends '::gen_base.html.twig' %}
+{% block title %}Administraci&oacute;n - Empresas Casa{% endblock %}
+{% block stylesheets %}
+  <style type="text/css">
+    #empresas-casa-form .form-control-feedback {
+    right: 17px;
+  }
+  </style>
+
+{% endblock %}
 {% block body -%}
 <div class="page-header">
-  <h1>Empresas por Proveedores
+  <h1>Empresas Casa
       <small>Agregar</small>
   </h1>
 </div>
-<div class="col-md-11 contenedor-formularios">
-    {{ form(form) }}
-</div>
+  <div class="clearfix"></div>
+  
+  <div class="row">
+
+    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+   {{ form_start(form) }}
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(form.nombreEmpresa) }}
+          {{ form_widget(form.nombreEmpresa) }}
+          {{ form_errors(form.nombreEmpresa) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(form.aliasEmpresa) }}
+          {{ form_widget(form.aliasEmpresa) }}
+          {{ form_errors(form.aliasEmpresa) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(form.tipoDocumento) }}
+          {{ form_widget(form.tipoDocumento) }}
+          {{ form_errors(form.tipoDocumento) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(form.rif) }}
+          {{ form_widget(form.rif) }}
+          {{ form_errors(form.rif) }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
+          {{ form_widget(form.submit) }}
+        </div>
+      </div>
+      {{ form_rest(form) }}       
+      {{ form_end(form) }}
+    </div>
+  </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+  var _globales = {
+    
+    formId: 'empresas-casa-form',
+    
+  };
+  </script>
+
+  {% javascripts  'assets/self/js/admin/empresas_casa_val.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+  </script>
 {% endblock %}

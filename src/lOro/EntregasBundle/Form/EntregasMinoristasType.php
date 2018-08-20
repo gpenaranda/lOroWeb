@@ -1,5 +1,8 @@
 <?php
 
+echo 'ARCHIVO PARA BORRAR EntregasMinoristasType.php'; die();
+
+/*
 namespace lOro\EntregasBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -24,7 +27,7 @@ class EntregasMinoristasType extends AbstractType
    /**
      * @param FormBuilderInterface $builder
      * @param array $options
-     */
+     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
       $this->em = $options['em'];    
@@ -66,23 +69,12 @@ class EntregasMinoristasType extends AbstractType
                                                                  'style' => 'margin-bottom:10px;',
                                                                  'readonly' => true)
                                                  ))
-            ->add('montoBsPorGramo',TextType::class,array('label' => 'Monto Pagado Bs. x Gr.',
-                                               'attr' => array('class' => 'form-control')))
-            ->add('totalMontoBs',TextType::class,array( 'label' => 'Total Monto Bs',
-                                                        'attr' => array('class' => 'form-control',
-                                                                        'readonly' => true)
-                                                      ))
-                                                     
-           ->add('valorOnza',TextType::class,array('label'=> 'Valor de la Onza',
-                                           'attr' => array('class' => 'form-control')))
-           ->add('dolarReferenciaDia',TextType::class,array('label' => 'Promedio Referencia Día',
-                                                     'attr' => array('class' => 'form-control'))) 
-        ;
+            ;
     }
     
     /**
      * @param OptionsResolverInterface $resolver
-     */
+     
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -94,9 +86,9 @@ class EntregasMinoristasType extends AbstractType
 
     /**
      * @return string
-     */
+     
     public function getBlockPrefix()
     {
         return 'loro_entitybundle_entregas_minoristas';
     }
-}
+}*/

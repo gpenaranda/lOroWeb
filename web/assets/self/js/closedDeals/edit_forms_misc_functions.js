@@ -1,4 +1,6 @@
+/*
 $(function(){
+
   $( "#"+_globales.inputBaseName+"feVenta" ).datepicker(_globales.arrayOptDatePic,$.datepicker.regional[ "es" ]);
 
   var pesoTotalVenta = $("#"+_globales.inputBaseName+"cantidadTotalVenta");
@@ -49,7 +51,7 @@ $(function(){
 
 });
 
-/* Function that undo the formating of the jQuery.number after the form is validated and its going to submit */
+/* Function that undo the formating of the jQuery.number after the form is validated and its going to submit 
 function undoNumberFormatForRegister() {
 
     var pesoTotalVenta = $("#"+_globales.inputBaseName+"cantidadTotalVenta");
@@ -80,4 +82,6 @@ function undoNumberFormatForRegister() {
           montoTotalDolar.number(true,2,'.','');
           montoTotalDolar.val(nuevoMontoTotalDolar);
     }
+
 }
+*/

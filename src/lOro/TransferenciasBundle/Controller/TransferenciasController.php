@@ -356,7 +356,7 @@ class TransferenciasController extends Controller
       if ($transferencia):
         $fechaTransferencia = $transferencia->getFeTransferencia();
         $datosTransferencia['feTransferencia'] = $fechaTransferencia->format('d-m-Y');
-        $datosTransferencia['montoTransferencia'] = number_format($transferencia->getMontoTransferencia(),2,',','.');
+        $datosTransferencia['montoTransferencia'] = number_format($transferencia->getMontoTransferencia(),2,',','.').' '.$transferencia->getTipoMonedaTransf()->getSimboloMoneda();
       endif;
         
       return new JsonResponse($datosTransferencia);        

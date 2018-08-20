@@ -10,7 +10,7 @@ use lOro\EntregasBundle\Form\AsociarEntregasMinoristasPiezasType;
 use lOro\EntityBundle\Entity\EntregasMinoristas;
 use lOro\EntregasBundle\Form\EntregasMinoristasType;
 
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+//use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,21 +32,20 @@ class EntregasMinoristasController extends Controller
     /**
      * Lists all Entregas entities.
      *
-     */
-    public function indexAction() {
+         public function indexAction() {
       $em = $this->getDoctrine()->getManager();
       
       $entities = $em->getRepository('lOroEntityBundle:EntregasMinoristas')->findEntregasMinoristas();
       
       $data['entities'] = $entities;
       return $this->render('lOroEntregasBundle:EntregasMinoristas:index.html.twig', $data);
-    }
+    }*/
     
     
     /**
      * Displays a form to create a new Entregas entity.
      *
-     */
+     
     public function newAction(Request $request) {
       $em = $this->getDoctrine()->getManager();
       $entity = new EntregasMinoristas();
@@ -68,11 +67,14 @@ class EntregasMinoristasController extends Controller
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
-    }    
+    }  
+
+    */
+      
 
     /**
      * Displays a form to edit an existing EntregasMinoristas entity.
-     */
+     
     public function editAction(Request $request, $id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -102,6 +104,8 @@ class EntregasMinoristasController extends Controller
             'form_edit'   => $editForm->createView(),
       ));
     }
+
+    */
 
     
     public function asociarEntregasMinoristasPiezaAction() {
@@ -151,6 +155,7 @@ class EntregasMinoristasController extends Controller
       return new JsonResponse("exito");
     }
     
+    /*
     public function buscarUbicacionFisicaActualAction() {
       $em = $this->getDoctrine()->getManager();
       $idEntregaMinorista = $_POST['idEntregaMinorista'];
@@ -173,8 +178,10 @@ class EntregasMinoristasController extends Controller
       $result['codUbicacionFisica'] = $entregaMinorista->getUbicacionFisicaEntrega();
       
       return new JsonResponse($result);    
-    }    
-    
+    } 
+    */   
+ 
+ /*   
     public function cambiarUbicacionFisicaEntregaAction() {
       $em = $this->getDoctrine()->getManager();
       $idEntregaMinorista = $_POST['idEntregaMinorista'];
@@ -192,7 +199,9 @@ class EntregasMinoristasController extends Controller
       $this->get('session')->getFlashBag()->set('success', 'El cambio de ubicación de la entrega fue realizado de manera satisfactoria.');    
       return new JsonResponse($result);         
     }
-    
+   */
+
+
     private function createAsociarForm() {
         $form = $this->createForm(new AsociarEntregasMinoristasPiezasType($this->getDoctrine()->getManager(),FALSE), NULL, array(
             'action' => $this->generateUrl('asociacion_chatarra_piezas_new'),
@@ -210,7 +219,7 @@ class EntregasMinoristasController extends Controller
     * @param EntregasMinoristas $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
-    */
+    
     private function createCreateForm(EntregasMinoristas $entity)
     {        
         $form = $this->createForm(EntregasMinoristasType::class, $entity, array(
@@ -228,7 +237,7 @@ class EntregasMinoristasController extends Controller
         
         return $form;
     }
-    
+    */
     
     /**
     * Creates a form to edit a Entregas entity.
@@ -236,7 +245,7 @@ class EntregasMinoristasController extends Controller
     * @param Entregas $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
-    */
+    
     private function createEditForm(EntregasMinoristas $entity)
     {
         $form = $this->createForm(EntregasMinoristasType::class, $entity, array(
@@ -252,5 +261,6 @@ class EntregasMinoristasController extends Controller
 
         return $form;
     }
+    */
     
 }

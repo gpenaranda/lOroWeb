@@ -1,40 +1,45 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Pago a Proveedores{% endblock %}
 
 {% block body -%}
-<div class="page-header">
+<div class="title_left">
   <h1>Pagos a Proveedores <small>Listado</small></h1>
 </div>
+<div class="clearfix"></div>
 
 
-<!-- LLamado del twig con los flash del sistema -->
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
+<div class="row">
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
+  <div class="clearfix"></div>
 
   
-  <div class="col-md-offset-1 col-md-9">
+  <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
     <div class="col-md-11" id="divSumatoria">
         <span  class="bubble you" style="float:right; display:none;">Sumatoria de los Seleccionados: <span id="montoSumatoria"></span> Bs.</span>
     </div>
-    <div class="col-md-1" style="padding:0 0 3em 0; margin-left: -5px;">
-      <a href="{{ path('nueva_carga_masiva') }}" style="float:right;" class="btn btn-primary btn-fab btn-raised mdi-content-add"></a>
+    <div class="col-md-1" style="padding:0.5em 0 1em 0; margin-left: -2px;">
+      <a href="{{ path('nueva_carga_masiva') }}" style="float:right;" class="btn btn-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i> Agregar
+      </a>
     </div>
   </div>
   
 
-    <div class="col-md-offset-1 col-md-9">
-    <table id="listado-cierres" class="display">
+  <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
+    <table id="listado-cierres" class="text-center table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
       <thead>
             <tr>
-                <th style="text-align:center;">ID</th>
-                <th style="text-align:center;">Fecha</th>
-                <th style="text-align:center;">Tipo de Transacción</th>
-                <th style="text-align:center;">Pagado en</th>
-                <th style="text-align:center;">Monto del Pago</th>
-                <th style="text-align:center;">Proveedor</th>
-                <th style="text-align:center;">Empresa</th>
-                <th style="text-align:center;">Acciones</th>
-                <th style="text-align:center;">Sumar</th>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Tipo de Transacción</th>
+                <th>Pagado en</th>
+                <th>Monto del Pago</th>
+                <th>Proveedor</th>
+                <th>Empresa</th>
+                <th>Acciones</th>
+                <th>Sumar</th>
             </tr>
       </thead>
         <tbody class="data-tabla">
@@ -49,14 +54,10 @@
                 <td>{{ entity.nombreEmpresa }}</td>                
                 <td>
                   <a title="Ver" style="text-decoration: none;" href="{{ path('pagos_proveedores_show', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/ver.png' %}
-                      <img src="{{ asset_url }}" alt="Ver" />
-                    {% endimage %}
+                    <i class="fa fa-eye fa-4" aria-hidden="true"></i>
                   </a>
                   <a title="Editar" style="text-decoration: none;" href="{{ path('pagos_proveedores_edit', { 'id': entity.id }) }}">
-                    {% image 'assets/self/images/editar.png' %}
-                      <img src="{{ asset_url }}" alt="Editar" />
-                    {% endimage %}
+                    <i class="fa fa-edit fa-4" aria-hidden="true"></i>
                   </a>
                 </td>
                 <td>
@@ -67,7 +68,7 @@
         </tbody>
     </table>
    </div>
-
+</div>
 
 {% endblock %}
 {% block javascripts %}
@@ -155,6 +156,5 @@ function sumarMontos(montoPagado,idPagoProveedor) {
 }
 
 $('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
-</script>
-<script src="{{ asset('bundles/lOroBundle/js/listados/listadoPagosProveedores.js') }}"></script>    
+</script>   
 {% endblock %}

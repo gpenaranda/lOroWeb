@@ -5,6 +5,10 @@ namespace lOro\AdminBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use Doctrine\ORM\EntityRepository;
 
 class EmpresasProveedoresType extends AbstractType
 {
@@ -22,12 +26,25 @@ class EmpresasProveedoresType extends AbstractType
     {
         if(!$this->esEmpresaCasa):
         $builder
-            ->add('proveedor','entity',array('label' => 'Proveedor',
+            ->add('proveedor',EntityType::class,array('label' => 'Proveedor',
                                              'class' => 'lOroEntityBundle:Proveedores',
+                                             'query_builder' => function(EntityRepository $er) {
+                                                      return $er->createQueryBuilder('u')
+                                                                ->where('u.tipoProveedor IN (1,2)');
+                                              },
+                                             'group_by' => function($choiceValue, $key, $value) {
+                                                    if ($choiceValue->getTipoProveedor()->getId() == 1) {
+                                                        return 'MAYORISTAS';
+                                                    } elseif ($choiceValue->getTipoProveedor()->getId() == 2)  {
+                                                        return 'MINORISTAS';
+                                                    }
+                                             },
                                              'property' => 'nbProveedor',
                                              'empty_value' => $this->empty_value,
                                              'attr' => array('class' => 'form-control')));
         endif;
+
+
         $builder
             ->add('nombreEmpresa','text',array('label' => 'Nombre de la Empresa',
                                                'attr' => array('class' => 'form-control')))

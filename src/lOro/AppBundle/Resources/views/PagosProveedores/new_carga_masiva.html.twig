@@ -1,37 +1,62 @@
-{% extends '::base.html.twig' %}
+{% extends '::gen_base.html.twig' %}
 {% block title %}Nueva Carga Masiva{% endblock %}
 {% block stylesheets %}
- <style>
-  .ui-autocomplete-loading {
-    background: white url('{{ asset('bundle/lOroBundle/images/ui-anim_basic_16x16.gif') }}') right center no-repeat;
+  <style type="text/css">
+  #form-pagos-carga-masiva .form-control-feedback {
+    right: 14px;
+    top: 22px;
   }
-  </style> 
+
+  .instructions-panel .form-control-feedback {
+    right: 5px !important;
+    top: -2px !important;
+  }
+
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierre]"],
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[proveedorCierre]"] {
+    right: 44px !important;
+  }
+
+  #ui-datepicker-div {
+    z-index: 100 !important;
+  }
+  </style>
 {% endblock stylesheets %}
 
 {% block body -%}
- 
+<div class="title_left">
+  <h1>Pagos a Proveedores <small>Carga Masiva</small></h1>
+</div>
+
+<div class="clearfix"></div>
+
+
+<div class="row">
+
 {% include '::VariosSistema/mensajes_flash.html.twig' %}
     
-<div class="page-header">
-  <h1>Pagos a Proveedores - Carga Masiva</h1>
-</div>
+<div class="clearfix"></div>    
+
+<div class="row">
+
+  <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
 
 {{ form_start(form)}}
   
   <h3 class="col-md-offset-2">Datos Generales</h3>
   <div class="row">
     <div class="form-group">
-      <div class="col-md-2 col-md-offset-3">
+      <div class="col-md-2 col-md-offset-3 col-xs-4">
         {{ form_label(form.feEjecucion) }}
         {{ form_widget(form.feEjecucion) }}
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-2 col-xs-4">
         {{ form_label(form.empresaCasa) }}
         {{ form_widget(form.empresaCasa) }}
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-2 col-xs-4">
         {{ form_label(form.nrosCuenta) }}
         {{ form_widget(form.nrosCuenta) }}
       </div>
@@ -42,7 +67,7 @@
   <h3 class="col-md-offset-2">Datos de la Instrucción</h3>
 
   <div class="row">
-    <div class="col-md-offset-2 col-md-8">
+    <div class="instructions-panel col-md-offset-2 col-md-8">
       <div class="panel panel-primary input_fields_wrap">
         <div class="panel-heading"><label for="empresasCasa" class="required">Instrucciones</label></div>
 
@@ -63,7 +88,7 @@
               </div>
               <div class="form-group">
                 <div class="row">
-                  <div class="col-xs-2">
+                  <div class="col-xs-3">
                     <select id="proveedor_1" class="form-control" name="loro_pagos_carga_masiva[proveedor][1]"> 
                       <option value=""></option>
                       {% for proveedor in proveedores %}
@@ -93,7 +118,7 @@
               <!-- The template for adding new field -->
                 <div class="form-group hide" id="paymentsTemplate">
                   <div class="row">
-                    <div class="col-xs-2">
+                    <div class="col-xs-3">
                         <select class="form-control" name="proveedor" ></select>
                     </div>
                     <div class="col-xs-3">
@@ -123,13 +148,16 @@
 
   
 
-  <div class="col-md-offset-8">
+  <div class="col-md-offset-9 col-md-3 col-xs-offset-10 col-xs-2">
     {{ form_widget(form.submit) }}
   </div>
   
   {{ form_end(form)}}               
+  </div>
+</div>
 </div>
 
+ <div class="clearfix"></div>
 {% endblock body %}
 {% block javascripts %}
 
@@ -145,10 +173,13 @@ _globales = {
                           changeYear: false,
                           buttonImageOnly: false,
                           dateFormat: 'dd-mm-yy' }
-};  
+}; 
+
+$("#"+_globales.formName+"empresaCasa").combobox();
+$("#"+_globales.formName+"nrosCuenta").combobox(); 
 </script>
 
-{% javascripts  'assets/self/js/payments/massive_payments_general_funct.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+{% javascripts  'assets/self/js/payments/massive_payments_general_funct.js' filter='?uglifyjs2' output='js/compiled/massive_payments_app.js' %}
   <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
