@@ -82,10 +82,16 @@
                         <div class="panel-body">
 
                             <div class="list-group">
+                                
                                 <a href="#" class="list-group-item">
                                     <i class="fa fa-comment fa-fw"></i> 
                                     <span class="text-muted" style="font-size:1em;">Ultimo Cierre Realizado</span>
-                                    <span style="font-size:1.5em;">{{ ultimoCierreProveedor.feVenta | date ('d/m/Y')}} - {{ ultimoCierreProveedor.cantidadTotalVenta | number_format(2,',','.') }} Grs@{{ ultimoCierreProveedor.montoBsCierrePorGramo | number_format(2,',','.') }} {{ ultimoCierreProveedor.tipoMonedaCierre.simboloMoneda }}
+                                    <span style="font-size:1.5em;">
+                                        {% if ultimoCierreProveedor %}
+                                            {{ ultimoCierreProveedor.feVenta | date ('d/m/Y')}} - {{ ultimoCierreProveedor.cantidadTotalVenta | number_format(2,',','.') }} Grs@{{ ultimoCierreProveedor.montoBsCierrePorGramo | number_format(2,',','.') }} {{ ultimoCierreProveedor.tipoMonedaCierre.simboloMoneda }}
+                                        {% else %}
+                                            No se poseen cierres para la fecha
+                                        {% endif %}
                                     </span>
                                 </a>
                                 <a href="#" class="list-group-item">

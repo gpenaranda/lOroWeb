@@ -22,7 +22,7 @@ class DefaultController extends Controller
       
 
       $data['ultimaEntregaProveedor'] = $entregasProveedor[0];
-      $data['ultimoCierreProveedor'] = $ultimoCierreProveedor[0];
+      $data['ultimoCierreProveedor'] = ($ultimoCierreProveedor ? $ultimoCierreProveedor[0] : null);
       $data['balanceProveedor'] = $this->get('loro_datos_generales')->getBalancePorProveedor($usuario->getProveedor()->getId());
       return $this->render('lOroProveedoresBundle:AppProveedores:index.html.twig',$data);
     }
