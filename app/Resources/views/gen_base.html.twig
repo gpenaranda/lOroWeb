@@ -5,8 +5,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"-->
+    
     <link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf">
+
     <title>Textiles Lolo | {% block title %}{% endblock %}</title>
 
 
@@ -15,7 +20,7 @@
                     'assets/self/css/roboto.min.css'
                     'assets/self/css/layout.css'
                     'assets/self/css/ripples.min.css'
-                    
+                    'assets/self/css/app_proveedores.css'
                     'assets/self/formvalidation/css/formValidation.min.css'
                     'assets/vendor/bootstrap-combobox/css/bootstrap-combobox.css'
                     'assets/self/css/general/general.css'
@@ -41,7 +46,7 @@
 
         <!-- Main menu (depends of the user) -->
         {% if is_granted('ROLE_PROVEEDOR') %}
-          {% include '::menu_proveedores.html.twig' %}
+          {% include '::gen_menu_proveedores.html.twig' %}
         {% else %}
           {% include '::gen_main_menu.html.twig' %}         
         {% endif %}

@@ -43,10 +43,12 @@
                 <span class="sr-only">Loading...</span>
               </div> 
             </div>
-            <div class="modal-footer">
-              <a href="#" id="supplier-delivery-edit-button" class="btn btn-primary">Editar</a>
-              <a href="#" id="supplier-delivery-delete-button" class="btn btn-danger">Eliminar</a>
-            </div>
+            {% if app_cliente == false %}
+                <div class="modal-footer">
+                    <a href="#" id="supplier-delivery-edit-button" class="btn btn-primary">Editar</a>
+                    <a href="#" id="supplier-delivery-delete-button" class="btn btn-danger">Eliminar</a>
+                </div>
+            {% endif %}
         </div>
     </div> 
 </div>

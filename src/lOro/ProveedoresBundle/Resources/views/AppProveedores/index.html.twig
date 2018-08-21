@@ -1,4 +1,4 @@
-{% extends('::base.html.twig') %}
+{% extends('::gen_base.html.twig') %}
 
 {% block title %}Inicio{% endblock %}
 
@@ -9,100 +9,96 @@
 </div>
 
 
+<!-- MENSAJES FLASH DEL SISTEMA -->
 {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
-
+<!-- PANELES PRINCIPALES -->
 <div class="row">
-    <div class="col-lg-offset-2 col-lg-8">
+    <div class="col-lg-offset-2 col-lg-8 col-xs-12">
         <div class="col-lg-6 col-xs-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-offset-1 col-lg-10 text-center">
-                            <div>Material en Deuda</div>
-                            <div class="huge">{{ balanceProveedor.balance_mat | number_format(2,',','.') }} Grs</div>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading-material text-center">
+                    <h3 class="panel-title">Material</h3> 
+                </div>
+                <div class="panel-body text-center">
+                    <h1 {% if balanceProveedor.balance_mat < 0 %}style="color:red;"{% endif %}>{{ balanceProveedor.balance_mat | number_format(2,',','.') }} Grs</h1>
                 </div>            
             </div>
         </div>
     
         <div class="col-lg-6 col-xs-12 pull-right">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-offset-1 col-lg-10 text-center">
-                            <div>Dolares Restantes</div>
-                            <div class="huge">{{ balanceProveedor.balance_dol | number_format(2,',','.') }} $</div>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading-bolivar text-center">
+                    <h3 class="panel-title">Bolivares</h3> 
                 </div>
-            </div>
-        </div>
-    </div>
-
-
-        <div class="col-lg-offset-2 col-lg-8">
-        <div class="col-lg-6 col-xs-12">
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-offset-1 col-lg-10 text-center">
-                            <div>Bolivares Restantes</div>
-                            <div class="huge">{{ balanceProveedor.balance_bs | number_format(2,',','.') }} Bs</div>
-                        </div>
-                    </div>
+                <div class="panel-body text-center">
+                    <h1 {% if balanceProveedor.balance_bs < 0 %}style="color:red;"{% endif %}>{{ balanceProveedor.balance_bs | number_format(2,',','.') }} Bs</h1>
                 </div>            
             </div>
         </div>
+    </div>
+
+
+    <div class="col-lg-offset-2 col-lg-8 col-xs-12">
+        <div class="col-lg-6 col-xs-12">
+            <div class="panel panel-default">         
+                <div class="panel-heading-dolar text-center">
+                    <h3 class="panel-title">Dolares</h3> 
+                </div>
+                <div class="panel-body text-center">
+                    <h1 {% if balanceProveedor.balance_dol < 0 %}style="color:red;"{% endif %}>{{ balanceProveedor.balance_dol | number_format(2,',','.') }} $</h1>
+                </div>            
+            </div>            
+        </div>
     
         <div class="col-lg-6 col-xs-12 pull-right">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-offset-1 col-lg-10 text-center">
-                            <div>Euros Restantes</div>
-                            <div class="huge">{{ balanceProveedor.balance_eu | number_format(2,',','.') }} €</div>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading-euro text-center">
+                    <h3 class="panel-title">Euros</h3> 
                 </div>
+                <div class="panel-body text-center">
+                    <h1 {% if balanceProveedor.balance_eu < 0 %}style="color:red;"{% endif %}>{{ balanceProveedor.balance_eu | number_format(2,',','.') }} €</h1>
+                </div>            
             </div>
         </div>
     </div>
 </div>
+<!-- PANELES PRINCIPALES -->
 
+
+<!-- INFORMACION GENERAL -->
 <div class="row">
-                <div class="col-lg-offset-2 col-lg-8 col-xs-12">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> 
-                            <span style="color:black;">INFORMACI&Oacute;N GENERAL</span>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-
-                            <div class="list-group">
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-comment fa-fw"></i> 
-                                    <span class="text-muted" style="font-size:1em;">Ultimo Cierre Realizado</span>
-                                    <span style="font-size:1.5em;">{{ ultimoCierreProveedor.feVenta | date ('d/m/Y')}} - {{ ultimoCierreProveedor.cantidadTotalVenta | number_format(2,',','.') }} Grs@{{ ultimoCierreProveedor.montoBsCierrePorGramo | number_format(2,',','.') }} {{ ultimoCierreProveedor.tipoMonedaCierre.simboloMoneda }}
-                                    </span>
-                                </a>
-                                <a href="#" class="list-group-item">
-                                    <i class="fa fa-twitter fa-fw"></i>
-                                    <span class="text-muted" style="font-size:1em;">Ultima Entrega Realizada</span>
-                                    <span style="font-size:1.5em;">{{ ultimaEntregaProveedor.feEntrega | date('d/m/Y') }} - (Puro) {{ ultimaEntregaProveedor.pesoPuroEntrega }} Grs - {{ ultimaEntregaProveedor.piezasEntregadas | length }} Pieza(s)
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                </div>
+    <div class="col-lg-offset-2 col-lg-8 col-xs-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> 
+                <span style="color:black;">INFORMACI&Oacute;N GENERAL</span>
+            </div>
+            <div class="list-group">
+                <a href="#" class="list-group-item">
+                    <span style="font-size:1.5em;">Ultimo Cierre Realizado</span>
+                    <br>
+                    <i class="fa fa-dot-circle-o fa-fw"></i>
+                    <span class="text-muted" style="font-size:1em;">
+                        {% if ultimoCierreProveedor %}
+                            {{ ultimoCierreProveedor.feVenta | date ('d/m/Y')}} - {{ ultimoCierreProveedor.cantidadTotalVenta | number_format(2,',','.') }} Grs@{{ ultimoCierreProveedor.montoBsCierrePorGramo | number_format(2,',','.') }} {{ ultimoCierreProveedor.tipoMonedaCierre.simboloMoneda }}
+                        {% else %}
+                             No se poseen cierres para la fecha
+                        {% endif %}
+                    </span>
+                </a>
+                <a href="#" class="list-group-item">
+                    <span  style="font-size:1.5em;">Ultima Entrega Realizada</span>
+                    <br>
+                    <i class="fa fa-dot-circle-o fa-fw"></i>
+                    <span class="text-muted" style="font-size:1em;">
+                        {{ ultimaEntregaProveedor.feEntrega | date('d/m/Y') }} - (Puro) {{ ultimaEntregaProveedor.pesoPuroEntrega }} Grs - {{ ultimaEntregaProveedor.piezasEntregadas | length }} Pieza(s)
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- INFORMACION GENERAL -->
 
-
-        
-{% endblock %}
-{% block javascripts %}
 {% endblock %}
