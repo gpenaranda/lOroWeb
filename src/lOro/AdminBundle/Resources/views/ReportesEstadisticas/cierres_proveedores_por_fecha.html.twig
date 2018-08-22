@@ -7,10 +7,10 @@
 <div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
     {{ form(form) }}
 </div>
-<div class="row" style="margin-bottom:5px;"></div>
+
 {% if arregloEntity != null %}
   {% if arregloEntity == 'vacio' %}
-    <div class="row" style="margin:0px 10% 0 10%;">
+    <div class="row" style="margin:20% 10% 0 10%;">
       <div class="alert alert-danger">
         No se poseen pagos generados
       </div>
@@ -19,6 +19,9 @@
     <div class="col-lg-offset-9 col-lg-2" style="margin-bottom:10px;">
       <button  style="color:black;" title="Enviar Correo" data-toggle="modal" class="btn btn-info modal-enviar-datos-entregas" data-target="#modalEnviarDatosEntregas">Enviar Por Correo</button>
     </div>
+ 
+
+    <div>
     <table class="table table-hover table-condensed tablasListados">
       <thead>
         <tr>
@@ -41,6 +44,7 @@
             {% endfor %}
             </tbody>
         </table>
+        </div>
 {% endif %}
 {% endif %}
 
