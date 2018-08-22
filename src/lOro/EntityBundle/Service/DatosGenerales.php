@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 
 
-include '../vendor/pdfparser/vendor/autoload.php';
+//include '../vendor/pdfparser/vendor/autoload.php';
 
 class DatosGenerales {
     
