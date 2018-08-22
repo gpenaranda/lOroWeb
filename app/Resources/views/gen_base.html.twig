@@ -14,7 +14,6 @@
 
     <title>Textiles Lolo | {% block title %}{% endblock %}</title>
 
-<!-- 'assets/vendor/font-awesome/css/font-awesome.min.css' -->
 
     {%  stylesheets 'assets/vendor/bootstrap/dist/css/bootstrap.min.css'
                     'assets/self/css/redmond/jquery-ui.min.css'
@@ -70,14 +69,6 @@
     </div>
   </body>
   
-  <script>
-  /*
-  'assets/self/css/jquery.dataTables.min.css'
-                    'assets/self/css/jquery.dataTables_themeroller.css'
-                    'assets/self/css/responsive.dataTables.min.css'
-  'assets/self/js/jquery.dataTables.min.js'
-  */
-   </script>
 
     {% javascripts  'assets/vendor/jquery/dist/jquery.min.js'
                       'assets/vendor/bootstrap/dist/js/bootstrap.min.js'
@@ -131,11 +122,7 @@
       <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     
-    <!--script>
-      $(document).ready(function() {
-                $.material.init();
-            });
-        </script-->
+
     {% block javascripts %}{% endblock %}
 </html>
 
