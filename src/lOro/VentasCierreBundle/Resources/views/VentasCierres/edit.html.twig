@@ -142,9 +142,9 @@
     {% endjavascripts %}
   {% endif %}
 
-  {#% javascripts  'assets/self/js/closedDeals/edit_forms_misc_functions.js' %}
-    <!--script src="{{ asset_url }}"></script-->
-  {% endjavascripts %#}
+  {% javascripts  'assets/self/js/closedDeals/edit_forms_misc_functions.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
 
   <script>
   $(function(){

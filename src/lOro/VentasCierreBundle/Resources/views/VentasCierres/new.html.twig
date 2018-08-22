@@ -135,9 +135,9 @@
   };
   </script>
 
-  {#% javascripts  'assets/self/js/closedDeals/new_forms_misc_functions.js' %}
-    <!--script src="{{ asset_url }}"></script-->
-  {% endjavascripts %#}
+  {% javascripts  'assets/self/js/closedDeals/new_forms_misc_functions.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
 
   {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
     {% javascripts  'assets/self/js/closedDeals/new_supplier_closed_deal_validation.js'  %}
