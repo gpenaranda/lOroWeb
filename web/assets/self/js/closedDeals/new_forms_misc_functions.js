@@ -1,81 +1,29 @@
-/*
 $(function(){
   $( "#"+_globales.inputBaseName+"feVenta" ).datepicker(_globales.arrayOptDatePic,$.datepicker.regional[ "es" ]);
 
-  var pesoTotalVenta = $("#"+_globales.inputBaseName+"cantidadTotalVenta");
-  var valorOnza = $("#"+_globales.inputBaseName+"valorOnza");
-
-  //pesoTotalVenta.number( true, 2);
-  //valorOnza.number( true, 2,'.',',' );
-
-  if ( _globales.place == 'proveedores' ) {
-    var dolarReferenciaDia = $("#"+_globales.inputBaseName+"dolarReferenciaDia");
-    var montoBsCierre = $("#"+_globales.inputBaseName+"montoBsCierrePorGramo");
-  
-    dolarReferenciaDia.number( true, 2,',','.' );
-    montoBsCierre.number( true, 2,',','.' );
-  } 
-
+  var pesoTotalVentaTagId = "#"+_globales.inputBaseName+"cantidadTotalVenta";
+  var valorOnzaTagId = "#"+_globales.inputBaseName+"valorOnza";
 
   if ( _globales.place == 'hc' ) {
     var montoTotalDolar = $("#"+_globales.inputBaseName+"montoTotalDolar");
-    montoTotalDolar.number( true, 2,',','.' );
-   
-    valorOnza.keyup(function(){
-      if(pesoTotalVenta.val() != '')
-      {
-        var valorPorGramoEnDolares = (parseFloat(valorOnza.val()) / parseFloat(_globales.onzaTroyGramos));
-        var resultadoMontoTotalDolar = (parseFloat(pesoTotalVenta.val()) * valorPorGramoEnDolares);
-        var resultadoFinal = ((resultadoMontoTotalDolar.toFixed(2))*parseFloat(_globales.margenGanancia));
-        montoTotalDolar.val(resultadoFinal);
-      }
-    });
   
-    pesoTotalVenta.keyup(function(){
-      if(valorOnza.val() != '')
-      {
-        var valorPorGramoEnDolares = (parseFloat(valorOnza.val()) / parseFloat(_globales.onzaTroyGramos));
-        var resultadoMontoTotalDolar = (parseFloat(pesoTotalVenta.val()) * valorPorGramoEnDolares);
-        var resultadoFinal = ((resultadoMontoTotalDolar.toFixed(2))*parseFloat(_globales.margenGanancia));
-        montoTotalDolar.val(resultadoFinal);
-      }
+    $(pesoTotalVentaTagId+", "+valorOnzaTagId).keyup(function(){
+      montoTotalDolar.val(calcurlarMontoTotal($(valorOnzaTagId),$(pesoTotalVentaTagId)));
     });
   }
 
-  
+  /* Calculo del campo de Monto total en Cierres HC */
+  function calcurlarMontoTotal(valorOnza,pesoTotalVenta) 
+  {
+    var resultadoFinal = 0;
+
+    if(valorOnza.val() != '')
+    {
+      var valorPorGramoEnDolares = (parseFloat(valorOnza.val()) / parseFloat(_globales.onzaTroyGramos));
+      var resultadoMontoTotalDolar = (parseFloat(pesoTotalVenta.val()) * valorPorGramoEnDolares);
+      var resultadoFinal = parseFloat(((resultadoMontoTotalDolar.toFixed(2))*parseFloat(_globales.margenGanancia)))  || 0;
+    }
+
+    return resultadoFinal.toFixed(2);
+  }  
 });
-
-/* Function that undo the formating of the jQuery.number after the form is validated and its going to submit 
-function undoNumberFormatForRegister() {
-  var valorOnza = $("#"+_globales.inputBaseName+"valorOnza");
-  var nuevoValorOnza = $.number(valorOnza.val(), 2,'.','' );
-      valorOnza.number(true,2,'.','');
-      valorOnza.val(nuevoValorOnza);
-
-  var pesoTotalVenta = $("#"+_globales.inputBaseName+"cantidadTotalVenta");
-  var nuevoValorpesoTotalVenta = $.number(pesoTotalVenta.val(), 2,'.','' );
-      pesoTotalVenta.number(true,2,'.','');
-      pesoTotalVenta.val(nuevoValorpesoTotalVenta);
-      
-  if ( _globales.place == 'proveedores' ) {  
-    var dolarReferenciaDia = $("#"+_globales.inputBaseName+"dolarReferenciaDia");
-    var nuevodolarReferenciaDia = $.number(dolarReferenciaDia.val(), 2,'.','' );
-        dolarReferenciaDia.number(true,2,'.','');
-        dolarReferenciaDia.val(nuevodolarReferenciaDia);   
-      
-    var montoBsCierre = $("#"+_globales.inputBaseName+"montoBsCierrePorGramo");
-    var nuevomontoBsCierre= $.number(montoBsCierre.val(), 2,'.','' );
-        montoBsCierre.number(true,2,'.','');
-        montoBsCierre.val(nuevomontoBsCierre);
-  }
-
-
-  if ( _globales.place == 'hc' ) {
-    var montoTotalDolar = $("#"+_globales.inputBaseName+"montoTotalDolar");
-    var nuevoMontoTotalDolar = $.number(montoTotalDolar.val(), 2,'.','' );
-        montoTotalDolar.number(true,2,'.','');
-        montoTotalDolar.val(nuevoMontoTotalDolar);
-  }
-}
-
-*/
