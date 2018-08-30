@@ -50,7 +50,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $usuario = $usr= $this->get('security.token_storage')->getToken()->getUser();
 
-        $entregas = $em->getRepository('lOroEntityBundle:Entregas')->findBy(array('proveedor' => $usuario->getProveedor()->getId()));
+        $entregas = $em->getRepository('lOroEntityBundle:Entregas')->findBy(array('proveedor' => $usuario->getProveedor()->getId()),array('feEntrega'=> 'DESC'));
 
 
 
