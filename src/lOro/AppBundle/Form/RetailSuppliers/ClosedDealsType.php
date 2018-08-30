@@ -69,7 +69,8 @@ class ClosedDealsType extends AbstractType
                                                           'class' => 'lOroEntityBundle:Proveedores',
                                                           'query_builder' => function(EntityRepository $er) {
                                                                                return $er->createQueryBuilder('u')
-                                                                                         ->where('u.tipoProveedor = 2');
+                                                                                         ->where('u.tipoProveedor = 2')
+                                                                                         ->andWhere("u.status = 'A'");
                                                                              },
                                                           'choice_label' => 'nbProveedor',
                                                           'placeholder' => '',

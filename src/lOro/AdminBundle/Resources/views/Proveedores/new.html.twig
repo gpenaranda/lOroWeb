@@ -18,39 +18,47 @@
   {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
 
-  <div class="row">
-    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
-
-      {{ form_start(form) }}
-
+<div class="row">
+  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+    {{ form_start(form) }}
       <div class="form-group">
-          <div class="col-xs-9 col-md-9">
+
+        <div class="col-xs-9 col-md-9">
           {{ form_label(form.nbProveedor) }}
           {{ form_widget(form.nbProveedor) }}
           {{ form_errors(form.nbProveedor) }}
-          </div>
-          <div class="col-xs-9 col-md-9">
+        </div>
+
+        <div class="col-xs-9 col-md-9">
           {{ form_label(form.compraDolares) }}
           {{ form_widget(form.compraDolares) }}
           {{ form_errors(form.compraDolares) }}
-          </div>
-          <div class="col-xs-9 col-md-9">
+        </div>
+
+        <div class="col-xs-9 col-md-9">
           {{ form_label(form.tipoProveedor) }}
           {{ form_widget(form.tipoProveedor) }}
           {{ form_errors(form.tipoProveedor) }}
-          </div>
+        </div>
+          
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(form.status) }}
+          {{ form_widget(form.status) }}
+          {{ form_errors(form.status) }}
         </div>
 
-    <div class="form-group">
-      <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
+        
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-7 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
           {{ form_widget(form.submit) }}
-          </div>
         </div>
-        {{ form_rest(form) }}       
-        {{ form_end(form) }}
-    </div>
+      </div>
+      {{ form_rest(form) }}
+    {{ form_end(form) }}
   </div>
-
+</div>
 {% endblock %}
 {% block javascripts %}
   <script>
@@ -68,5 +76,6 @@
   <script>
    $("#"+_globales.inputBaseName+"compraDolares").combobox();
    $("#"+_globales.inputBaseName+"tipoProveedor").combobox();
+   $("#"+_globales.inputBaseName+"status").combobox();
   </script>
 {% endblock %}

@@ -74,7 +74,8 @@ class PagosProveedoresType extends AbstractType
                                                           'class' => 'lOroEntityBundle:Proveedores',
                                                           'query_builder' => function(EntityRepository $er) {
                                                             return $er->createQueryBuilder('u')
-                                                                      ->where('u.tipoProveedor = 1');
+                                                                      ->where('u.tipoProveedor = 1')
+                                                                      ->andWhere("u.status = 'A'");
                                                            },                
                                                            'property' => 'nbProveedor',
                                                            'empty_value' => $this->empty_value,

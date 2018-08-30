@@ -61,6 +61,13 @@ class Proveedores
      */
     private $tipoProveedor;     
     
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=1, nullable=true)
+     */
+    private $status = 'A';
+
     /**
      * @var string
      *
@@ -312,5 +319,29 @@ class Proveedores
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     *
+     * @return Proveedores
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

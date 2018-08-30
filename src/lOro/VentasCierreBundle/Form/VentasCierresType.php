@@ -96,7 +96,8 @@ class VentasCierresType extends AbstractType
                                                    'class' => 'lOroEntityBundle:Proveedores',
                                                    'query_builder' => function(EntityRepository $er) {
                                                       return $er->createQueryBuilder('u')
-                                                                ->where('u.tipoProveedor = 1');
+                                                                ->where('u.tipoProveedor = 1')
+                                                                ->andWhere("u.status = 'A'");
                                                    },
                                                    'choice_label' => 'nbProveedor',
                                                    'placeholder' => '',
