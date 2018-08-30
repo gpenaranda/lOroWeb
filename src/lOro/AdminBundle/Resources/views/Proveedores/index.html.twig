@@ -25,6 +25,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Proveedor</th>
+                    <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -32,7 +33,8 @@
             {% for entity in entities %}
                 <tr>
                     <td>{{ entity.id }}</td>              
-                    <td>{{ entity.nbProveedor }}</td>  
+                    <td>{{ entity.nbProveedor }}</td>
+                     <td>{{ entity.status == 'A' ? 'Activo' : 'Inactivo' }}</td>  
                     <td>
                       <a title="Ver" data-toggle="modal" data-target="#showViewModal" data-id="{{ entity.id }}" data-path="{{ path('proveedores_show', { 'id': entity.id }) }}" style="text-decoration: none;" href='#'>
                         <i class="fa fa-eye fa-4" aria-hidden="true"></i>

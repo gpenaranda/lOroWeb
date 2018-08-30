@@ -23,7 +23,7 @@ class PagosProveedoresController extends Controller
       
       
       $data['form'] = $form->createView();
-      $data['proveedores'] = $em->getRepository('lOroEntityBundle:Proveedores')->findBy(array('tipoProveedor' => 1));
+      $data['proveedores'] = $em->getRepository('lOroEntityBundle:Proveedores')->findBy(array('tipoProveedor' => 1, 'status' => 'A'));
       return $this->render('lOroAppBundle:PagosProveedores:new_carga_masiva.html.twig', $data);
     }  
     

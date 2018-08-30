@@ -4,7 +4,10 @@ namespace lOro\AdminBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProveedoresType extends AbstractType
 {
@@ -18,23 +21,30 @@ class ProveedoresType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nbProveedor','text',array('label' => 'Nombre del Proveedor',
+            ->add('nbProveedor',TextType::class,array('label' => 'Nombre del Proveedor',
                                                'attr' => array('class' => 'form-control')))
-            ->add('compraDolares','choice',array('label' => 'Realiza compra de dolares?',
-                                                 'choices' => array(1 => 'Si', 0 => 'No'),
-                                               'attr' => array('class' => 'form-control')))
-            ->add('tipoProveedor','entity',array('label' => 'Tipo de Proveedor',
+            ->add('compraDolares',ChoiceType::class,array('label' => 'Realiza compra de dolares?',
+                                                          'choices_as_values' => true,
+                                                          'placeholder' => $this->seleccione_opcion,
+                                                          'choices' => array('Si' => 1, 'No' => 0),
+                                                          'attr' => array('class' => 'form-control')))
+            ->add('tipoProveedor',EntityType::class,array('label' => 'Tipo de Proveedor',
                                              'class' => 'lOroEntityBundle:TiposProveedores',
-                                             'property' => 'nbTipoProveedor',
-                                             'empty_value' => $this->seleccione_opcion,
+                                             'choice_label' => 'nbTipoProveedor',
+                                             'placeholder' => $this->seleccione_opcion,
                                              'attr' => array('class' => 'form-control')))
+            ->add('status',ChoiceType::class,array('label' => 'Estatus del Proveedor',
+                                                   'choices_as_values' => true,
+                                                   'placeholder' => $this->seleccione_opcion,
+                                                   'choices' => array('Activo' => 'A', 'Inactivo' => 'I'),
+                                                   'attr' => array('class' => 'form-control')))
         ;
     }
     
     /**
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'lOro\EntityBundle\Entity\Proveedores'
@@ -44,7 +54,7 @@ class ProveedoresType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'loro_entitybundle_proveedores';
     }
