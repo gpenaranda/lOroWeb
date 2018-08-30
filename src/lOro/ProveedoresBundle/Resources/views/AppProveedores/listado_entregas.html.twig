@@ -16,7 +16,7 @@
 
 
     <div class="col-lg-offset-1 col-lg-10">
-        <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
+        <table id="listado-entregas" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th style="text-align:center;">ID</th>
@@ -54,7 +54,7 @@ var _globales = {
       urlVerEntrega: '{{ path('entregas_show', { 'id': ':idEntrega' }) }}',
       urlEliminarEntrega: '{{ path('entregas_delete', { 'id': ':idEntrega' }) }}',
       urlEliminarPieza: '{{ path('piezas_delete', { 'id': ':idPieza' }) }}',
-      titulosNoFiltrados: [0,1,2,4,5],
+      titulosNoFiltrados: [0,1,2,3,4],
       idListado: 'listado-entregas',
       urlDatatableLang: '{{ asset('lang.txt') }}'
 };
