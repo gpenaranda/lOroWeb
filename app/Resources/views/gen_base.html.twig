@@ -25,7 +25,6 @@
                     'assets/vendor/bootstrap-combobox/css/bootstrap-combobox.css'
                     'assets/self/css/general/general.css'
                     'assets/vendor/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css'
-                    'assets/vendor/font-awesome/css/font-awesome.min.css'
                     'assets/vendor/gentelella/vendors/nprogress/nprogress.css'
                     'assets/vendor/gentelella/vendors/iCheck/skins/flat/green.css'
                     'assets/vendor/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css'
@@ -70,14 +69,6 @@
     </div>
   </body>
   
-  <script>
-  /*
-  'assets/self/css/jquery.dataTables.min.css'
-                    'assets/self/css/jquery.dataTables_themeroller.css'
-                    'assets/self/css/responsive.dataTables.min.css'
-  'assets/self/js/jquery.dataTables.min.js'
-  */
-   </script>
 
     {% javascripts  'assets/vendor/jquery/dist/jquery.min.js'
                       'assets/vendor/bootstrap/dist/js/bootstrap.min.js'
@@ -92,7 +83,6 @@
                       'assets/self/formvalidation/js/framework/bootstrap.min.js'
                       'assets/self/formvalidation/js/language/es_ES.js'
                       'assets/vendor/bootstrap-combobox/js/bootstrap-combobox.js' 
-
                       'assets/vendor/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js'
                       'assets/vendor/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'
                       'assets/vendor/gentelella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'
@@ -105,15 +95,6 @@
                       'assets/vendor/gentelella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'
                       'assets/vendor/gentelella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'
                       'assets/vendor/gentelella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'
-
-                      
-                      
-                      
-                      
-                      
-                      
-                      
-
                       'assets/vendor/gentelella/vendors/fastclick/lib/fastclick.js'
                       'assets/vendor/gentelella/vendors/nprogress/nprogress.js'
                       'assets/vendor/gentelella/vendors/Chart.js/dist/Chart.min.js'
@@ -141,11 +122,7 @@
       <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     
-    <!--script>
-      $(document).ready(function() {
-                $.material.init();
-            });
-        </script-->
+
     {% block javascripts %}{% endblock %}
 </html>
 

@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use lOro\EntityBundle\Entity\Proveedores;
 use lOro\AdminBundle\Form\ProveedoresType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Proveedores controller.
@@ -66,14 +67,14 @@ class ProveedoresController extends Controller
     */
     private function createCreateForm(Proveedores $entity)
     {
-        $form = $this->createForm(new ProveedoresType(), $entity, array(
+        $form = $this->createForm(ProveedoresType::Class, $entity, array(
             'attr' => array('id' => 'proveedores-form'),
             'action' => $this->generateUrl('proveedores_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Agregar',
-                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
+        $form->add('submit', SubmitType::class, array('label' => 'Agregar',
+                                             'attr' => array('class' => 'btn btn-lg btn-success pull-right')));
 
         return $form;
     }
@@ -151,13 +152,13 @@ class ProveedoresController extends Controller
     */
     private function createEditForm(Proveedores $entity)
     {
-        $form = $this->createForm(new ProveedoresType(), $entity, array(
+        $form = $this->createForm(ProveedoresType::Class, $entity, array(
             'action' => $this->generateUrl('proveedores_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'method' => 'PUT'
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Actualizar',
-                                             'attr' => array('class' => 'btn btn-lg btn-success')));
+        $form->add('submit', SubmitType::class, array('label' => 'Actualizar',
+                                             'attr' => array('class' => 'btn btn-lg btn-success pull-right')));
 
         return $form;
     }
@@ -230,7 +231,7 @@ class ProveedoresController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('proveedores_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', SubmitType::class, array('label' => 'Delete'))
             ->getForm()
         ;
     }

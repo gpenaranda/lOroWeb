@@ -150,17 +150,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5B9EFF', end
 
 
 .tablasListados {
-    position:relative;
-    width: 84%;
     font-size: 16pt;
-    left:50%;
-    margin-left: -42%;
     text-align: center;
 }
 
 
 .tablasListados  thead th th {
-  text-align: center;  
+  text-align: center; 
+
 }
 
 /** Info de los recuadros del balance **/
