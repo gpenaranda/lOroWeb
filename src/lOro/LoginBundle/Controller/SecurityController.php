@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use lOro\LoginBundle\Form\CambiarContrasenaType;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 class SecurityController extends Controller
 {
     public function indexAction()
@@ -124,8 +126,8 @@ class SecurityController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit',"Symfony\Component\Form\Extension\Core\Type\SubmitType", array('label' => 'Cambiar Contraseña',
-                                             'attr' => array('class' =>'btn btn-success')));
+        $form->add('submit',SubmitType::class, array('label' => 'Cambiar Contraseña',
+                                             'attr' => array('class' =>'btn btn-lg btn-success pull-right')));
 
         return $form;        
     }
