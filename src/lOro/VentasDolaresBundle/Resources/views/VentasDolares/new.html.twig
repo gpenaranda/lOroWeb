@@ -51,18 +51,18 @@
       </div>
 
       <div class="form-group">
-        <div class="col-xs-9 col-md-9">          
-          {{ form_label(form.cantidadDolaresComprados) }}
-          {{ form_widget(form.cantidadDolaresComprados) }}
-          {{ form_errors(form.cantidadDolaresComprados) }}
-        </div>
-      </div>
-
-      <div class="form-group">
         <div class="col-xs-9 col-md-9">               
           {{ form_label(form.dolarReferencia) }}
           {{ form_widget(form.dolarReferencia) }}
           {{ form_errors(form.dolarReferencia) }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">          
+          {{ form_label(form.cantidadDolaresComprados) }}
+          {{ form_widget(form.cantidadDolaresComprados) }}
+          {{ form_errors(form.cantidadDolaresComprados) }}
         </div>
       </div>
 
@@ -252,19 +252,28 @@ $( "#"+_globales.formName+'empresa' ).autocomplete({
   var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
   var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
   
-  dolarReferencia.keyup(function(){
-    if(cantidadDolaresComprados.val() != '')
-    {
-      var resultadoFinal = (parseFloat(cantidadDolaresComprados.val()) * parseFloat(dolarReferencia.val()));
-      montoVentaBolivares.val($.number(resultadoFinal,2,',','.'));
-    }
+  cantidadDolaresComprados.keyup(function(){
+      var resultadoFinal = parseFloat((parseFloat(cantidadDolaresComprados.val()) * parseFloat(dolarReferencia.val()))) || 0;
+
+      montoVentaBolivares.val(resultadoFinal);
   });
 
+    montoVentaBolivares.keyup(function(){
+      var resultadoFinal =  parseFloat((parseFloat(montoVentaBolivares.val()) / parseFloat(dolarReferencia.val()))) || 0;
+     
+      cantidadDolaresComprados.val(resultadoFinal);
+  });
+
+/*
 var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
 dolaresComprados.number(true,2,',','.');
 
 var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
 dolarReferencia.number(true,2,',','.');
+
+var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
+montoVentaBolivares.number(true,2,',','.');
+*/
 
 var cantidadAEnviarInicial = $('#cantidadAEnviar_1');
 cantidadAEnviarInicial.number(true,2,',','.');
