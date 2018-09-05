@@ -57,7 +57,7 @@
           {{ form_errors(form.dolarReferencia) }}
         </div>
       </div>
-      
+
       <div class="form-group">
         <div class="col-xs-9 col-md-9">          
           {{ form_label(form.cantidadDolaresComprados) }}
@@ -123,9 +123,7 @@
      
 {% endblock %}
 {% block javascripts %}
-    <script type="text/javascript">
-      
-
+<script type="text/javascript">
 var _globales = {
   formName: 'loro_entitybundle_ventasdolares_' ,
   urlBuscarAutocomplete: '{{ path('_buscar_empresas_venta_dolares') }}',
@@ -135,7 +133,20 @@ var _globales = {
   creditoEnVerdes: '0.00',
   cantEmpresas: 0
 };  
-    </script>
+
+
+/* DatePicker jQuery */
+var arregloOpcionesDP = {changeMonth: false,
+                         changeYear: false,
+                         buttonImageOnly: false,
+                         dateFormat: 'dd-mm-yy' };
+$( "#loro_entitybundle_ventasdolares_fechaVenta" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
+
+          
+
+
+</script>
+
     <script>
 $(document).ready(function() {
     var max_fields      = 10; //maximum input boxes allowed
@@ -157,7 +168,7 @@ $(document).ready(function() {
             $('#inputsParaClonar_'+x).append('<br id="divisor_'+x+'">'); //add input box
             $('#inputsParaClonar_'+x).append(inputCantidadAEnviar); //add input box
             $('#inputsParaClonar_'+x).append('<a href="#" onClick="event.preventDefault(); eliminarCampos('+x+');" class="remove_field">Eliminar</a></div>'); //add input box
-            $('#inputsParaClonar_'+x).append("<script>var cantidadAEnviar"+x+" = $('#cantidadAEnviar_"+x+"'); cantidadAEnviar"+x+".number(true,2,',','.');");
+           // $('#inputsParaClonar_'+x).append("<script>var cantidadAEnviar"+x+" = $('#cantidadAEnviar_"+x+"'); cantidadAEnviar"+x+".number(true,2,',','.');");
             _globales.cantEmpresas = x;
         }
     });
@@ -221,7 +232,7 @@ $( "#"+_globales.formName+'empresa' ).autocomplete({
             q: request.term
           },
           success: function( data ) {
-            console.log(data);
+            
             response( data );
           }
         });
@@ -240,14 +251,9 @@ $( "#"+_globales.formName+'empresa' ).autocomplete({
 </script>
 <script>
  $(function(){
-     
-    var arregloOpcionesDP = {changeMonth: false,
-                            changeYear: false,
-                            buttonImageOnly: false,
-                            dateFormat: 'dd-mm-yy' };
-   $( "#loro_entitybundle_ventasdolares_fechaVenta" ).datepicker(arregloOpcionesDP,$.datepicker.regional[ "es" ]);
 
-  
+
+
   var cantidadDolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
   var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
   var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
@@ -264,68 +270,9 @@ $( "#"+_globales.formName+'empresa' ).autocomplete({
       cantidadDolaresComprados.val(resultadoFinal);
   });
 
-/*
-var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
-dolaresComprados.number(true,2,',','.');
-
-var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
-dolarReferencia.number(true,2,',','.');
-
-var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
-montoVentaBolivares.number(true,2,',','.');
-*/
-
-var cantidadAEnviarInicial = $('#cantidadAEnviar_1');
-cantidadAEnviarInicial.number(true,2,',','.');
-
-$('#'+_globales.inputCotizacionReferencia).number(true,4,',','.');
-
-$("#form-ventas-dolares").submit(function(e) {
-     
-     var dolaresComprados = $('#loro_entitybundle_ventasdolares_cantidadDolaresComprados');
-     var nuevoValorDolaresComprados = $.number(dolaresComprados.val(), 2,'.','' );
-     dolaresComprados.number(true,2,'.','');
-     dolaresComprados.val(nuevoValorDolaresComprados);
-    
-     var dolarReferencia = $('#loro_entitybundle_ventasdolares_dolarReferencia');
-     var nuevoValorDolarReferencia = $.number(dolarReferencia.val(), 2,'.','' );
-     dolarReferencia.number(true,2,'.','');
-     dolarReferencia.val(nuevoValorDolarReferencia);
-    
-     var montoVentaBolivares = $('#loro_entitybundle_ventasdolares_montoVentaBolivares');
-     var nuevoValorMontoVentaBolivares = parseFloat((nuevoValorDolaresComprados * nuevoValorDolarReferencia));
-     
-     montoVentaBolivares.number(true,2,'.','');
-     montoVentaBolivares.val(nuevoValorMontoVentaBolivares);
-     
-     
-     var cotizacionReferencia = $('#'+_globales.inputCotizacionReferencia);
-     
-     var nuevoValorCotizacionReferencia = $.number(cotizacionReferencia.val(),4,'.','' );
-     $('#'+_globales.inputCotizacionReferencia).number(true,4,'.','');
-     $('#'+_globales.inputCotizacionReferencia).val(nuevoValorCotizacionReferencia);
-     
-     
-     console.log(_globales.cantEmpresas);
-     
-     for (var n = 1; n <= _globales.cantEmpresas; ++ n) {
-       var cantidadEnviadaEmpresa = $("#cantidadAEnviar_"+n);
-     
-       console.log("#cantidadAEnviar_"+n);
-       
-       var nuevoValorCantidadEnviadaEmpresa = $.number(cantidadEnviadaEmpresa.val(),2,'.','' );
-       $("#cantidadAEnviar_"+n).number(true,2,'.','');
-       $("#cantidadAEnviar_"+n).val(nuevoValorCantidadEnviadaEmpresa);      
-   }
-     
-    
-
-        //e.preventDefault();
-});
 
 
 
-    
 
  });
  </script>
