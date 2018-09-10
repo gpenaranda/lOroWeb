@@ -24,8 +24,8 @@
 <!-- LLamado del twig con los flash del sistema -->
 {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
-  <div class="title_left">
-    <h1>Cierres - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}} <small>Editar</small></h1>
+  <div class="page-header">
+    <h1>Cierre - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedor' : 'Aupanas / HC'}} <small>Editar</small></h1>
   </div>
   <div class="clearfix"></div>
 
@@ -33,15 +33,30 @@
 <div class="row">
   <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
     {{ form_start(edit_form , { 'attr': {'autocomplete': 'off'} }) }}
-        
-        
-      <div class="form-group">
+
+    <div class="form-group">
         <div class="col-xs-9 col-md-9">
-        {{ form_label(edit_form.feVenta) }}
-        {{ form_widget(edit_form.feVenta) }}
-        {{ form_errors(edit_form.feVenta) }}
+          {{ form_label(edit_form.feVenta) }}
+          {{ form_widget(edit_form.feVenta) }}
+          {{ form_errors(edit_form.feVenta) }}
         </div>
-      </div>
+
+        <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.tipoMonedaCierre) }}
+          {{ form_widget(edit_form.tipoMonedaCierre) }}
+          {{ form_errors(edit_form.tipoMonedaCierre) }}
+        </div>
+    </div>
+
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(edit_form.proveedorCierre) }}
+          {{ form_widget(edit_form.proveedorCierre) }}
+          {{ form_errors(edit_form.proveedorCierre) }}  
+          </div>
+        </div>
+      {% endif %}
 
       {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
         <div class="form-group">
@@ -55,34 +70,11 @@
       
       <div class="form-group">
         <div class="col-xs-9 col-md-9">
-        {{ form_label(edit_form.tipoMonedaCierre) }}
-        {{ form_widget(edit_form.tipoMonedaCierre) }}
-        {{ form_errors(edit_form.tipoMonedaCierre) }}
-        </div>
-              
-      
-        <div class="col-xs-9 col-md-9">
         {{ form_label(edit_form.cantidadTotalVenta) }}
         {{ form_widget(edit_form.cantidadTotalVenta) }}
         {{ form_errors(edit_form.cantidadTotalVenta) }} 
         </div>
-
-        <div class="col-xs-9 col-md-9">
-        {{ form_label(edit_form.valorOnza) }}
-        {{ form_widget(edit_form.valorOnza) }}
-        {{ form_errors(edit_form.valorOnza) }}  
-        </div>
       </div>
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.montoTotalDolar) }}
-          {{ form_widget(edit_form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
-          {{ form_errors(edit_form.montoTotalDolar) }}  
-          </div>
-        </div>
-      {% endif %}
 
       {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
         <div class="form-group">      
@@ -94,28 +86,44 @@
         </div>
       {% endif %}
 
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+        {{ form_label(edit_form.valorOnza) }}
+        {{ form_widget(edit_form.valorOnza) }}
+        {{ form_errors(edit_form.valorOnza) }}  
+          <br>
+        </div>
+      </div>
+     
+
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
         <div class="form-group">
           <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.proveedorCierre) }}
-          {{ form_widget(edit_form.proveedorCierre) }}
-          {{ form_errors(edit_form.proveedorCierre) }}  
+          {{ form_label(edit_form.montoTotalDolar) }}
+          {{ form_widget(edit_form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
+          {{ form_errors(edit_form.montoTotalDolar) }}  
           </div>
         </div>
       {% endif %}
-      
+
+   
+
       <div class="form-group">
-        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-6 col-xs-3 col-md-offset-8 col-md-3">
-        {{ form_widget(edit_form.submit) }}
+        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
+          {{ form_widget(edit_form.submit) }}
         </div>
-      </div> 
+      </div>
+
         
-        {{ form_rest(edit_form) }}
-        
-      {{ form_end(edit_form) }}
+      
   </div>
 </div>
-{% endblock %}
+
+{{ form_rest(edit_form) }}
+{{ form_end(edit_form) }}
+<div class="clearfix"></div>
+{% endblock body %}
+
 {% block javascripts %}
   <script>
   var _globales = {
