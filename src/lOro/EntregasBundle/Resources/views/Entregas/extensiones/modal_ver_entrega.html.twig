@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalVerEntrega" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -8,40 +8,40 @@
             <div class="modal-body">
               <div id="mensaje-accion"></div>
               <h4>Datos Generales de la Entrega</h4>
-              <hr style="border-color: black;">
-              <table class="table table-condensed">
-                  <thead>
-                      <tr>
-                          <th style="text-align:center;">ID</th>
-                          <th style="text-align:center;">Fecha de entrega</th>
-                          <th style="text-align:center;">Peso bruto de la entrega</th>
-                          <th style="text-align:center;">Promedio de la ley</th>
-                          <th style="text-align:center;">Peso puro de la entrega</th>
-                          <th style="text-align:center;">Entrega realizada por</th>
-                          <th style="text-align:center;">Piezas Entregadas</th>
-                      </tr>
-                  </thead>
-                  <tbody class="data-entrega">
-                  </tbody>
-              </table>
+                <hr style="border-color: black;">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">ID</th>
+                            <th style="text-align:center;">Fecha de entrega</th>
+                            <th style="text-align:center;">Peso bruto</th>
+                            <th style="text-align:center;">Peso puro</th>
+                            <th {% if app_cliente == true %}class="hidden-xs"{% endif %} style="text-align:center;">Entrega realizada por</th>
+                            <th style="text-align:center;">Piezas Entregadas</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-entrega">
+                    </tbody>
+                </table>
               <h4>Datos de las Piezas</h4>
-              <hr style="border-color: black;">
-              <table class="table table-condensed" id="tabla-datos-piezas">
-                  <thead>
-                      <tr>
-                          <th style="text-align:center;">ID</th>
-                          <th style="text-align:center;">Peso bruto de la pieza</th>
-                          <th style="text-align:center;">Ley de la pieza</th>
-                          <th style="text-align:center;">Peso puro de la pieza</th>
-                      </tr>
-                  </thead>
-                  <tbody class="data-piezas">
-                  </tbody>
-              </table>
+                <hr style="border-color: black;">
+                <table class="table table-condensed" id="tabla-datos-piezas">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;">ID</th>
+                            <th style="text-align:center;">Peso bruto</th>
+                            <th style="text-align:center;">Ley</th>
+                            <th style="text-align:center;">Peso puro</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-piezas">
+                    </tbody>
+                </table>
+              <!-- Cargando... -->
               <div class="text-center" id="loading-square-closed-deals-show">
                 <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-                <span class="sr-only">Loading...</span>
               </div> 
+              <!-- Cargando... -->
             </div>
             {% if app_cliente == false %}
                 <div class="modal-footer">

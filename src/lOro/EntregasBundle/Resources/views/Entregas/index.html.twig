@@ -218,7 +218,6 @@ $(document).on("click", ".open-ver-entrega", function () {
               htmlEntrega += '<td style="text-align:center;">'+entrega.id+'</td>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.feEntrega+'</td>';
               htmlEntrega += '<td style="text-align:center;">'+pesoBrutoEntrega+' Grs.</td>';
-              htmlEntrega += '<td style="text-align:center;">'+promLeyEntrega+'</td>';
               htmlEntrega += '<td style="text-align:center;">'+pesoPuroEntrega+' Grs.</td>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.proveedorEntrega+'</td>';
               htmlEntrega += '<td style="text-align:center;">'+entrega.cantPiezasEntregadas+'</td>';
@@ -242,7 +241,7 @@ $(document).on("click", ".open-ver-entrega", function () {
                 htmlPiezas += '<td style="text-align:center;">'+pesoBrutoPieza+' Grs.</td>';
                 htmlPiezas += '<td style="text-align:center;">'+leyPieza+'</td>';
                 htmlPiezas += '<td style="text-align:center;">'+pesoPuroPieza+' Grs.</td>';
-                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\',\''+entrega.id+'\');" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i> Eliminar Pieza</a></td>';
+                htmlPiezas += '<td style="text-align:center;"><a onClick="eliminarPieza(\''+piezas[row].id+'\',\''+entrega.id+'\');" class="btn btn-danger"><i class="fa fa-minus" aria-hidden="true"></i> Eliminar</a></td>';
                 htmlPiezas += '</tr>';                
             }
 

@@ -13,6 +13,7 @@ use lOro\EntityBundle\Entity\VentasDolaresEmpresasCasa;
 use lOro\VentasDolaresBundle\Form\VentasDolaresType;
 use lOro\EntityBundle\Entity\Banco;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 /**
@@ -305,13 +306,14 @@ class VentasDolaresController extends Controller
     */
     private function createCreateForm(VentasDolares $entity,$compradorDolares = FALSE)
     {
-        $form = $this->createForm(new VentasDolaresType($compradorDolares), $entity, array(
+        $form = $this->createForm(VentasDolaresType::class, $entity, array(
             'action' => $this->generateUrl('ventas-dolares_create'),
             'method' => 'POST',
-            'attr' => array('id' => 'form-ventas-dolares')
+            'attr' => array('id' => 'form-ventas-dolares'),
+            'compradorDolares' => $compradorDolares
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Agregar',
+        $form->add('submit', SubmitType::class, array('label' => 'Agregar',
                                              'attr' => array('class' => 'btn btn-lg btn-success', 'style' => 'margin-top:10px;')));
 
         return $form;

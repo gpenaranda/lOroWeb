@@ -32,13 +32,32 @@ class CierresHCType extends AbstractType
                   'attr' => array('class' => 'form-control'))
                  )
             ->add('cantidadTotalVenta',TextType::class,array('label' => 'Peso Total (Gr.)',
-                                                     'attr' => array('class' => 'form-control')))
+                                                             'attr' => array('class' => 'form-control',
+                                                                             'autocomplete' => 'off',
+                                                                             'pattern' => '[0-9]*',
+                                                                             'step' => 'any',
+                                                                             'inputmode' => 'numeric'
+                                                                            )
+                                                            ))
             ->add('valorOnza',TextType::class,array('label'=> 'Valor de la Onza',
-                                           'attr' => array('class' => 'form-control')))
+                                                    'attr' => array('class' => 'form-control',
+                                                                    'autocomplete' => 'off',
+                                                                    'pattern' => '[0-9]*',
+                                                                    'step' => 'any',
+                                                                    'inputmode' => 'numeric'
+                                                                    )
+                                                    ))
+
             ->add('montoTotalDolar',TextType::class,array('label' => 'Monto Total (por formula)',
-                                                 'attr' => array('class' => 'form-control',
-                                                   'style' => 'margin-bottom:10px;',
-                                                    'read_only' => true)))
+                                                          'attr' => array('class' => 'form-control',
+                                                                          'style' => 'margin-bottom:10px;',
+                                                                          'autocomplete' => 'off',
+                                                                          'pattern' => '[0-9]*',
+                                                                          'step' => 'any',
+                                                                          'inputmode' => 'numeric',
+                                                                          'read_only' => true
+                                                                          )
+                                                        ))
             ->add('tipoMonedaCierre',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
                                               'class' => 'lOroEntityBundle:TiposMoneda',
                                               'query_builder' => function(EntityRepository $er) {
