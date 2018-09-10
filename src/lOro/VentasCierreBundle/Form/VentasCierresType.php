@@ -75,19 +75,19 @@ class VentasCierresType extends AbstractType
                                                    'attr' => array('class' => 'form-control',
                                                    'mapped'        => true,
                                                    'style' => 'margin-bottom:10px;')))                
-            ->add('cantidadTotalVenta',NumberType::class,array('label' => 'Peso Total (Gr.)',
+            ->add('cantidadTotalVenta',TextType::class,array('label' => 'Peso Total (Gr.)',
                                                      'attr' => array('class' => 'form-control',
                                                                 'autocomplete' => 'off',
                                                                 'pattern' => '[0-9]*',
                                                                 'step' => 'any',
                                                                 'inputmode' => 'numeric')))
-            ->add('valorOnza',NumberType::class,array('label'=> 'Valor de la Onza',
+            ->add('valorOnza',TextType::class,array('label'=> 'Valor de la Onza',
                                            'attr' => array('class' => 'form-control',
                                                                 'autocomplete' => 'off',
                                                                 'pattern' => '[0-9]*',
                                                                 'inputmode' => 'numeric'
                                                                 )))              
-            ->add('montoBsCierrePorGramo',NumberType::class,array('label' => 'Monto Pagado x Gr.',
+            ->add('montoBsCierrePorGramo',TextType::class,array('label' => 'Monto Pagado x Gr.',
                                                'attr' => array('class' => 'form-control',
                                                                 'autocomplete' => 'off',
                                                                 'pattern' => '[0-9]*',
