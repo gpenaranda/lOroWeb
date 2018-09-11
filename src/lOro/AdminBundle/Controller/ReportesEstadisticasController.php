@@ -603,17 +603,6 @@ class ReportesEstadisticasController extends Controller
       return $form;          
     }
     
-    protected function seleccionarProveedorForm($urlSubmit,$compradorDolares = FALSE) {
-      $form = $this->createForm(new SeleccionarProveedorType($compradorDolares),null, array(
-              'action' => $this->generateUrl($urlSubmit),
-              'method' => 'POST',
-      ));
-
-      $form->add('submit', 'submit', array('label' => 'Generar Reporte',
-                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
-
-      return $form;        
-    }
        
     public function gananciasPorCierreProveedorAction(Request $request) {
       $em = $this->getDoctrine()->getManager();
@@ -969,10 +958,8 @@ class ReportesEstadisticasController extends Controller
               endforeach;
               /*
               foreach($row['arreglo_entregas'] as $rowEntrega):
-
-                
               endforeach;
- */
+              */
               echo '<hr>';
           endforeach;
           
@@ -1130,4 +1117,40 @@ class ReportesEstadisticasController extends Controller
           endforeach; 
         endforeach;
     }
+
+    /**
+     * Reporte para poder mostrar y descargar en excel el balance de un proveedor del material adeudado,
+     * Indicando Cierres, Entregas y balance de dicho proveedor.
+     * 
+     *  
+     */
+    public function reporteBalanceMaterialProveedoresAction(Request $request, $proveedorId) {
+      $em = $this->getDoctrine()->getManager();
+      
+      $form = $this->seleccionarProveedorForm('ganancias_por_cierre_proveedor');
+
+      $data['form'] = $form->createView();
+      return $this->render('lOroAdminBundle:ReportesEstadisticas/Proveedores:balance_material_proveedores.html.twig',$data);
+    }
+
+
+    /** 
+     * Funcion para crear el input de Proveedores, para los reportes.
+     * 
+     * @param string $urlSubmit - String del path de la URL de donde se llamo el formulario 
+     * @param boolean $compradorDolares - Indica si el input solo va a ser  llenado por proveedores compradores de Divisas
+     * 
+     * @return object $form - Objeto Formulario
+     */
+    protected function seleccionarProveedorForm($urlSubmit,$compradorDolares = FALSE) {
+      $form = $this->createForm(new SeleccionarProveedorType($compradorDolares),null, array(
+              'action' => $this->generateUrl($urlSubmit),
+              'method' => 'POST',
+      ));
+
+      $form->add('submit', 'submit', array('label' => 'Generar Reporte',
+                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
+
+      return $form;        
+    }    
 }
