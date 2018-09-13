@@ -1,14 +1,63 @@
 {% extends '::gen_base.html.twig' %}
 {% block title %}Administraci&oacute;n - Reportes y Estadisticas{% endblock %}
-{% block body -%}
-<div class="page-header">
-  <h1>Reportes</h1>
-  
-</div>
 
-<div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
-    {{ form(form) }}
+
+{% block body -%}
+<div class="title_left">
+    <h1>Reportes - Proveedores <small>Balance de Material</small></h1>
 </div>
+<div class="clearfix"></div>
+
+    <div class="row">
+        <!-- INPUTS PARA SELECCIONAR LOS DATOS A PRESENTAR EN EL REPORTE -->
+        <div class="col-lg-4 col-lg-offset-4" style="margin-bottom:20px;">  
+            {{ form(form) }}
+        </div>
+        <!-- INPUTS PARA SELECCIONAR LOS DATOS A PRESENTAR EN EL REPORTE -->
+    </div>
+
+    {% if datosBalanceMaterial  %}
+    <div class="row">
+        <!-- INPUTS PARA GENERA EXCEL Y ENVIO DE CORREO DEL REPORTE -->
+        <div class="col-lg-11 col-xs-12" style="margin-bottom:20px;">  
+             <a  class="btn btn-info pull-right" title="Generar Excel" id="generar-excel"  href="{{ path('_excel_balance_material_proveedores',{'proveedorId':proveedorId}) }}" >Generar Excel</a>
+        </div>
+        <!-- INPUTS PARA GENERA EXCEL Y ENVIO DE CORREO DEL REPORTE -->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1"> 
+            <table class="table table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">Fecha</th>
+                        <th style="text-align:center;">Tipo de Transacci&oacute;n</th>
+                        <th style="text-align:center;">Descripci&oacute;n</th>
+                        <th style="text-align:center;">Cerrado</th>
+                        <th style="text-align:center;">Entregado</th>
+                        <th class="hidden-xs" style="font-size:1vw; text-align:center;">Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set balance = 0 %}
+                    {% for row in datosBalanceMaterial %}
+                        {% set balance = ((row.cerrado - row.entregado) + balance) %}
+                        <tr>
+                            <td style="text-align:center;">{{ row.fecha | date('d-m-Y') }}</td>
+                            <td style="text-align:center;">{{ row.tipo_transaccion }}</td>
+                            <td style="text-align:center;">{{ row.descripcion }}</td>
+                            <td style="text-align:center;">{{ row.cerrado | number_format('2',',','.')}} Grs.</td>
+                            <td style="text-align:center;">{{ row.entregado | number_format('2',',','.')}} Grs.</td>
+                            <td class="hidden-xs" style="text-align:center;">{{ balance | number_format('2',',','.')}} Grs.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>    
+    </div>
+    {% endif %}
+
+
 {% endblock body %}
 {% block javascripts %}
 <script>

@@ -42,10 +42,15 @@ reporte_pagos_proveedores_empresas:
     path:  /pagos-proveedores-por-empresa
     defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:pagosProveedoresPorEmpresa" }
 
+# ROUTES PARA EL REPORTE DE BALANCE DE MATERIAL POR PROVEEDOR
 reporte_balance_material_proveedores:
-    path:  /reporte-balance-material-proveedores/{proveedorId}
-    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:reporteBalanceMaterialProveedores", proveedorId: null}    
+    path:  /reporte-balance-material-proveedores
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:reporteBalanceMaterialProveedores"}  
 
+_excel_balance_material_proveedores:    
+    path:  /generar-excel-balance-material-proveedores/{proveedorId}
+    defaults: { _controller: "lOroAdminBundle:ReportesEstadisticas:excelBalanceMaterialProveedores"}     
+# ROUTES PARA EL REPORTE DE BALANCE DE MATERIAL POR PROVEEDOR
 
 
 venta_dolares_comprador:
