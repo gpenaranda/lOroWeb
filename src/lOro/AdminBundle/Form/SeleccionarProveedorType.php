@@ -4,57 +4,56 @@ namespace lOro\AdminBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 
 class SeleccionarProveedorType extends AbstractType
 {
    protected $empty_value = 'Seleccione una Opción';
-   protected $compradorDolares;
+   //protected $compradorDolares;
    
-   public function __construct($compradorDolares) {
-     $this->compradorDolares = $compradorDolares;    
-   }
     
    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $compradorDolares = TRUE;//$this->compradorDolares;
-        $labelProveedor = ($compradorDolares == TRUE ? 'Comprador' : 'Proveedor');
+    { 
+        $compradorDolares = $options['compradorDolares'];
+        $labelProveedor = ($compradorDolares  == TRUE ? 'Comprador' : 'Proveedor');
         
         
         $builder
-            ->add('proveedor','entity',array('label' => $labelProveedor,
+            ->add('proveedor',EntityType::class,array('label' => $labelProveedor,
                                              'class' => 'lOroEntityBundle:Proveedores',
-                                             'query_builder' => function(EntityRepository $er) use ($compradorDolares) {
+                                             'query_builder' => function(EntityRepository $er) use ($compradorDolares ) {
                                                       return $er->createQueryBuilder('u');
                                                                 //->where('u.compraDolares = :compradorDolares')
                                                                 //->setParameter('compradorDolares',$compradorDolares);
                                              },
-                                             'property' => 'nbProveedor',
-                                             'empty_value' => $this->empty_value,
+                                             'choice_label' => 'nbProveedor',
+                                             'placeholder' => $this->empty_value,
                                              'mapped' => false,
                                              'attr' => array('class' => 'form-control')))
         ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'lOro\EntityBundle\Entity\Proveedores'
+            'data_class' => 'lOro\EntityBundle\Entity\Proveedores',
+            'compradorDolares' => null
         ));
-    }
+    } 
 
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'loro_seleccionar_proveedores_form';
     }
