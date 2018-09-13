@@ -309,7 +309,19 @@ class EntregasController extends Controller
     }
 
 
+    /**
+     * Crear el formato del correo para el envio de los registros de leyes y pesos por proveedor
+     */
+    public function formatoCorreoActualizacionDeEntrega($proveedor,$entrega){
+      $em = $this->getDoctrine()->getManager();
+      $correoDestinatario = $proveedor->getEmail();
+      $asunto = 'Recepción de Entrega';
+      
+      $textoMensaje = $this->renderView('/Emails/Proveedores/actualizacion_datos_entrega.html.twig',
+                        array('entrega' => $entrega));
 
+       $this->get('loro_datos_generales')->enviarCorreo($asunto, $correoDestinatario, $textoMensaje); 
+    }
 
 
     /**
@@ -343,7 +355,8 @@ class EntregasController extends Controller
           $totalLeyPiezas = 0;
           $pesoPuroEntrega = 0;
             
-        
+          
+
           /* Actualizacion de los datos de las Piezas asociadas a la Entrega que se esta Editando */
           foreach($piezasEntregadas as $pieza):
             $pieza->setEntrega($entity);
@@ -358,6 +371,7 @@ class EntregasController extends Controller
             $pesoPuroEntrega += $pesoPuroPieza;
           endforeach;
           
+
           $entity->setPesoBrutoEntrega($pesoBrutoEntrega);
           $promedioLeyEntrega = $totalLeyPiezas/$cantPiezasEntregadas;
           $entity->setLey($promedioLeyEntrega);
@@ -366,6 +380,10 @@ class EntregasController extends Controller
           $em->persist($entity);
           $em->flush();
 
+          /* Si el proveedor posee email asociado */
+          if($proveedor->getEmail()):
+            $this->formatoCorreoActualizacionDeEntrega($proveedor,$entity);
+          endif;
 
           $this->get('session')->getFlashBag()->set('success', 'La entrega N° '.$entity->getId().' ha sido actualizada satisfactoriamente.'); 
           return $this->redirect($this->generateUrl('entregas'));

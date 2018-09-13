@@ -93,7 +93,7 @@ class DatosGenerales {
     
           $message = $mailer->createMessage()
                           ->setSubject($asunto)
-                          ->setFrom('orotex@textileslolo.com')
+                          ->setFrom(['orotex@textileslolo.com' => 'Administración - Orotex'])
                           ->setTo($correo)
                           ->setBody($textoMensaje,'text/html');
 
