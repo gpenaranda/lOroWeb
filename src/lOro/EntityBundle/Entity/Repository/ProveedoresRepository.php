@@ -217,5 +217,21 @@ class ProveedoresRepository extends EntityRepository
             
             
             return $stmt->fetchAll();
-    }    
+    }  
+    
+    
+    public function getCierresFormatoBalanceMaterialProveedor($proveedorId) {
+      $conn = $this->getEntityManager()->getConnection();
+      
+      $variables['proveedorId'] = $proveedorId; 
+
+
+        
+      $query = 'CALL REPORTE_BALANCE_MATERIAL_POR_PROVEEDOR(:proveedorId);';
+
+      $stmt = $conn->executeQuery($query, $variables);
+            
+            
+      return $stmt->fetchAll();
+    }
 }

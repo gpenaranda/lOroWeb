@@ -13,7 +13,7 @@ class EnviarReportesCorreoCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('reportes:enviar')
+            ->setName('textileslolo:enviar-reportes')
             ->setDescription('Enviar correos con los Reportes')
             ->addArgument(
                 'tipoReporte',

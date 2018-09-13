@@ -11,6 +11,8 @@ use lOro\AdminBundle\Form\VentasCierresProveedorType;
 use lOro\AdminBundle\Form\PagosVariosPorMesAnioType;
 use lOro\AdminBundle\Form\TiempoCierresEntregasProveedorType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 use PHPExcel;
 use PHPExcel_IOFactory;
 
@@ -603,17 +605,6 @@ class ReportesEstadisticasController extends Controller
       return $form;          
     }
     
-    protected function seleccionarProveedorForm($urlSubmit,$compradorDolares = FALSE) {
-      $form = $this->createForm(new SeleccionarProveedorType($compradorDolares),null, array(
-              'action' => $this->generateUrl($urlSubmit),
-              'method' => 'POST',
-      ));
-
-      $form->add('submit', 'submit', array('label' => 'Generar Reporte',
-                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
-
-      return $form;        
-    }
        
     public function gananciasPorCierreProveedorAction(Request $request) {
       $em = $this->getDoctrine()->getManager();
@@ -969,10 +960,8 @@ class ReportesEstadisticasController extends Controller
               endforeach;
               /*
               foreach($row['arreglo_entregas'] as $rowEntrega):
-
-                
               endforeach;
- */
+              */
               echo '<hr>';
           endforeach;
           
@@ -1130,4 +1119,162 @@ class ReportesEstadisticasController extends Controller
           endforeach; 
         endforeach;
     }
+
+    /**
+     * Reporte para poder mostrar y descargar en excel el balance de un proveedor del material adeudado,
+     * Indicando Cierres, Entregas y balance de dicho proveedor.
+     * 
+     * @param object Request $request Objeto request de Symfony
+     */
+    public function reporteBalanceMaterialProveedoresAction(Request $request) {
+      $em = $this->getDoctrine()->getManager();
+      
+      $form = $this->seleccionarProveedorForm('reporte_balance_material_proveedores');
+
+      if($request->getMethod() === 'POST'):
+          
+        $form->handleRequest($request);
+         
+
+        if($form->isValid()):
+          $compradorSeleccionado = $form->get('proveedor')->getData();
+          $proveedorId = $compradorSeleccionado->getId();
+          
+          $datosBalanceMaterial = $em->getRepository('lOroEntityBundle:Proveedores')->getCierresFormatoBalanceMaterialProveedor($proveedorId);
+        endif; 
+      endif;
+
+      $data['proveedorId'] = (isset($proveedorId) ? $proveedorId: '');
+      $data['form'] = $form->createView();
+      $data['datosBalanceMaterial'] = (isset($datosBalanceMaterial) ? $datosBalanceMaterial: null);
+      return $this->render('lOroAdminBundle:ReportesEstadisticas/Proveedores:balance_material_proveedores.html.twig',$data);
+    }
+
+    public function excelBalanceMaterialProveedoresAction($proveedorId) {
+      $response = new Response();
+      $em = $this->getDoctrine()->getManager();
+      
+      $datosBalanceMaterial = $em->getRepository('lOroEntityBundle:Proveedores')->getCierresFormatoBalanceMaterialProveedor($proveedorId);
+         
+      
+
+         
+      // Create new PHPExcel object
+      $objPHPExcel = new PHPExcel();
+
+
+
+      // Set document properties
+      $objPHPExcel->getProperties()->setCreator("GePTulkhas")
+                  ->setTitle("Balance de Material")
+                  ->setSubject("Balance de Material");
+      
+      
+      // Add some data
+      $objPHPExcel->setActiveSheetIndex(0);
+      
+      $obj = $objPHPExcel->getActiveSheet();
+      
+
+      /* DAR COLOR A LOS TITULOS DEL EXCEL */
+      $obj->getStyle('A1:F1')->applyFromArray(array(
+        'font'  => array(
+          'bold'  => true,
+          'color' => array('rgb' => 'ffffff'),
+          'size'  => 12,
+          'name'  => 'Verdana'
+        )
+      ));
+
+      $obj->getStyle('A1:F1')->getFill()->applyFromArray(array(
+        'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+        'startcolor' => array(
+             'rgb' => '#0093e2'
+        )
+      ));
+
+      $obj->setCellValue('A1', 'Fecha')
+          ->setCellValue('B1', 'Tipo de Transacción')
+          ->setCellValue('C1', 'Descripción')
+          ->setCellValue('D1', 'Cerrado')
+          ->setCellValue('E1', 'Entregado')
+          ->setCellValue('F1', 'Balance');
+
+      
+
+        if($datosBalanceMaterial):
+          $col = 2;
+          $balance = 0;
+          foreach($datosBalanceMaterial as $row):
+             $balance = (($row['cerrado']-$row['entregado']) + $balance);
+             
+             $fecha = new \DateTime($row['fecha']);
+             $fechaFormateada = $fecha->format('d-m-Y');
+
+             $obj->setCellValue('A'.$col,$fechaFormateada);
+             $obj->setCellValue('B'.$col,$row['tipo_transaccion']);
+             $obj->setCellValue('C'.$col,$row['descripcion']);
+             $obj->setCellValue('D'.$col,number_format($row['cerrado'],2,',','.')." Grs.");
+             $obj->setCellValue('E'.$col,number_format($row['entregado'],2,',','.')." Grs.");
+             $obj->setCellValue('F'.$col,number_format($balance,2,',','.')." Grs.");
+            
+             $col++;
+             
+             $nombreArchivo = "balance_material_proveedor";
+          endforeach;
+          
+         $cantidadCeldas = count($datosBalanceMaterial) + 1;
+         
+      
+         $styleArray = array('borders' => array('allborders' => array(
+                                                  'style' => \PHPExcel_Style_Border::BORDER_THIN
+                                                )),
+                             'alignment' => array('horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                                                )
+                            );
+      
+         $objPHPExcel->getActiveSheet()->getStyle('A1:F'.$cantidadCeldas)->applyFromArray($styleArray);  
+         $objPHPExcel->getActiveSheet()->getStyle('A1:F'.$cantidadCeldas)->getAlignment()->setWrapText(true);
+         
+         foreach(range('A','G') as $columnID)
+         {
+           $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+         }
+       endif;
+         
+      // Set active sheet index to the first sheet
+      $objPHPExcel->setActiveSheetIndex(0);
+
+      // Redirect output to a client’s web browser (Excel5)
+      $response->headers->set('Content-Type', 'application/vnd.ms-excel');
+      $response->headers->set('Content-Disposition', 'attachment;filename="'.$nombreArchivo.'".xls"');
+      $response->headers->set('Cache-Control', 'max-age=0');
+      //$response->prepare();
+      $response->sendHeaders();
+      $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter->save('php://output');
+      exit();
+    }
+
+
+    /** 
+     * Funcion para crear el input de Proveedores, para los reportes.
+     * 
+     * @param string $urlSubmit - String del path de la URL de donde se llamo el formulario 
+     * @param boolean $compradorDolares - Indica si el input solo va a ser  llenado por proveedores compradores de Divisas
+     * 
+     * @return object $form - Objeto Formulario
+     */
+    protected function seleccionarProveedorForm($urlSubmit,$compradorDolares = FALSE) {
+      $form = $this->createForm(SeleccionarProveedorType::class,null, array(
+              'action' => $this->generateUrl($urlSubmit),
+              'method' => 'POST',
+              'compradorDolares' => $compradorDolares
+      ));
+
+      $form->add('submit', SubmitType::class, array('label' => 'Generar Reporte',
+                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
+
+      return $form;        
+    }    
 }
