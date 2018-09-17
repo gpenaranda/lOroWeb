@@ -83,17 +83,9 @@
     eval("var ley_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_leyPieza');");
     eval("var pesoPuroEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoPuroPieza');");
 
-  
-    eval("pesoBrutoEntrega_" + i + ".val($.number(pesoBrutoEntrega_" + i + ".val(), 2,',','.' ));");
-    eval("pesoBrutoEntrega_" + i + ".number( true, 2,',','.' );");
-  
-    eval("ley_" + i + ".val($.number(ley_" + i + ".val(), 2,',','.' ));");
-    eval("ley_" + i + ".number( true, 2,',','.' );");
-  
-    eval("pesoPuroEntrega_" + i + ".val($.number(pesoPuroEntrega_" + i + ".val(), 2,',','.' ));");
-    eval("pesoPuroEntrega_" + i + ".number( true, 2,',','.' );");
-  
-  
+    eval("pesoBrutoEntrega_" + i + ".keyup(function(){ var pesoBrutoXLey_" + i + " = pesoBrutoEntrega_" + i + ".val() * ley_" + i + ".val(); var resultadoPesoPuro_" + i + " = parseFloat(pesoBrutoXLey_" + i + " / parseInt(1000)); pesoPuroEntrega_" + i + ".val(resultadoPesoPuro_" + i + "); });");
+
+
     eval("ley_" + i + ".keyup(function(){ var pesoBrutoXLey_" + i + " = pesoBrutoEntrega_" + i + ".val() * ley_" + i + ".val(); var resultadoPesoPuro_" + i + " = parseFloat(pesoBrutoXLey_" + i + " / parseInt(1000)); pesoPuroEntrega_" + i + ".val(resultadoPesoPuro_" + i + "); });");
     
   
@@ -102,40 +94,6 @@
  });
 
 
-$("#entregas-form").submit(function(e) {
-   {% set i = 0 %}
-  {% for tag in edit_form.piezasEntregadas %}
-    var i = '{{ i }}';
-    
-    eval("var pesoBrutoEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoBrutoPieza');");
-    
-    
-     
-     
-    eval("var nuevoValorPesoBruto_" + i + " = $.number(pesoBrutoEntrega_" + i + ".val(), 2,'.','' );");
-    eval("pesoBrutoEntrega_" + i + ".number(true,2,'.','');");
-    eval("pesoBrutoEntrega_" + i + ".val(nuevoValorPesoBruto_" + i + ");");
-    
-    
-    
-    eval("var ley_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_leyPieza');");
-     
-    eval("var nuevoLey_" + i + " = $.number(ley_" + i + ".val(), 2,'.','' );");
-    eval("ley_" + i + ".number(true,2,'.','');");
-    eval("ley_" + i + ".val(nuevoLey_" + i + ");  ");
-    
-    
-          
-    eval("var pesoPuroEntrega_" + i + " = $('#loro_entitybundle_entregas_piezasEntregadas_" + i + "_pesoPuroPieza');"); 
-    
-    eval("var nuevoValorPesoPuro_" + i + " = parseFloat((nuevoValorPesoBruto_" + i + " * nuevoLey_" + i + ") /parseInt(1000));");
-    eval("pesoPuroEntrega_" + i + ".number(true,2,'.','');");
-    eval("pesoPuroEntrega_" + i + ".val(nuevoValorPesoPuro_" + i + ");");
-    
-    {% set i = i+1 %}
-  {% endfor %}
-     
-});
 
    var arregloOpcionesDP = {changeMonth: false,
                             changeYear: false,
