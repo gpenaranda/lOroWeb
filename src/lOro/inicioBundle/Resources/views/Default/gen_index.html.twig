@@ -480,18 +480,28 @@ $(document).ready(function(){
 
 
 
+       
+        
+
 <script> 
 $('#cierres-del-dia').click(function(){
-  $('#loading-square-closed-deals-day').show();
-       
+  $('.loading-cierres-dia').show();
+  $('#marco-cierres-dia').hide();    
+
   $.ajax({
     type: "POST",
     url: urlCierresDelDia,
     success: function(data) {
-      $('#loading-square-closed-deals-day').hide();
+      
       if(data != 'vacio') {
-        var cierresDelDia = data;//jQuery.parseJSON(data);
+        var cierresDelDia = data.cierres;
+        var totales = data.totales;
+        
+        var htmlTotales = '<h3 title="Refleja la sumatoria de los cierres realizados en el día">Cantidad Total Cierres: '+totales.cant_cierres+'</h3>';
+            htmlTotales += '<h3 title="Refleja la sumatoria de los gramos cerrados en el día">Total Cerrado en gramos: '+$.number(totales.total_cerrado_dia,2,',','.')+' Grs.</h3>';
             
+        $('#totales').html(htmlTotales);
+
         var html = '<div class="text-center">';
         for(var row in cierresDelDia) {
           var arregloCierres = cierresDelDia[row].arregloCierres;
@@ -514,6 +524,9 @@ $('#cierres-del-dia').click(function(){
       } else {
           $('#body-modal-ver-cierres-dia').html('<h2 class="text-center red">No existen cierres del dia para mostrar actualmente.</h2>');       
         }
+
+      $('.loading-cierres-dia').delay( 800 ).hide(0); 
+      $('#marco-cierres-dia').delay( 800 ).show(0);   
     }  
   });
 });

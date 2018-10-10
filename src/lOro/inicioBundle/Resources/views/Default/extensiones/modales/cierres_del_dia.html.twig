@@ -5,10 +5,14 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
         <h4 class="modal-title" id="myModalLabel">Cierres del Dia {{ "now" | date('d-m-Y') }}</h4>
       </div>
-      <div class="modal-body" id="body-modal-ver-cierres-dia">
-        <div class="text-center loading-img">
+      <div class="modal-body">
+        <div id="marco-cierres-dia">
+          <div id="totales"></div>
+          <hr />
+          <div id="body-modal-ver-cierres-dia"></div>
+        </div>
+        <div class="text-center loading-cierres-dia">
           <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-          <span class="sr-only">Loading...</span>
         </div>
       </div>
     </div> 
