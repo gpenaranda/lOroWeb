@@ -151,11 +151,20 @@ class DefaultController extends Controller
 
 
       if($cierresDelDia):
+        
+
+        /* Calcular la sumatoria total de cierres del dia */
+        $totalesCierres['cant_cierres'] = count($cierresDelDia);
+        $totalesCierres['total_cerrado_dia'] = 0;
+        foreach($cierresDelDia as $rowCierre):
+          $totalesCierres['total_cerrado_dia'] = $rowCierre['raw_cantidad_total_venta'] + $totalesCierres['total_cerrado_dia'];
+        endforeach;
+        
+
+        /* Organiza los Cierres por Proveedores */
         $cierresPorProveedores = array();
         foreach($proveedores as $proveedor):
-          foreach($cierresDelDia as $row):
-            
-            
+          foreach($cierresDelDia as $row):            
             if($row['proveedor_id'] == $proveedor->getId()):
               $cierresPorProveedores[$row['proveedor_id']]['nombre'] = $row['nb_proveedor'];
               
@@ -170,8 +179,6 @@ class DefaultController extends Controller
             endif;
           endforeach;  
         endforeach;
-
-        
 
         foreach($cierresPorProveedores as $cierrePorProveedor):
           $cierres = explode(',', $cierrePorProveedor['cierresId']);
@@ -193,12 +200,16 @@ class DefaultController extends Controller
             endforeach;
           endforeach;
         endforeach;
+        /* Organiza los Cierres por Proveedores */
+        
 
+        $response['totales'] = $totalesCierres;
+        $response['cierres'] = $cierresPorProveedores;
       else:
-        $cierresPorProveedores = 'vacio';
+        $response = 'vacio';
       endif;
       
-      return new JsonResponse($cierresPorProveedores);
+      return new JsonResponse($response);
     }    
     
     public function buscarInfoProveedorAction() {

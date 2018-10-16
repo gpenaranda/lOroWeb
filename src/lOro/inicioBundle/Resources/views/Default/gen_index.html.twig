@@ -1,25 +1,11 @@
 {% extends '::gen_base.html.twig' %}
-
-
 {% block title %}Inicio{% endblock %}
-
 {% block stylesheets %}
-<style>
-.mat-and-bs-content p 
-{
-color:black;font-weight:bold;
-}
-
-.loading-img i.fa-spinner,
-#loading-square-money-balance i.fa-spinner,
-#loading-square-supp-mat-balance i.fa-spinner,
-#loading-square-hc-mat-balance i.fa-spinner,
-#loading-square-suppliers i.fa-spinner,
-#loading-square-retail-suppliers i.fa-spinner {
-  color: #2A3F54;
-}
-</style>
-{% endblock stylesheets %}
+  {%  stylesheets 'assets/self/css/inicioBundle/index.css'
+                  filter='?uglifycss' filter='cssrewrite' output='css/compiled/index.css' %}
+      <link rel="stylesheet" href="{{ asset_url }}" />
+  {% endstylesheets %}
+{% endblock %}
 
 {% block body -%}
 
@@ -38,7 +24,7 @@ color:black;font-weight:bold;
             {% else %}
               {% set style2= 'col-md-offset-2 col-md-4 col-sm-4 col-xs-6' %}
             {% endif %}
-            <div class="{{ style2 }} tile_stats_count">
+            <div class="{{ style2 }} text-center  tile_stats_count">
               <span class="count_top">C&oacute;digo de la Ultima Pieza</span>
               <div class="count">{{ ultimaPiezaEntregada }}</div>
               <span class="count_bottom"></span>
@@ -48,7 +34,7 @@ color:black;font-weight:bold;
             {% else %}
               {% set style1= 'col-md-6 col-sm-6 col-xs-6' %}
             {% endif %}
-            <div class="{{ style1 }} tile_stats_count">
+            <div class="{{ style1 }} text-center  tile_stats_count">
               <a id="cierres-del-dia" data-toggle="modal" data-target="#modalVerCierresDelDia" href="#">
                 <span class="count_top">Cierres del dia <i class="fa fa-expand" aria-hidden="true"></i></span>
                 <div class="count">{{ cantCierresDelDia }}</div>
@@ -56,7 +42,7 @@ color:black;font-weight:bold;
               </a>
             </div>
             {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
-            <div class="col-md-4 col-sm-5 col-xs-12 tile_stats_count">
+            <div class="text-center col-md-4 col-sm-5 col-xs-12 tile_stats_count">
               <span class="count_top">Promedio de Referencia</span>
               <div class="count">{{ averageReferenceCurrency |number_format(2, ',', '.') }} Bs/$</div>
               <span class="count_bottom"></span>
@@ -68,18 +54,17 @@ color:black;font-weight:bold;
           <!-- Bolivares y Material -->
           <div class="row">
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="x_panel mat-and-bs-content">
+              <div class="x_panel mat-and-bs-content text-center">
 
                 <div class="row x_title">
                   <div class="col-md-6">
                     <h3>Bolivares</h3>
                   </div>
                 </div>
-
-                <div class="x_title">
-                    <h2>General</h2>
+                <div>
+                    <h2 class="text-center">General</h2>
                     <div class="clearfix"></div>
-                  </div>
+                </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
 
                   <div class="text-center" id="loading-square-money-balance">
@@ -122,7 +107,7 @@ color:black;font-weight:bold;
 
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="x_panel mat-and-bs-content">
+              <div class="x_panel mat-and-bs-content text-center">
 
                 <div class="row x_title">
                   <div class="col-md-6">
@@ -131,8 +116,8 @@ color:black;font-weight:bold;
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="x_title">
-                    <h2>Proveedores (Me Deben)</h2>
+                  <div>
+                    <h2 class="text-center">Proveedores</h2>
                     <div class="clearfix"></div>
                   </div>
                   
@@ -171,8 +156,8 @@ color:black;font-weight:bold;
                 </div>
 
                 <div class="col-md-6 col-sm-6 col-xs-6">
-                <div class="x_title">
-                    <h2>HC (Debo)</h2>
+                  <div>
+                    <h2 class="text-center">HC (Debo)</h2>
                     <div class="clearfix"></div>
                   </div>
                   
@@ -237,14 +222,14 @@ color:black;font-weight:bold;
                       <tr>        
                         <th></th>
                         <th class="text-center">Me Deben</th>
-                        <th class="text-center" colspan=3>Debo</th>
+                        <th class="text-center hidden-xs" colspan=3>Debo</th>
                       </tr>
                       <tr>        
                         <th class="text-center green"><b>Proveedor</b></th>
                         <th class="text-center green"> <b>Material</b></th>
-                        <th class="text-center green"> <b>Bolivares</b></th>
-                        <th class="text-center green"> <b>Dolares</b></th>
-                        <th class="text-center green"> <b>Euros</b></th>
+                        <th class="text-center green hidden-xs"> <b>Bolivares</b></th>
+                        <th class="text-center green hidden-xs"> <b>Dolares</b></th>
+                        <th class="text-center green hidden-xs"> <b>Euros</b></th>
                       </tr>
                     </thead>
                     <tbody id="balance-by-suppliers">
@@ -413,18 +398,18 @@ $(document).ready(function(){
           displayHtml += '<tr>';
             displayHtml += '<td><b>'+dataSupplier.nbProveedor+'</b></td>';
             displayHtml += '<td style="'+(dataSupplier.matAdeudado.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.matAdeudado+'</b></td>';
-            displayHtml += '<td style="'+(dataSupplier.deudaTotalBs.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalBs+'</b></td>';
-            displayHtml += '<td style="'+(dataSupplier.deudaTotalDol.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalDol+'</b></td>';
-            displayHtml += '<td style="'+(dataSupplier.deudaTotalEu.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalEu+'</b></td>';
+            displayHtml += '<td class="hidden-xs" style="'+(dataSupplier.deudaTotalBs.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalBs+'</b></td>';
+            displayHtml += '<td class="hidden-xs" style="'+(dataSupplier.deudaTotalDol.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalDol+'</b></td>';
+            displayHtml += '<td class="hidden-xs" style="'+(dataSupplier.deudaTotalEu.search("-") == -1 ? "" : "color: red;")+'"><b>'+dataSupplier.deudaTotalEu+'</b></td>';
           displayHtml += '</tr>';
         }
 
          var displayHtmlTotals =  '<tr>';
              displayHtmlTotals += '<th class="text-center green"><h3>Totales</h3></th>';
              displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalMat.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalMat+'</h3></td>';
-             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalBs.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalBs+'</h3></td>';
-             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalDol.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalDol+'</h3></td>';
-             displayHtmlTotals += '<td style="'+(totalsDataSuppliers.totalEu.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalEu+'</h3></td>';
+             displayHtmlTotals += '<td class="hidden-xs" style="'+(totalsDataSuppliers.totalBs.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalBs+'</h3></td>';
+             displayHtmlTotals += '<td class="hidden-xs" style="'+(totalsDataSuppliers.totalDol.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalDol+'</h3></td>';
+             displayHtmlTotals += '<td class="hidden-xs" style="'+(totalsDataSuppliers.totalEu.search("-") == -1 ? "" : "color: red;")+'"><h3>'+totalsDataSuppliers.totalEu+'</h3></td>';
              displayHtmlTotals += '</tr>';
 
              
@@ -480,18 +465,28 @@ $(document).ready(function(){
 
 
 
+       
+        
+
 <script> 
 $('#cierres-del-dia').click(function(){
-  $('#loading-square-closed-deals-day').show();
-       
+  $('.loading-cierres-dia').show();
+  $('#marco-cierres-dia').hide();    
+
   $.ajax({
     type: "POST",
     url: urlCierresDelDia,
     success: function(data) {
-      $('#loading-square-closed-deals-day').hide();
+      
       if(data != 'vacio') {
-        var cierresDelDia = data;//jQuery.parseJSON(data);
+        var cierresDelDia = data.cierres;
+        var totales = data.totales;
+        
+        var htmlTotales = '<h3 title="Refleja la sumatoria de los cierres realizados en el día">Cantidad Total Cierres: '+totales.cant_cierres+'</h3>';
+            htmlTotales += '<h3 title="Refleja la sumatoria de los gramos cerrados en el día">Total Cerrado en gramos: '+$.number(totales.total_cerrado_dia,2,',','.')+' Grs.</h3>';
             
+        $('#totales').html(htmlTotales);
+
         var html = '<div class="text-center">';
         for(var row in cierresDelDia) {
           var arregloCierres = cierresDelDia[row].arregloCierres;
@@ -514,6 +509,9 @@ $('#cierres-del-dia').click(function(){
       } else {
           $('#body-modal-ver-cierres-dia').html('<h2 class="text-center red">No existen cierres del dia para mostrar actualmente.</h2>');       
         }
+
+      $('.loading-cierres-dia').delay( 800 ).hide(0); 
+      $('#marco-cierres-dia').delay( 800 ).show(0);   
     }  
   });
 });
