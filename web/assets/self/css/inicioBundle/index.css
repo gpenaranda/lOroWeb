@@ -1,14 +1,26 @@
-table#supplier-condensed-table tr td,
-table#supplier-condensed-table tr th,
-table#retail-supplier-condensed-table tr td,
-table#retail-supplier-condensed-table tr th {
-	text-align: center !important;
-	font-size: 14pt !important;
+.mat-and-bs-content p 
+{
+color:black;font-weight:bold;
 }
 
-table#supplier-condensed-table tfoot tr td,
-table#retail-supplier-condensed-table tfoot tr td
-{
-	text-align: center !important;
-	font-size: 16pt !important;
+.loading-img i.fa-spinner,
+#loading-square-money-balance i.fa-spinner,
+#loading-square-supp-mat-balance i.fa-spinner,
+#loading-square-hc-mat-balance i.fa-spinner,
+#loading-square-suppliers i.fa-spinner,
+#loading-square-retail-suppliers i.fa-spinner {
+  color: #2A3F54;
+}
+
+
+
+/* tablet, landscape iPad, lo-res laptops ands desktops */
+/* big landscape tablets, laptops, and desktops */
+/* hi-res laptops and desktops */ 
+@media (min-width:961px),
+	   (min-width:1025px),
+	   (min-width:1281px) { 
+	div.x_panel {
+		min-height: 370px;
+	}
 }
