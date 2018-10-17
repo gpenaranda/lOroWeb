@@ -38,14 +38,10 @@
                 <td>{{ entity.proveedor.nbProveedor }}</td>  
                 <td>
                   <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_show', { 'id': entity.id }) }}">
-                      {% image 'assets/self/images/ver.png' %}
-                        <img src="{{ asset_url }}" alt="Ver" />
-                      {% endimage %}
+                      <i class="fa fa-eye fa-4" aria-hidden="true"></i>
                   </a>
                   <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_edit', { 'id': entity.id }) }}">
-                      {% image 'assets/self/images/editar.png' %}
-                        <img src="{{ asset_url }}" alt="Editar" />
-                      {% endimage %}
+                     <i class="fa fa-edit fa-4" aria-hidden="true"></i>
                   </a>
                 </td>
             </tr>
@@ -65,7 +61,7 @@
   };
   </script>
 
-  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/gen_app.js' %}
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' %}
     <script src="{{ asset_url }}"></script>
   {% endjavascripts %} 
 {% endblock %}
