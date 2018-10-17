@@ -1,7 +1,7 @@
     var table = $('#'+_globales.idListado).DataTable(
     {
       responsive: true,
-      "order": [[ 1, "desc" ]],
+      "order": [[ 2, "asc" ]],
       "oLanguage": {
         "sUrl": _globales.urlDatatableLang
       } , 

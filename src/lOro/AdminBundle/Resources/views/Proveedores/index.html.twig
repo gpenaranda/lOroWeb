@@ -113,7 +113,7 @@ $('#showViewModal').on('show.bs.modal', function (event) {
 </script>
 
 
-  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2'  %}
     <script src="{{ asset_url }}"></script>
   {% endjavascripts %} 
 {% endblock %}
