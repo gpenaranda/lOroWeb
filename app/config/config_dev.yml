@@ -32,8 +32,10 @@ monolog:
 assetic:
     use_controller: true
 
-#swiftmailer:
-#    delivery_address: me@example.com
+swiftmailer:
+    transport: gmail
+    username:  gabriel.e.p.gonzalez@gmail.com
+    password:  $$R3n0v4c10n$$
 
 
 # Doctrine Configuration

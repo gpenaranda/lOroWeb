@@ -76,7 +76,33 @@ class EmpresasProveedoresController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Agregar',
-                                             'attr' => array('class' => 'btn btn-success', 'style' => 'margin-top: 10px;')));
+                                             'attr' => array('class'    => 'btn btn-success pull-right',
+                                                             'disabled' => true)
+                                            )
+                );
+
+        return $form;
+    }
+
+    /**
+    * Creates a form to edit a EmpresasProveedores entity.
+    *
+    * @param EmpresasProveedores $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createEditForm(EmpresasProveedores $entity)
+    {
+        $form = $this->createForm(new EmpresasProveedoresType(), $entity, array(
+            'action' => $this->generateUrl('empresas-proveedores_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Actualizar',
+                                             'attr' => array('class' => 'btn btn-success pull-right',
+                                                             'disabled' => true)
+                                            )
+                );
 
         return $form;
     }
@@ -184,30 +210,11 @@ class EmpresasProveedoresController extends Controller
 
         return $this->render('lOroAdminBundle:EmpresasProveedores:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
         ));
     }
 
-    /**
-    * Creates a form to edit a EmpresasProveedores entity.
-    *
-    * @param EmpresasProveedores $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(EmpresasProveedores $entity)
-    {
-        $form = $this->createForm(new EmpresasProveedoresType(), $entity, array(
-            'action' => $this->generateUrl('empresas-proveedores_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
 
-        $form->add('submit', 'submit', array('label' => 'Actualizar',
-                                             'attr' => array('class' => 'btn btn-lg btn-success',
-                                                             'style' => 'margin-top:10px;')));
-
-        return $form;
-    }
     /**
      * Edits an existing EmpresasProveedores entity.
      *
@@ -234,7 +241,7 @@ class EmpresasProveedoresController extends Controller
 
         return $this->render('lOroAdminBundle:EmpresasProveedores:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
         ));
     }
     /**

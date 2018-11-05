@@ -1,0 +1,48 @@
+{{ form_start(form) }}
+    <div class="form-group">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+        {{ form_label(form.proveedor) }}
+        {{ form_widget(form.proveedor) }}
+        {{ form_errors(form.proveedor) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+            {{ form_label(form.nombreEmpresa) }}
+            {{ form_widget(form.nombreEmpresa) }}
+            {{ form_errors(form.nombreEmpresa) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+            {{ form_label(form.aliasEmpresa) }}
+            {{ form_widget(form.aliasEmpresa) }}
+            {{ form_errors(form.aliasEmpresa) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+            {{ form_label(form.tipoDocumento) }}
+            {{ form_widget(form.tipoDocumento) }}
+            {{ form_errors(form.tipoDocumento) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+            {{ form_label(form.rif) }}
+            {{ form_widget(form.rif) }}
+            {{ form_errors(form.rif) }}
+        </div>
+    </div>
+      
+    <div class="form-group">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+        {{ form_widget(form.submit) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}       
+{{ form_end(form) }} 

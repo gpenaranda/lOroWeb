@@ -36,7 +36,6 @@ class VentasCierresController extends Controller
       $em = $this->getDoctrine()->getManager();
       $lugar = $request->get('lugar');
         
-
       $arregloFiltrosGanancia = $this->getEarningsArrayFilter($lugar);
 
       $arregloFiltrosCierres['tipoCierre'] = ($lugar == 'proveedores' ? 'proveedor' : 'hc');

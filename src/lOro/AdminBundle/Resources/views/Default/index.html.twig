@@ -1,1 +1,33 @@
-Hello {{ name }}!
+{% extends '::gen_base.html.twig' %}
+{% block title %}Administraci&oacute;n - Tipos de Proveedor{% endblock %}
+{% block body -%}
+<div class="page-header">
+  <h1>Tipos de Proveedor<small>Listado</small>
+  </h1>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+  var url = 'http://127.0.0.1:8000/tipos-proveedor/';
+
+     $.ajax({
+        type: 'GET',
+        url: url,
+        contentType: "application/json",
+        crossDomain: true,
+        header: {
+              "accept": "application/json",
+              "Access-Control-Allow-Origin":"*"
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa('gpenaranda:g15169051'));
+            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        },
+        success: function(entrega) {
+            alert('A');
+        }
+      });
+  </script>
+{% endblock %}
