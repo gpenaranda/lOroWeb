@@ -8,7 +8,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "~2.8.2",
+        "symfony/symfony": "2.8.*",
         "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "1.0.*",
@@ -20,8 +20,9 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "symfony/assetic-bundle": "dev-master",
         "beberlei/DoctrineExtensions": "*",
-        "phpoffice/phpexcel": "dev-master",
-        "waldo/datatable-bundle": "^4.0"
+        "phpoffice/phpexcel": "1.8",
+        "waldo/datatable-bundle": "^4.0",
+        "symfony/serializer": "2.8"
     },
     "scripts": {
         "post-install-cmd": [

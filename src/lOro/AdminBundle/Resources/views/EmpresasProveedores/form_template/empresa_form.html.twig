@@ -1,9 +1,9 @@
 {{ form_start(form) }}
     <div class="form-group">
         <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-        {{ form_label(form.proveedor) }}
-        {{ form_widget(form.proveedor) }}
-        {{ form_errors(form.proveedor) }}
+            {{ form_label(form.proveedor) }}
+            {{ form_widget(form.proveedor) }}
+            {{ form_errors(form.proveedor) }}
         </div>
     </div>
 
@@ -22,7 +22,7 @@
             {{ form_errors(form.aliasEmpresa) }}
         </div>
     </div>
-
+    
     <div class="form-group">
         <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
             {{ form_label(form.tipoDocumento) }}
@@ -38,10 +38,11 @@
             {{ form_errors(form.rif) }}
         </div>
     </div>
-      
+
     <div class="form-group">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-        {{ form_widget(form.submit) }}
+        <div class="col-xs-12 col-sm-12 col-md-10">
+            <br>
+            {{ form_widget(form.submit) }}
         </div>
     </div>
     {{ form_rest(form) }}       

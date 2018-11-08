@@ -10,39 +10,10 @@
 <div class="row">
     <div class="col-md-8  col-md-offset-2">
         <div class="panel panel-danger">
-            <div class="panel-heading">
-                <h1 style="font-size: 40pt; text-align: center;">Empresa ID N° {{ entity.id }}</h1>
-            </div>
+
             <div class="panel-body">
-                <div class="col-md-6">
-                    <h2>Nombre</h2>
-                    <p>{{ entity.nombreEmpresa }}</p>
-                </div>
-                <div class="col-md-6">
-                    <h2>Documento de Identificaci&oacute;n</h2>
-                    <p>{{ entity.rif }}</p>
-                </div>
-                <br>
-                <div class="col-md-12">
-                    <table class="table table-condensed">
-                        <tr>
-                            <th>Banco</th>
-                            <th>Nro de Cuenta</th>
-                            <th>Acciones</th>
-                        </tr>
-                        <tbody id="body-nros-cuenta-registrados">
-                        {% for cuenta in cuentasEmpresa %}
-                        <tr id="empresaBanco_{{ cuenta.banco.id }}_{{ entity.id }}_{{ cuenta.nroCuenta}}">
-                            <td>{{ cuenta.banco.nbBanco }}</td>
-                            <td class="nros-cuentas-registrados">{{ cuenta.nroCuenta }}</td>
-                            <td>
-                                <a href="#" style="color:red;" onClick="event.preventDefault(); eliminarNroCuentaEmpresa('{{ cuenta.banco.id }}','{{ entity.id }}','{{ cuenta.nroCuenta}}');">Eliminar Cuenta</a>
-                            </td>
-                        </tr>    
-                        {% endfor %}
-                        </tbody>
-                    </table>   
-                </div>
+                
+                
                 <hr>
                 <div class="col-md-3 col-md-offset-8">
                     <a class="btn btn-md btn-success" id="agregar-nro-cuenta" href="#">Agregar N° de cuenta</a>

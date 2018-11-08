@@ -2,13 +2,12 @@
 {% block title %}Administraci&oacute;n - Empresas Por Proveedores{% endblock %}
 {% block body -%}
 <div class="page-header">
-  <h1>Empresa por Proveedores<small>Listado</small>
-  </h1>
+  <h1>Empresa por Proveedores<small>Listado</small></h1>
 </div>
 
-  <div class="clearfix"></div>
+<div class="clearfix"></div>
   
-  <div class="row">
+<div class="row">
     <!-- LLamado del twig con los flash del sistema -->
     {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
@@ -21,47 +20,52 @@
   
  <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
 
-      <table id="listado-cierres" class="table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
+      <table id="listado-cierres" class="table table-hover table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%" >
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre de la Empresa</th>
                 <th>Proveedor asociado a la empresa</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
-            <tr>
+            <tr class="clickable-row" data-toggle="modal" data-target="#modalVer" data-id="{{ entity.id }}">
                 <td>{{ entity.id }}</td>              
                 <td>{{ entity.nombreEmpresa }}</td>
                 <td>{{ entity.proveedor.nbProveedor }}</td>  
-                <td>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_show', { 'id': entity.id }) }}">
-                      <i class="fa fa-eye fa-4" aria-hidden="true"></i>
-                  </a>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('empresas-proveedores_edit', { 'id': entity.id }) }}">
-                     <i class="fa fa-edit fa-4" aria-hidden="true"></i>
-                  </a>
-                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
   </div>
 </div>
+
+<!-- LLamado del twig con el modal de Ver Venta Divisa -->
+{% include 'lOroAdminBundle:EmpresasProveedores/ext:show_modal.html.twig' %}
+
 {% endblock %}
 
 {% block javascripts %}
-  <script>
-    var _globales = {
+<script>
+  var _globales = {
+        idEntity: "",
+        urlShowAction: "{{ path('empresas-proveedores_show', { 'id': ':idEntity' }) }}", 
+        urlEditAction: "{{ path('empresas-proveedores_edit', { 'id': ':idEntity' }) }}",
+        urlBuscarBancosCuentaAction: "{{ path('_ajax_buscar_bancos_nro_cuenta', { 'id': ':idEntity' }) }}",
+        urlRegisterCuentaAction : "{{ url('_ajax_agregar_nro_cuenta_empresa') }}",
+        urlDeleteCuentaAction: "{{ url('_ajax_eliminar_nro_cuenta_empresa') }}",
         titulosNoFiltrados: '[0,1]',
         idListado: 'listado-cierres',
-        urlDatatableLang: '{{ asset('lang.txt') }}'
+        urlDatatableLang: "{{ asset('lang.txt') }}",
+        funciones: ""
   };
-  </script>
+</script>
+  
 
-  {% javascripts  'assets/self/js/general/general_functions.js' filter='?uglifyjs2' %}
+  {%  javascripts 'assets/self/js/general/general_functions.js'
+                  'assets/self/js/admin/empresas_proveedor.js'
+      filter='?uglifyjs2' %}
     <script src="{{ asset_url }}"></script>
   {% endjavascripts %} 
 {% endblock %}

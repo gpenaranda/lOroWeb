@@ -2,9 +2,14 @@
 {% block title %}Administraci&oacute;n - Empresas por Proveedores{% endblock %}
   {% block stylesheets %}
   <style type="text/css">
-   #empresa-proveedor-form.form-control-feedback {
-    top: 17px;
-    right:14px;
+   #empresa-proveedor-form .form-control-feedback {
+    top: 21px;
+    right:12px;
+  }
+
+  #empresa-proveedor-form .combobox-container .form-control-feedback {
+    top: 21px;
+    right:44px;
   }
   </style>
 {% endblock %}
@@ -29,7 +34,7 @@
   };
   </script>
 
-  {% javascripts  'assets/self/js/admin/empresas_val.js' filter='?uglifyjs2' %}
+  {% javascripts  'assets/self/js/admin/empresas_proveedor.js' filter='?uglifyjs2' %}
     <script src="{{ asset_url }}"></script>
   {% endjavascripts %}
 </script>
