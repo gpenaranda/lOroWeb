@@ -29,21 +29,24 @@ class EmpresasProveedoresController extends Controller
 {
 
     /**
-     * Lists all EmpresasProveedores entities.
+     * Index para listar las Empresas por Proveedores.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-
+        $entity = new EmpresasProveedores();
+        $form   = $this->createCreateForm($entity);
       
         $entities = $em->getRepository('lOroEntityBundle:EmpresasProveedores')->findBy(array('esEmpresaCasa' => false,'isWorker' => false),array('proveedor' => 'DESC'));
 
-        return $this->render('lOroAdminBundle:EmpresasProveedores:index.html.twig', array(
-            'entities' => $entities,
-        ));
+        
+        $data['entity'] = $entity;
+        $data['form'] = $form->createView();
+        $data['entities'] = $entities;
+        return $this->render('lOroAdminBundle:EmpresasProveedores:index.html.twig', $data);
     }
+
     /**
      * Creates a new EmpresasProveedores entity.
      *
@@ -62,6 +65,7 @@ class EmpresasProveedoresController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->set('success', 'La Empresa '.$entity->getNombreEmpresa().' ha sido registrada satisfactoriamente.');    
             return $this->redirect($this->generateUrl('empresas-proveedores', array('id' => $entity->getId())));
         }
 
@@ -87,7 +91,7 @@ class EmpresasProveedoresController extends Controller
         ));
 
         $form->add('submit', SubmitType::class, array('label' => 'Register',
-                                             'attr' => array('class'    => 'btn btn-success pull-right',
+                                             'attr' => array('class'    => 'btn btn-lg btn-success pull-right',
                                                              'disabled' => true)
                                             )
                 );

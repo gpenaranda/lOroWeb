@@ -38,24 +38,6 @@ $(function(){
   }();
 
 
-  function eliminarNroCuentaEmpresa(idBanco,idEmpresa,nroCuenta) {
-    $.ajax({
-        type: "POST",
-        url: _globales.urlDeleteCuentaAction,
-        data: {
-          idEmpresa:idEmpresa,
-          idBanco:idBanco,
-          nroCuenta:nroCuenta
-        },
-        success: function(data) {
-          $('#empresaBanco_'+idBanco+'_'+idEmpresa+'_'+nroCuenta).remove();  
-         
-          var mensaje = 'El nro de cuenta ha sido eliminado exitosamente.';
-          _globales.funciones.mostrarMensaje('<div class="alert alert-danger" style="color:white; text-shadow:none;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> '+mensaje+'</div>');
-        }
-    });
-    
-  }
 
   // Habilitar el Boton submit del formulario una vez cargado todo el JS
   $("#loro_entitybundle_empresasproveedores_submit").prop("disabled", false);
@@ -66,7 +48,7 @@ $(function(){
   // Combobox para selects Proveedor y Tipo Documento
   $("#loro_entitybundle_empresasproveedores_proveedor, #loro_entitybundle_empresasproveedores_tipoDocumento").combobox();
 
-  // Evitar que se usen caracteres fuera de letras y numeros en Nombre de Empresa y Alias Empresa
+  /* Evitar que se usen caracteres fuera de letras y numeros en Nombre de Empresa y Alias Empresa
   $('#loro_entitybundle_empresasproveedores_nombreEmpresa, #loro_entitybundle_empresasproveedores_aliasEmpresa').keypress(function (e) {
     var regex = new RegExp("^[a-zA-Z0-9]+$");
     var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
@@ -77,7 +59,7 @@ $(function(){
     e.preventDefault();
     return false;
   });
-
+  */
 
 
 
@@ -167,10 +149,13 @@ $(function(){
                   nroCuentaRegistrado += '<td><a style="color:red;" href="#" onClick="event.preventDefault(); eliminarNroCuentaEmpresa(\''+data.idBanco+'\',\''+_globales.idEntity+'\',\''+data.nroCuenta+'\');">Eliminar Cuenta</a></td>';
                   nroCuentaRegistrado += "</tr>";
                   
+
               $('#body-nros-cuenta-registrados').append(nroCuentaRegistrado);
               $('#banco').val('');
               $('#nro-cuenta').val('');
               $('#panel-form-nro-cuenta').hide();
+              $('#sin-nros-cuentas').hide();
+              $('#body-nros-cuenta-registrados').show();
 
               var mensaje = 'El nro de cuenta ha sido registrado exitosamente.';
               _globales.funciones.mostrarMensaje('<div class="alert alert-success" style="color:white; text-shadow:none;"><i class="fa fa-check" aria-hidden="true"></i> '+mensaje+'</div>');
