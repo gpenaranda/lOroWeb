@@ -1,0 +1,50 @@
+<div class="modal fade" id="modalVer" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Empresa N° <b class="id-empresa"></b></h4>
+            </div>
+            <div class="modal-body"> <!-- Body -->
+
+                <div id="mensaje-accion"></div>
+                <h4>Datos Generales</h4>
+                <hr style="border-color: black;">
+
+                <!-- Default panel contents -->
+                <div class="row">
+                    <div class="col-md-5">
+                        <h2>Nombre</h2>
+                        <p id="nombre-empresa"></p>
+                    </div>
+                    <div class="col-md-4">
+                        <h2>Doc. de Identificaci&oacute;n</h2>
+                        <p id="documento-empresa"></p>
+                    </div>
+                    <br>
+                    <div class="col-md-2">
+                        <a class="btn btn-md btn-success" id="agregar-nro-cuenta" href="#"><i class="fa fa-plus" aria-hidden="true"></i> N° de cuenta</a>
+                    </div>
+                    <!-- Formulario de Registro de Nros de Cuenta -->
+                    {% include 'lOroAdminBundle:EmpresasProveedores/form_template:agegar_nro_cuenta_form.html.twig' %}
+                    <!-- Formulario de Registro de Nros de Cuenta -->
+                </div>
+
+                <div class="row">
+                    <table class="table table-condensed">
+                        <caption id="sin-nros-cuentas" class="text-center" style="display:none;"><h4 style="color:red;">La empresa no posee cuentas asociadas</h4></caption>
+                        <tr>
+                            <th>Banco</th>
+                            <th>Nro de Cuenta</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tbody id="body-nros-cuenta-registrados"></tbody>
+                    </table>   
+                </div>
+            </div><!-- Body -->
+            <div class="modal-footer">
+                <a  title="Editar" class="btn btn-lg btn-primary" id="edit-button" href="#">{% trans %}Edit{% endtrans %}</a>
+            </div>
+        </div>
+    </div> 
+</div>

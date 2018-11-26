@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EmpresasBancos
 {
     /**
-     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\EmpresasProveedores")
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\EmpresasProveedores", inversedBy="cuentasPorEmpresa")
      * @ORM\JoinColumn(name="empresa_id", referencedColumnName="id", nullable=true) 
      * @ORM\Id
      */

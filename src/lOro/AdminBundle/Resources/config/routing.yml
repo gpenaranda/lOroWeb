@@ -1,7 +1,3 @@
-l_oro_admin_homepage:
-    path:  /hello/{name}
-    defaults: { _controller: lOroAdminBundle:Default:index }
-    
 relacion-entregas-cierres:
     path:  /relacionar-entregas-cierres-index
     defaults: { _controller: "lOroAdminBundle:Parametros:relacionEntregasCierresIndex" }
@@ -19,3 +15,13 @@ relacionar-entregas-cierres-proveedores:
 _ajax_sacar_prom_ref:
     path:  /ajax-sacar-prom-ref
     defaults: { _controller: "lOroAdminBundle:Servicios:ajaxSacarPromRef" }  
+
+
+# TIPOS DE PROVEEDOR
+tipos-proveedor-index:
+    path:  /tipos-proveedor
+    defaults: { _controller: lOroAdminBundle:Default:index }
+
+_get-tipos-proveedor:
+    path:  /get-tipos-proveedor
+    defaults: { _controller: lOroAdminBundle:Default:getTiposProveedor }   

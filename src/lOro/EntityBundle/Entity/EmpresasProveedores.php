@@ -98,7 +98,12 @@ class EmpresasProveedores
      * 
      * @ORM\Column(name="alias_empresa", type="string",length=40, nullable=true) 
      */
-    private $aliasEmpresa;     
+    private $aliasEmpresa;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\EmpresasBancos", mappedBy="empresa")
+     */
+    private $cuentasPorEmpresa; 
     
     
     public function __toString() {
@@ -476,5 +481,39 @@ class EmpresasProveedores
     public function getAliasEmpresa()
     {
         return $this->aliasEmpresa;
+    }
+
+    /**
+     * Add cuentasPorEmpresa
+     *
+     * @param \lOro\EntityBundle\Entity\EmpresasBancos $cuentasPorEmpresa
+     *
+     * @return EmpresasProveedores
+     */
+    public function addCuentasPorEmpresa(\lOro\EntityBundle\Entity\EmpresasBancos $cuentasPorEmpresa)
+    {
+        $this->cuentasPorEmpresa[] = $cuentasPorEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Remove cuentasPorEmpresa
+     *
+     * @param \lOro\EntityBundle\Entity\EmpresasBancos $cuentasPorEmpresa
+     */
+    public function removeCuentasPorEmpresa(\lOro\EntityBundle\Entity\EmpresasBancos $cuentasPorEmpresa)
+    {
+        $this->cuentasPorEmpresa->removeElement($cuentasPorEmpresa);
+    }
+
+    /**
+     * Get cuentasPorEmpresa
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCuentasPorEmpresa()
+    {
+        return $this->cuentasPorEmpresa;
     }
 }
