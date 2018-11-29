@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -39,6 +40,14 @@ class CierresHCType extends AbstractType
                                                                              'inputmode' => 'numeric'
                                                                             )
                                                             ))
+            ->add('descuentoOnzaProveedor',NumberType::class,array('label' => 'Descuento de la Onza (%)',
+                                                            'attr' => array('class' => 'form-control',
+                                                                            'autocomplete' => 'off',
+                                                                            'pattern' => '[0-9]*',
+                                                                            'step' => 'any',
+                                                                            'inputmode' => 'numeric'
+                                                                           )
+                                                           ))
             ->add('valorOnza',TextType::class,array('label'=> 'Valor de la Onza',
                                                     'attr' => array('class' => 'form-control',
                                                                     'autocomplete' => 'off',
@@ -66,10 +75,11 @@ class CierresHCType extends AbstractType
                                                               ->setParameter('monedaExcluida',array(1));
                                               },
                                                 'choice_label' => 'nbMoneda',
-                                                'placeholder' => '',
-                                                'attr' => array('class' => 'form-control',
+                                                'attr' => array('class' => '',
                                                 'style' => 'margin-bottom:10px;'),
                                                 'mapped'        => true,
+                                                'multiple'  => false,
+                                                'expanded' => true,
                                                 'required' => false))
         ;
     }

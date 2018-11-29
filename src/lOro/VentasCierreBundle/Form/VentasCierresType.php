@@ -63,7 +63,22 @@ class VentasCierresType extends AbstractType
         $builder
             ->add('feVenta',DateType::class,$attrFecha)
             ->add('dolarReferenciaDia',TextType::class,$attrDolarRefDia)   
-                                                     
+            ->add('descuentoOnzaProveedor',NumberType::class,array('label' => 'Descuento de la Onza (%)',
+                                                            'attr' => array('class' => 'form-control',
+                                                                            'autocomplete' => 'off',
+                                                                            'pattern' => '[0-9]*',
+                                                                            'step' => 'any',
+                                                                            'inputmode' => 'numeric'
+                                                                           )
+                                                           ))
+            ->add('descuentoOnzaCliente',NumberType::class,array('label' => 'Descuento de la Onza - Cliente (%)',
+                                                            'attr' => array('class' => 'form-control',
+                                                                            'autocomplete' => 'off',
+                                                                            'pattern' => '[0-9]*',
+                                                                            'step' => 'any',
+                                                                            'inputmode' => 'numeric'
+                                                                           )
+                                                           ))                                                     
             ->add('tipoMonedaCierre',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
                                                    'class' => 'lOroEntityBundle:TiposMoneda',
                                                    'query_builder' => function(EntityRepository $er) {

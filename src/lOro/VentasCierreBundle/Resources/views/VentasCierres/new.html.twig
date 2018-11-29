@@ -16,8 +16,91 @@
   #ui-datepicker-div {
     z-index: 100 !important;
   }
+
+
+/* =============================================
+* RADIO BUTTONS
+=============================================== */
+/*
+.container {
+  height: 100%;
+  min-height: 100%;
+  margin: 0 auto;
+}
+*/
+
+.button-wrap {
+  margin-top: 1.5em;
+  margin-left: 2em;
+}
+
+.button-label {
+  display: inline-block;
+  padding: 0.15em 1em;
+  margin: 0.15em;
+  cursor: pointer;
+  color: #292929;
+  border-radius: 0.25em;
+  background: #eee;
+  /*box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 -3px 0 rgba(0, 0, 0, 0.22);*/
+  transition: 0.3s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.button-label h1 {
+  font-size: 0.5em;
+  font-family: "Lato", sans-serif;
+}
+
+.button-label:active {
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0px -1px 0 rgba(0, 0, 0, 0.22);
+}
+@media (max-width: 40em) {
+  .button-label {
+    padding: 0em 1em 3px;
+    margin: 0.25em;
+  }
+}
+
+#yes-button:checked + .button-label {
+  background: #54E7BE;
+}
+#yes-button:checked + .button-label:hover {
+  background: #63e9c3;
+}
+
+#no-button:checked + .button-label {
+  background: #54E7BE;
+}
+#no-button:checked + .button-label:hover {
+  background: #63e9c3;
+}
+
+.hidden {
+  display: none;
+}
+/* =============================================
+* RADIO BUTTONS
+=============================================== */
   </style>
 {% endblock stylesheets %}
+
+
+{% form_theme form _self %}
+
+{% block radio_widget %}
+<div class="radio-container">
+  <div class="button-wrap">
+        {#% set type = type|default('text') %#}
+        {{ block('form_widget_simple') }}
+    </div>
+    </div>
+{% endblock %}
+
 
 {% block body -%}
 
@@ -48,6 +131,24 @@
           {{ form_errors(form.tipoMonedaCierre) }}
         </div>
       </div>
+      
+      <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+        {{ form_label(form.descuentoOnzaProveedor) }}
+        {{ form_widget(form.descuentoOnzaProveedor) }}
+        {{ form_errors(form.descuentoOnzaProveedor) }} 
+        </div>
+      </div>
+
+      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+        <div class="form-group">
+          <div class="col-xs-9 col-md-9">
+          {{ form_label(form.descuentoOnzaCliente) }}
+          {{ form_widget(form.descuentoOnzaCliente) }}
+          {{ form_errors(form.descuentoOnzaCliente) }}  
+          </div>
+        </div>
+      {% endif %}
 
       {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
         <div class="form-group">
@@ -89,10 +190,29 @@
 
       <div class="form-group">
         <div class="col-xs-9 col-md-9">
-        {{ form_label(form.valorOnza) }}
-        {{ form_widget(form.valorOnza) }}
-        {{ form_errors(form.valorOnza) }}  
-          <br>
+                
+          <div class="col-xs-2 col-md-2">
+<div class="radio-container">
+  <div class="button-wrap">
+    <input class="hidden radio-label" type="radio" name="accept-offers" id="yes-button" checked="checked"/>
+    <label class="button-label" for="yes-button">
+      <h1><i class="fa fa-eur fa-2x" aria-hidden="true"></i></h1>
+    </label>
+    <input class="hidden radio-label" type="radio" name="accept-offers" id="no-button"/>
+    <label class="button-label" for="no-button">
+      <h1><i class="fa fa-dollar fa-2x" aria-hidden="true"></i></h1>
+    </label>
+  </div>
+</div>
+
+          </div>
+
+          <div class="col-xs-10 col-md-10 pull-right">
+            {{ form_label(form.valorOnza) }}
+            {{ form_widget(form.valorOnza) }}
+            {{ form_errors(form.valorOnza) }}
+            <br>  
+          </div>
         </div>
       </div>
      
@@ -161,7 +281,7 @@
       $("#loro_entitybundle_ventascierres_proveedorCierre").combobox();
     } 
 
-    $("#"+_globales.inputBaseName+"tipoMonedaCierre").combobox();
+   // $("#"+_globales.inputBaseName+"tipoMonedaCierre").combobox();
     
   });
   </script>

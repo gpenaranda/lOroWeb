@@ -112,7 +112,9 @@ class VentasCierresController extends Controller
       
       $form->handleRequest($request);
         
-          
+
+      var_dump($request->request->all());
+      die();
         if ($form->isValid()):
             
           $tipoMonedaCierre = $form->get('tipoMonedaCierre')->getData();
@@ -124,14 +126,19 @@ class VentasCierresController extends Controller
           $pesoTotalVenta = $form->get('cantidadTotalVenta')->getData();
           
           if($lugar == 'proveedores'):
+            $descuentoOnzaCliente = $form->get('descuentoOnzaCliente')->getData();
+
             $arregloFiltrosCierresPrevios['proveedorCierre'] = $form->get('proveedorCierre')->getData();
 
             $valorOnza = $form->get('valorOnza')->getData();
             $montoBsCierrePorGramo = $form->get('montoBsCierrePorGramo')->getData();
             
             
-            $entity->setDolarReferencia(($montoBsCierrePorGramo / (($valorOnza /$onzaTroyGramos->getValorParametro()) *  $ganancia->getTipoMargen())));
-            $entity->setMontoTotalDolar(((($valorOnza /$onzaTroyGramos->getValorParametro()) *  $ganancia->getTipoMargen() ) * $pesoTotalVenta));
+            $dolarReferencia = ($montoBsCierrePorGramo / (($valorOnza /$onzaTroyGramos->getValorParametro()) * $descuentoOnzaCliente));
+            $totalMontoDolar = ((($valorOnza /$onzaTroyGramos->getValorParametro()) * $descuentoOnzaCliente ) * $pesoTotalVenta);
+
+            $entity->setDolarReferencia($dolarReferencia);
+            $entity->setMontoTotalDolar($totalMontoDolar);
           else:         
             $entity->setMontoBsFormula(0);
             $entity->setDolarReferencia(0);
