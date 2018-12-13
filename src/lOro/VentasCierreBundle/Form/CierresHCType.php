@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -39,6 +40,14 @@ class CierresHCType extends AbstractType
                                                                              'inputmode' => 'numeric'
                                                                             )
                                                             ))
+            ->add('descuentoOnzaProveedor',NumberType::class,array('label' => 'Descuento de la Onza (%)',
+                                                            'attr' => array('class' => 'form-control',
+                                                                            'autocomplete' => 'off',
+                                                                            'pattern' => '[0-9]*',
+                                                                            'step' => 'any',
+                                                                            'inputmode' => 'numeric'
+                                                                           )
+                                                           ))
             ->add('valorOnza',TextType::class,array('label'=> 'Valor de la Onza',
                                                     'attr' => array('class' => 'form-control',
                                                                     'autocomplete' => 'off',
@@ -58,23 +67,35 @@ class CierresHCType extends AbstractType
                                                                           'read_only' => true
                                                                           )
                                                         ))
-            ->add('tipoMonedaCierre',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
-                                              'class' => 'lOroEntityBundle:TiposMoneda',
-                                              'query_builder' => function(EntityRepository $er) {
+            ->add('tipoMonedaCierreHc',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
+                                                'class' => 'lOroEntityBundle:TiposMoneda',
+                                                'query_builder' => function(EntityRepository $er) {
                                                     return $er->createQueryBuilder('u')
                                                               ->where('u.id NOT IN (:monedaExcluida)')
                                                               ->setParameter('monedaExcluida',array(1));
-                                              },
-                                                'choice_label' => 'nbMoneda',
-                                                'placeholder' => '',
-                                                'attr' => array('class' => 'form-control',
+                                                 },
+                                                'placeholder' => false,
+                                                'choice_label' => 'simboloMoneda',
+                                                'attr' => array('class' => '',
                                                 'style' => 'margin-bottom:10px;'),
                                                 'mapped'        => true,
+                                                'multiple'  => false,
+                                                'expanded' => true,
                                                 'required' => false))
+            ->add('cliente',EntityType::class,array('label' => 'Proveedor',
+                                                   'class' => 'lOroEntityBundle:Clientes',
+                                                   'query_builder' => function(EntityRepository $er) {
+                                                      return $er->createQueryBuilder('u');
+                                                   },
+                                                   'choice_label' => 'alias',
+                                                   'placeholder' => '',
+                                                   'attr' => array('class' => 'form-control',
+                                                   'style' => 'margin-bottom:10px;')))
         ;
     }
     
     /**
+     * 
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

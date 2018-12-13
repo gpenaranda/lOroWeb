@@ -1,4 +1,5 @@
 $(function(){
+
     $('#'+_globales.formId).formValidation({
       onSuccess: function(e) {
         //undoNumberFormatForRegister();
@@ -10,6 +11,14 @@ $(function(){
         validating: 'glyphicon glyphicon-refresh'
       },
       fields: {
+        "loro_entitybundle_cierres_hc[tipoMonedaCierreHc]" : {
+          row: '.button-wrap',
+          validators: {
+            notEmpty: {
+              message: 'Seleccione una opción.'
+            }
+          }
+        },
         "loro_entitybundle_cierres_hc[feVenta]": {
           row: '.col-xs-9',
           validators: {
@@ -26,7 +35,15 @@ $(function(){
           row: '.col-xs-9',
           excluded: true 
         },
-        "loro_entitybundle_cierres_hc[tipoMonedaCierre]": {
+        "loro_entitybundle_cierres_hc[descuentoOnzaProveedor]": {
+          row: '.col-xs-9',
+          validators: {
+            notEmpty: {
+              message: 'Debe seleccionar una opción.'
+            }
+          }
+        },
+        "loro_entitybundle_cierres_hc[cliente]": {
           row: '.col-xs-9',
           validators: {
             notEmpty: {

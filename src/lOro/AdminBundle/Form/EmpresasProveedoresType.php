@@ -4,15 +4,16 @@ namespace lOro\AdminBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Doctrine\ORM\EntityRepository;
 
 class EmpresasProveedoresType extends AbstractType
 {
-   protected $empty_value = 'Seleccione una Opción';
+   protected $empty_value = 'Select an option';
    protected $esEmpresaCasa;
    
    public function __construct($esEmpresaCasa = null) {
@@ -39,32 +40,32 @@ class EmpresasProveedoresType extends AbstractType
                                                         return 'MINORISTAS';
                                                     }
                                              },
-                                             'property' => 'nbProveedor',
-                                             'empty_value' => $this->empty_value,
+                                             'choice_label' => 'nbProveedor',
+                                             'placeholder' => $this->empty_value,
                                              'attr' => array('class' => 'form-control')));
         endif;
 
 
         $builder
-            ->add('nombreEmpresa','text',array('label' => 'Nombre de la Empresa',
+            ->add('nombreEmpresa',TextType::class,array('label' => 'Enterprise name',
                                                'attr' => array('class' => 'form-control')))
-            ->add('aliasEmpresa','text',array('label' => 'Alias de la Empresa',
+            ->add('aliasEmpresa',TextType::class,array('label' => 'Enterprise alias',
                                                'attr' => array('class' => 'form-control')))
-            ->add('tipoDocumento','entity',array('label' => 'Tipo de Documento',
+            ->add('tipoDocumento',EntityType::class,array('label' => 'Document type',
                                              'class' => 'lOroEntityBundle:TiposDocumentos',
-                                             'property' => 'nombre',
-                                             'empty_value' => $this->empty_value,
+                                             'choice_label' => 'nombre',
+                                             'placeholder' => $this->empty_value,
                                              'attr' => array('class' => 'form-control')))
             
-            ->add('rif','text',array('label' => 'Documento de Identificacion',
+            ->add('rif',TextType::class,array('label' => 'Identification document',
                                                'attr' => array('class' => 'form-control')))
         ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'lOro\EntityBundle\Entity\EmpresasProveedores'
@@ -74,7 +75,7 @@ class EmpresasProveedoresType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'loro_entitybundle_empresasproveedores';
     }

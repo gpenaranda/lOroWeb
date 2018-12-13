@@ -23,6 +23,22 @@ $(function(){
             }
           }
         },
+        "loro_entitybundle_ventascierres[descuentoOnzaProveedor]": {
+          row: '.col-xs-9',
+          validators: {
+            notEmpty: {
+              message: 'Debe seleccionar una opción.'
+            }
+          }
+        },
+        "loro_entitybundle_ventascierres[descuentoOnzaCliente]": {
+          row: '.col-xs-9',
+          validators: {
+            notEmpty: {
+              message: 'Debe seleccionar una opción.'
+            }
+          }
+        },
         "loro_entitybundle_ventascierres[dolarReferenciaDia]": {
           row: '.col-xs-9',
           validators: {
@@ -62,10 +78,18 @@ $(function(){
           }
         },
         "loro_entitybundle_ventascierres[tipoMonedaCierre]": {
-          row: '.col-xs-9',
+          row: '.button-wrap',
           validators: {
             notEmpty: {
-              message: 'Debe seleccionar una opción.'
+              message: 'Seleccione una opción.'
+            }
+          }
+        },
+        "loro_entitybundle_ventascierres[tipoMonedaCierreHc]" : {
+          row: '.button-wrap',
+          validators: {
+            notEmpty: {
+              message: 'Seleccione una opción.'
             }
           }
         },

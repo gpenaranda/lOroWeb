@@ -2,126 +2,54 @@
 {% block title %}Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}}{% endblock %}
 
 {% block stylesheets %}
-  <style type="text/css">
-    #proveedores-form .form-control-feedback {
-    right: 14px;
-    top: 22px;
-  }
-
-  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierre]"],
-  i[data-fv-icon-for="loro_entitybundle_ventascierres[proveedorCierre]"] {
-    right: 44px !important;
-  }
-
-  #ui-datepicker-div {
-    z-index: 100 !important;
-  }
-  </style>
+    {%  stylesheets 'assets/self/css/ventasCierresBundle/form.css'                      
+            filter='?uglifycss' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 {% endblock stylesheets %}
 
-{% block body -%}
+{# Customizacion para el Radio button #}
+{% form_theme form _self %}
 
-<!-- LLamado del twig con los flash del sistema -->
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
+{%- block choice_widget -%}
+    {% if expanded %}
+        {{- block('choice_widget_expanded') -}}
+    {% else %}
+        {{- block('choice_widget_collapsed') -}}
+    {% endif %}
+{%- endblock choice_widget -%}
+
+{%- block choice_widget_expanded -%}
+<div class="btn-group button-wrap" data-toggle="buttons">
+    <div {{ block('widget_container_attributes') }}>
+    {%- for child in form %}
+        <label class="btn btn-default">
+        {{- form_widget(child, {'attr': {'class': 'radio-label'}}) -}}
+        {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+        </label>
+    {% endfor -%}
+    </div>
+  </div>
+{%- endblock choice_widget_expanded -%}
+{# Customizacion para el Radio button #}
+
+
+{% block body -%}
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
   <div class="page-header">
     <h1>Cierre - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedor' : 'Aupanas / HC'}} <small>Editar</small></h1>
   </div>
   <div class="clearfix"></div>
 
-
-<div class="row">
-  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
-    {{ form_start(edit_form , { 'attr': {'autocomplete': 'off'} }) }}
-
-    <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.feVenta) }}
-          {{ form_widget(edit_form.feVenta) }}
-          {{ form_errors(edit_form.feVenta) }}
-        </div>
-
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.tipoMonedaCierre) }}
-          {{ form_widget(edit_form.tipoMonedaCierre) }}
-          {{ form_errors(edit_form.tipoMonedaCierre) }}
-        </div>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+      {% include 'lOroVentasCierreBundle:VentasCierres/form_template:form.html.twig' %}
     </div>
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.proveedorCierre) }}
-          {{ form_widget(edit_form.proveedorCierre) }}
-          {{ form_errors(edit_form.proveedorCierre) }}  
-          </div>
-        </div>
-      {% endif %}
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.dolarReferenciaDia) }}
-          {{ form_widget(edit_form.dolarReferenciaDia) }}
-          {{ form_errors(edit_form.dolarReferenciaDia) }}
-          </div>
-        </div>
-      {% endif %}
-      
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-        {{ form_label(edit_form.cantidadTotalVenta) }}
-        {{ form_widget(edit_form.cantidadTotalVenta) }}
-        {{ form_errors(edit_form.cantidadTotalVenta) }} 
-        </div>
-      </div>
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">      
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.montoBsCierrePorGramo) }}
-          {{ form_widget(edit_form.montoBsCierrePorGramo) }}
-          {{ form_errors(edit_form.montoBsCierrePorGramo) }}
-          </div>
-        </div>
-      {% endif %}
-
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-        {{ form_label(edit_form.valorOnza) }}
-        {{ form_widget(edit_form.valorOnza) }}
-        {{ form_errors(edit_form.valorOnza) }}  
-          <br>
-        </div>
-      </div>
-     
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(edit_form.montoTotalDolar) }}
-          {{ form_widget(edit_form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
-          {{ form_errors(edit_form.montoTotalDolar) }}  
-          </div>
-        </div>
-      {% endif %}
-
-   
-
-      <div class="form-group">
-        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
-          {{ form_widget(edit_form.submit) }}
-        </div>
-      </div>
-
-        
-      
   </div>
-</div>
 
-{{ form_rest(edit_form) }}
-{{ form_end(edit_form) }}
-<div class="clearfix"></div>
+  <div class="clearfix"></div>
 {% endblock body %}
 
 {% block javascripts %}
@@ -159,11 +87,7 @@
 
     if (_globales.place == 'proveedores') {
       $("#loro_entitybundle_ventascierres_proveedorCierre").combobox();
-      $("#loro_entitybundle_ventascierres_tipoMonedaCierre").combobox();
-    } else {
-      $("#loro_entitybundle_cierres_hc_tipoMonedaCierre").combobox();
-    }
-
+    } 
 
   });
   </script>

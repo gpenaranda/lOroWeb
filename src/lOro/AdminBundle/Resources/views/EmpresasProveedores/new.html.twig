@@ -2,88 +2,40 @@
 {% block title %}Administraci&oacute;n - Empresas por Proveedores{% endblock %}
   {% block stylesheets %}
   <style type="text/css">
-    #empresa-proveedor-form .form-control-feedback {
-    right: 17px;
+   #empresa-proveedor-form .form-control-feedback {
+    top: 21px;
+    right:12px;
+  }
+
+  #empresa-proveedor-form .combobox-container .form-control-feedback {
+    top: 21px;
+    right:44px;
   }
   </style>
 {% endblock %}
 {% block body -%}
 <div class="page-header">
-  <h1>Empresas por Proveedores
-      <small>Agregar</small>
-  </h1>
+  <h1>Empresa <small>Agregar</small></h1>
 </div>
 
-  <div class="clearfix"></div>
-  
-  <div class="row">
+<div class="clearfix"></div>
 
-    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
-      {{ form_start(form) }}
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+        {% include 'lOroAdminBundle:EmpresasProveedores/form_template:empresa_form.html.twig' %}
+    </div> 
+</div>
 
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.proveedor) }}
-          {{ form_widget(form.proveedor) }}
-          {{ form_errors(form.proveedor) }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.nombreEmpresa) }}
-          {{ form_widget(form.nombreEmpresa) }}
-          {{ form_errors(form.nombreEmpresa) }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.aliasEmpresa) }}
-          {{ form_widget(form.aliasEmpresa) }}
-          {{ form_errors(form.aliasEmpresa) }}
-        </div>
-      </div>
-
-
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.tipoDocumento) }}
-          {{ form_widget(form.tipoDocumento) }}
-          {{ form_errors(form.tipoDocumento) }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.rif) }}
-          {{ form_widget(form.rif) }}
-          {{ form_errors(form.rif) }}
-        </div>
-      </div>
-
-    <div class="form-group">
-      <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
-          {{ form_widget(form.submit) }}
-        </div>
-      </div>
-      
-        {{ form_rest(form) }}       
-        {{ form_end(form) }}
-    </div>
-  </div>
 {% endblock %}
 {% block javascripts %}
 <script>
   var _globales = {
-    
     formId: 'empresa-proveedor-form',
-    
   };
   </script>
 
-  {% javascripts  'assets/self/js/admin/empresas_val.js' filter='?uglifyjs2' output='js/compiled/app.js' %}
+  {% javascripts  'assets/self/js/admin/empresas_proveedor.js' filter='?uglifyjs2' %}
     <script src="{{ asset_url }}"></script>
   {% endjavascripts %}
-  </script>
+</script>
 {% endblock %}

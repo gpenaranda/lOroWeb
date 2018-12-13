@@ -61,6 +61,85 @@ class CrearVistasReportesCommand extends ContainerAwareCommand
         $arregloVistas[] = $datosVistas;
         /*******************************************************************************/
 
+        /**************************  CONCILIACION  DE CAJA BOLIVARES   *******************/
+        $datosVistas['nombreVista'] = 'v_conciliacion_caja_bolivares';
+        $datosVistas['sqlCreacion'] = "CREATE VIEW v_conciliacion_caja_bolivares AS 
+                                       (
+                                        SELECT pm.id AS id_transaccion,
+                                            'pagos_minoristas' AS tipo_transaccion,
+                                                pm.fe_pago AS fecha,
+                                                concat(p.nb_proveedor,' - ',epm.nombre_empresa) AS descripcion,
+                                                0 AS credito,
+                                                pm.monto_pagado AS debito 
+                                        FROM pagos_minoristas AS pm 
+                                        JOIN empresas_proveedores AS epm ON (epm.id = pm.empresa_proveedor_id) 
+                                        JOIN proveedores AS p ON (p.id = epm.proveedor_id) 
+                                        WHERE pm.conciliado_en_caja = 0
+                                        ) 
+                                        UNION 
+                                        (
+                                        SELECT vd.id AS id_transaccion,
+                                            'ventas_dolares' AS tipo_transaccion,
+                                            vd.fecha_venta AS fecha,
+                                            concat_ws(' - ',concat_ws(' X ',concat_ws('',replace(replace(replace(format((vd.cantidad_dolares_comprados / 1000),0),'.','@'),',','.'),'@',','),'K'),vd.dolar_referencia),p.nb_proveedor) AS descripcion,
+                                            vd.monto_venta_bolivares AS credito,
+                                            0 AS debito 
+                                        FROM ventas_dolares vd 
+                                        LEFT JOIN proveedores p ON (p.id = vd.comprador_id)
+                                        WHERE vd.conciliado_en_caja = 0
+                                        )
+                                        UNION 
+                                        (
+                                        SELECT pv.id AS id_transaccion,
+                                            'pagos_varios' AS tipo_transaccion,
+                                            pv.fe_pago AS fecha,
+                                            pv.descripcion_pago AS descripcion,
+                                            0 AS credito,
+                                            pv.monto_pago AS debito 
+                                        FROM pagos_varios pv 
+                                        WHERE pv.conciliado_en_caja = 0
+                                        ) 
+                                        UNION 
+                                        (
+                                        SELECT pp.id AS id_transaccion,
+                                            'pagos_proveedores' AS tipo_transaccion,
+                                            pp.fe_pago AS fecha,
+                                            concat_ws(' - ',p.nb_proveedor,ep.nombre_empresa) AS descripcion,
+                                            0 AS credito,
+                                            pp.monto_pagado AS debito 
+                                        FROM pagos_proveedores AS pp 
+                                        LEFT JOIN empresas_proveedores ep ON (ep.id = pp.empresa_proveedor_id)
+                                        LEFT JOIN proveedores p ON (p.id = ep.proveedor_id)
+                                        WHERE pp.conciliado_en_caja = 0
+                                        )
+                                        UNION 
+                                        (
+                                        SELECT a.id AS id_transaccion,
+                                            'abonos' AS tipo_transaccion,
+                                                a.fe_abono AS fecha,
+                                            a.descripcion AS descripcion,
+                                            a.monto AS credito,
+                                            0 AS debito 
+                                        FROM abonos AS a 
+                                        WHERE (a.conciliado_en_caja = 0) 
+                                        )
+                                        UNION
+                                        ( 
+                                        SELECT d.id AS id_transaccion,
+                                        'debitos' AS tipo_transaccion,
+                                        d.fe_debito AS fecha,
+                                        d.descripcion AS descripcion,
+                                        0 AS credito,
+                                        d.monto AS debito 
+                                        FROM debitos AS d 
+                                        WHERE d.conciliado_en_caja = 0
+                                        );";
+
+        
+
+        $arregloVistas[] = $datosVistas;
+        /*******************************************************************************/
+
         return $arregloVistas;
     }
 

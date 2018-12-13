@@ -9,3 +9,17 @@
     -moz-box-shadow: none !important;
     box-shadow: none !important;
 }
+
+
+/* Cursor clickable a todos los TRs que contengan la clase */
+.clickable-row:hover {
+    cursor: pointer;
+}
+
+
+/* Color para las tablas del sistema al hacer HOVER */
+.table-hover>tbody>tr:hover>td, 
+.table-hover>tbody>tr:hover>th {
+    background-color: #2A3F54 !important;
+    color:#eeeeee !important;
+}

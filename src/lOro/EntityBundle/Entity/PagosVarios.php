@@ -45,7 +45,7 @@ class PagosVarios
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_pago", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="monto_pago", type="decimal", precision=14, scale=2)
      */
     private $montoPago;
 

@@ -24,18 +24,9 @@ empresas-proveedores_update:
     defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:update" }
     requirements: { methods: post|put }
 
-empresas-proveedores_delete:
-    path:  /{id}/delete
-    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:delete" }
-#    requirements: { methods: post|delete }
 
-_ajax_agregar_nro_cuenta_empresa:
-    path:  /ajax-agregar-nro-cuenta-empresa
-    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:agregarNroCuentaEmpresa" } 
-    
-_ajax_eliminar_nro_cuenta_empresa:
-    path:  /ajax-eliminar-nro-cuenta-empresa
-    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:eliminarNroCuentaEmpresa" }     
+
+     
 
 empresas-casa:
     path:  /empresas-casa
@@ -63,8 +54,19 @@ empresas-casa_new:
 #empresas-casa_show:
 #    path:  /{id}/empresas-casa-show
 #    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:show" }   
+       
+
+
+# Nros de Cuenta
+_ajax_buscar_bancos_nro_cuenta:
+    path:  /ajax-buscar-bancos-nro-cuenta
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:buscarBancosSelectNrosCuenta" } 
+    requirements: { methods: post }   
+
+_ajax_agregar_nro_cuenta_empresa:
+    path:  /ajax-agregar-nro-cuenta-empresa
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:agregarNroCuentaEmpresa" } 
     
-empresas-casa_delete:
-    path:  /{id}/empresas-casa-delete
-    defaults: { _controller: "lOroAdminBundle:EmpresasCasa:delete" }
-#    requirements: { methods: post|delete }    
+_ajax_eliminar_nro_cuenta_empresa:
+    path:  /ajax-eliminar-nro-cuenta-empresa
+    defaults: { _controller: "lOroAdminBundle:EmpresasProveedores:eliminarNroCuentaEmpresa" }

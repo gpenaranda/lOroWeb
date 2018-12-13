@@ -3,17 +3,19 @@ $(function(){
 
   var pesoTotalVentaTagId = "#"+_globales.inputBaseName+"cantidadTotalVenta";
   var valorOnzaTagId = "#"+_globales.inputBaseName+"valorOnza";
+  var descuentoOnzaProveedorTagId = "#"+_globales.inputBaseName+"descuentoOnzaProveedor";
+
 
   if ( _globales.place == 'hc' ) {
     var montoTotalDolar = $("#"+_globales.inputBaseName+"montoTotalDolar");
   
-    $(pesoTotalVentaTagId+", "+valorOnzaTagId).keyup(function(){
-      montoTotalDolar.val(calcurlarMontoTotal($(valorOnzaTagId),$(pesoTotalVentaTagId)));
+    $(pesoTotalVentaTagId+", "+valorOnzaTagId+", "+descuentoOnzaProveedorTagId).keyup(function(){
+      montoTotalDolar.val(calcularMontoTotal($(valorOnzaTagId),$(pesoTotalVentaTagId),$(descuentoOnzaProveedorTagId)));
     });
   }
 
   /* Calculo del campo de Monto total en Cierres HC */
-  function calcurlarMontoTotal(valorOnza,pesoTotalVenta) 
+  function calcularMontoTotal(valorOnza,pesoTotalVenta,descuentoOnzaProveedor) 
   {
     var resultadoFinal = 0;
 
@@ -21,7 +23,7 @@ $(function(){
     {
       var valorPorGramoEnDolares = (parseFloat(valorOnza.val()) / parseFloat(_globales.onzaTroyGramos));
       var resultadoMontoTotalDolar = (parseFloat(pesoTotalVenta.val()) * valorPorGramoEnDolares);
-      var resultadoFinal = parseFloat(((resultadoMontoTotalDolar.toFixed(2))*parseFloat(_globales.margenGanancia)))  || 0;
+      var resultadoFinal = parseFloat(((resultadoMontoTotalDolar.toFixed(2))*parseFloat(descuentoOnzaProveedor.val())))  || 0;
     }
 
     return resultadoFinal.toFixed(2);

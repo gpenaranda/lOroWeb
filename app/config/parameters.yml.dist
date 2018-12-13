@@ -1,15 +1,40 @@
+# This file is auto-generated during the composer install
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: 3306
+    database_name: l_oro_e
+    database_user: root
+    database_password: 123456
 
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
+    mailer_transport: smtp
+    mailer_host: p3plcpnl0169.prod.phx3.secureserver.net
+    mailer_port: 465
+    mailer_encryption: ssl
+    mailer_user: orotex@textileslolo.com
+    mailer_password: 19*orense56
 
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+
+# Configuracion para Desarrollo
+    database_dev_driver: pdo_mysql
+    database_dev_host: localhost
+    database_dev_port: 3306
+    database_dev_name: l_oro_e
+    database_dev_user: root
+    database_dev_password: 123456
+    
+   
+    mailer_dev_transport: smtp
+    mailer_dev_host: p3plcpnl0169.prod.phx3.secureserver.net
+    mailer_dev_port: 465
+    mailer_dev_encryption: ssl
+    mailer_dev_user: orotex@textileslolo.com
+    mailer_dev_password: 19*orense56
+    
+    locale: es
+    secret: l_oro_2014_$$$_@1nn0v4_t3C
+
+
+# Para mantenimiento de la pagina
+    maintenance: false  #turn it to true to enable maintenance
+    underMaintenanceUntil: manana a las 8 AM
