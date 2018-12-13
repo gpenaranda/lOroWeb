@@ -15,13 +15,29 @@
           <thead></thead>
           <tbody>
             <tr>
-              <td class="text-right">ID</td>
-              <td id="closed-deal-id"></td>
-            </tr>
-            <tr>
-              <td class="text-right">Fecha del Cierre</td>
+              <td class="text-right">Fecha</td>
               <td id="closed-deal-date"></td>
             </tr>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
+            <tr>
+              <td class="text-right">Cliente</td>
+              <td id="cliente"></td>
+            </tr>
+            <tr>
+              <td class="text-right">Divisa del Cierre</td>
+              <td id="closed-deal-fcurrency-hc"></td>
+            </tr>  
+            {% endif %} 
+            <tr>
+              <td class="text-right">Descuento Onza del Proveedor (%)</td>
+              <td id="descuento-onza-proveedor"></td>
+            </tr>
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+            <tr>
+              <td class="text-right">Descuento Onza del Cliente (%)</td>
+              <td id="descuento-onza-cliente"></td>
+            </tr>
+            {% endif %}
             <tr>
               <td class="text-right">Total Cerrado (Gramos)</td>
               <td id="closed-deal-grams"></td>
@@ -31,22 +47,20 @@
               <td id="closed-deal-oz"></td>
             </tr>
             {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-            <tr>
+            <tr id="referencia-divisa-diaria-wrap">
               <td class="text-right">Dolar de Referencia del Dia</td>
               <td id="closed-deal-fcurrency-daily-ref"></td>
             </tr>
             {% endif %}
-            <tr>
-              <td class="text-right">Divisa del Cierre</td>
-              <td id="closed-deal-fcurrency-hc">7</td>
-            </tr>            
+            {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
             <tr>
               <td class="text-right">Monto Total en Divisa</td>
-              <td id="closed-calc-fcurrency-total">7</td>
+              <td id="closed-calc-fcurrency-total"></td>
             </tr>
+            {% endif %}
             {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
             <tr>
-              <td class="text-right">Monto Bolivares Pagados</td>
+              <td class="text-right">Monto Pagado</td>
               <td id="closed-closed-deal-bs-payed"></td>
             </tr>
             <tr>

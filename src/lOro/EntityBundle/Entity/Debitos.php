@@ -45,7 +45,7 @@ class Debitos
     /**
      * @var string
      *
-     * @ORM\Column(name="monto", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="monto", type="decimal", precision=14, scale=2)
      */
     private $monto;
 

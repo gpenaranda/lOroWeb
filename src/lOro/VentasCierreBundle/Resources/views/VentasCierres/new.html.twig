@@ -1,249 +1,55 @@
 {% extends '::gen_base.html.twig' %}
-{% block title %}Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedores' : 'Aupanas / HC'}}{% endblock %}
+{% block title %}Cierres {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Clientes' : 'Proveedores'}}{% endblock %}
 
 {% block stylesheets %}
-  <style type="text/css">
-    #proveedores-form .form-control-feedback {
-    right: 14px;
-    top: 22px;
-  }
-
-  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierre]"],
-  i[data-fv-icon-for="loro_entitybundle_ventascierres[proveedorCierre]"] {
-    right: 44px !important;
-  }
-
-  #ui-datepicker-div {
-    z-index: 100 !important;
-  }
-
-
-/* =============================================
-* RADIO BUTTONS
-=============================================== */
-/*
-.container {
-  height: 100%;
-  min-height: 100%;
-  margin: 0 auto;
-}
-*/
-
-.button-wrap {
-  margin-top: 1.5em;
-  margin-left: 2em;
-}
-
-.button-label {
-  display: inline-block;
-  padding: 0.15em 1em;
-  margin: 0.15em;
-  cursor: pointer;
-  color: #292929;
-  border-radius: 0.25em;
-  background: #eee;
-  /*box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0 -3px 0 rgba(0, 0, 0, 0.22);*/
-  transition: 0.3s;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-.button-label h1 {
-  font-size: 0.5em;
-  font-family: "Lato", sans-serif;
-}
-
-.button-label:active {
-  -webkit-transform: translateY(2px);
-          transform: translateY(2px);
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0px -1px 0 rgba(0, 0, 0, 0.22);
-}
-@media (max-width: 40em) {
-  .button-label {
-    padding: 0em 1em 3px;
-    margin: 0.25em;
-  }
-}
-
-#yes-button:checked + .button-label {
-  background: #54E7BE;
-}
-#yes-button:checked + .button-label:hover {
-  background: #63e9c3;
-}
-
-#no-button:checked + .button-label {
-  background: #54E7BE;
-}
-#no-button:checked + .button-label:hover {
-  background: #63e9c3;
-}
-
-.hidden {
-  display: none;
-}
-/* =============================================
-* RADIO BUTTONS
-=============================================== */
-  </style>
+    {%  stylesheets 'assets/self/css/ventasCierresBundle/form.css'                      
+            filter='?uglifycss' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 {% endblock stylesheets %}
 
-
+{# Customizacion para el Radio button #}
 {% form_theme form _self %}
 
-{% block radio_widget %}
-<div class="radio-container">
-  <div class="button-wrap">
-        {#% set type = type|default('text') %#}
-        {{ block('form_widget_simple') }}
+{%- block choice_widget -%}
+    {% if expanded %}
+        {{- block('choice_widget_expanded') -}}
+    {% else %}
+        {{- block('choice_widget_collapsed') -}}
+    {% endif %}
+{%- endblock choice_widget -%}
+
+{%- block choice_widget_expanded -%}
+<div class="btn-group button-wrap" data-toggle="buttons">
+    <div {{ block('widget_container_attributes') }}>
+    {%- for child in form %}
+        <label class="btn btn-default">
+        {{- form_widget(child, {'attr': {'class': 'radio-label'}}) -}}
+        {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+        </label>
+    {% endfor -%}
     </div>
-    </div>
-{% endblock %}
+  </div>
+{%- endblock choice_widget_expanded -%}
+{# Customizacion para el Radio button #}
 
 
 {% block body -%}
-
-<!-- LLamado del twig con los flash del sistema -->
-{% include '::VariosSistema/mensajes_flash.html.twig' %}
+  <!-- LLamado del twig con los flash del sistema -->
+  {% include '::VariosSistema/mensajes_flash.html.twig' %}
 
   <div class="page-header">
-    <h1>Cierre - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Proveedor' : 'Aupanas / HC'}} <small>Registrar</small></h1>
+    <h1>Cierre - {{ app.request.attributes.get('_route_params')['lugar']  == 'proveedores' ? 'Cliente' : 'Proveedor'}} <small>Registrar</small></h1>
   </div>
   <div class="clearfix"></div>
 
-
-
-<div class="row">
-  <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
-    {{ form_start(form, { 'attr': {'autocomplete': 'off'} }) }}
-      
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.feVenta) }}
-          {{ form_widget(form.feVenta) }}
-          {{ form_errors(form.feVenta) }}
-        </div>
-
-        <div class="col-xs-9 col-md-9">
-          {{ form_label(form.tipoMonedaCierre) }}
-          {{ form_widget(form.tipoMonedaCierre) }}
-          {{ form_errors(form.tipoMonedaCierre) }}
-        </div>
-      </div>
-      
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-        {{ form_label(form.descuentoOnzaProveedor) }}
-        {{ form_widget(form.descuentoOnzaProveedor) }}
-        {{ form_errors(form.descuentoOnzaProveedor) }} 
-        </div>
-      </div>
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(form.descuentoOnzaCliente) }}
-          {{ form_widget(form.descuentoOnzaCliente) }}
-          {{ form_errors(form.descuentoOnzaCliente) }}  
-          </div>
-        </div>
-      {% endif %}
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(form.proveedorCierre) }}
-          {{ form_widget(form.proveedorCierre) }}
-          {{ form_errors(form.proveedorCierre) }}  
-          </div>
-        </div>
-      {% endif %}
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(form.dolarReferenciaDia) }}
-          {{ form_widget(form.dolarReferenciaDia) }}
-          {{ form_errors(form.dolarReferenciaDia) }}
-          </div>
-        </div>
-      {% endif %}
-      
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-        {{ form_label(form.cantidadTotalVenta) }}
-        {{ form_widget(form.cantidadTotalVenta) }}
-        {{ form_errors(form.cantidadTotalVenta) }} 
-        </div>
-      </div>
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
-        <div class="form-group">      
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(form.montoBsCierrePorGramo) }}
-          {{ form_widget(form.montoBsCierrePorGramo) }}
-          {{ form_errors(form.montoBsCierrePorGramo) }}
-          </div>
-        </div>
-      {% endif %}
-
-      <div class="form-group">
-        <div class="col-xs-9 col-md-9">
-                
-          <div class="col-xs-2 col-md-2">
-<div class="radio-container">
-  <div class="button-wrap">
-    <input class="hidden radio-label" type="radio" name="accept-offers" id="yes-button" checked="checked"/>
-    <label class="button-label" for="yes-button">
-      <h1><i class="fa fa-eur fa-2x" aria-hidden="true"></i></h1>
-    </label>
-    <input class="hidden radio-label" type="radio" name="accept-offers" id="no-button"/>
-    <label class="button-label" for="no-button">
-      <h1><i class="fa fa-dollar fa-2x" aria-hidden="true"></i></h1>
-    </label>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-2 col-xs-offset-1 col-xs-11 col-sm-10 col-sm-offset-2">
+      {% include 'lOroVentasCierreBundle:VentasCierres/form_template:form.html.twig' %}
+    </div>
   </div>
-</div>
-
-          </div>
-
-          <div class="col-xs-10 col-md-10 pull-right">
-            {{ form_label(form.valorOnza) }}
-            {{ form_widget(form.valorOnza) }}
-            {{ form_errors(form.valorOnza) }}
-            <br>  
-          </div>
-        </div>
-      </div>
-     
-
-      {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
-        <div class="form-group">
-          <div class="col-xs-9 col-md-9">
-          {{ form_label(form.montoTotalDolar) }}
-          {{ form_widget(form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
-          {{ form_errors(form.montoTotalDolar) }}  
-          </div>
-        </div>
-      {% endif %}
-
-   
-
-      <div class="form-group">
-        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
-          {{ form_widget(form.submit) }}
-        </div>
-      </div>
-
-        
-  </div>
-</div>
-
-
-{{ form_rest(form) }}       
-{{ form_end(form) }}
-<div class="clearfix"></div>
-
+  
+  <div class="clearfix"></div>
 {% endblock %}
 {% block javascripts %}
   <script>
@@ -280,8 +86,10 @@
     if (_globales.place == 'proveedores') {
       $("#loro_entitybundle_ventascierres_proveedorCierre").combobox();
     } 
-
-   // $("#"+_globales.inputBaseName+"tipoMonedaCierre").combobox();
+    
+    if (_globales.place == 'hc') { 
+      $("#loro_entitybundle_cierres_hc_cliente").combobox();
+    }
     
   });
   </script>

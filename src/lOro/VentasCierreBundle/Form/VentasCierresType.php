@@ -79,17 +79,35 @@ class VentasCierresType extends AbstractType
                                                                             'inputmode' => 'numeric'
                                                                            )
                                                            ))                                                     
-            ->add('tipoMonedaCierre',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
+            ->add('tipoMonedaCierre',EntityType::class,array('label' => '',
                                                    'class' => 'lOroEntityBundle:TiposMoneda',
                                                    'query_builder' => function(EntityRepository $er) {
                                                       return $er->createQueryBuilder('u')
                                                                 ->where('u.id IN (1,2,3)');
                                                    },
-                                                   'choice_label' => 'nbMoneda',
-                                                   'placeholder' => '',
-                                                   'attr' => array('class' => 'form-control',
+                                                   'placeholder' => false,
+                                                   'choice_label' => 'simboloMoneda',
+                                                   'attr' => array('class' => '',
+                                                   'style' => 'margin-bottom:10px;'),
                                                    'mapped'        => true,
-                                                   'style' => 'margin-bottom:10px;')))                
+                                                   'multiple'  => false,
+                                                   'expanded' => true,
+                                                   'required' => false))
+            ->add('tipoMonedaCierreHc',EntityType::class,array('label' => '',
+                                                   'class' => 'lOroEntityBundle:TiposMoneda',
+                                                   'query_builder' => function(EntityRepository $er) {
+                                                    return $er->createQueryBuilder('u')
+                                                              ->where('u.id NOT IN (:monedaExcluida)')
+                                                              ->setParameter('monedaExcluida',array(1));
+                                                   },
+                                                   'placeholder' => false,
+                                                   'choice_label' => 'simboloMoneda',
+                                                   'attr' => array('class' => '',
+                                                   'style' => 'margin-bottom:10px;'),
+                                                   'mapped'        => true,
+                                                   'multiple'  => false,
+                                                   'expanded' => true,
+                                                   'required' => false))                                                                
             ->add('cantidadTotalVenta',TextType::class,array('label' => 'Peso Total (Gr.)',
                                                      'attr' => array('class' => 'form-control',
                                                                 'autocomplete' => 'off',

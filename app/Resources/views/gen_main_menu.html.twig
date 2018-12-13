@@ -20,14 +20,14 @@
                   </li>
                   <li><a><i class="fa fa-handshake-o" aria-hidden="true"></i> Mayoristas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a target="_blank" href="{{ path('ventas_cierres_proveedores') }}">Cierres con Proveedores</a>
+                      <li><a target="_blank" href="{{ path('ventas_cierres_proveedores') }}">Cierres con Clientes</a>
                       </li>
-                      <li><a target="_blank" href="{{ path('ventas_cierres_hc') }}">Cierres con Aupanas/HC</a></li>
-                      <li><a target="_blank"  href="{{ path('entregas') }}">Entregas de Proveedores</a></li>
+                      <li><a target="_blank" href="{{ path('ventas_cierres_hc') }}">Cierres con Proveedores</a></li>
+                      <li><a target="_blank"  href="{{ path('entregas') }}">Entregas a Proveedores</a></li>
                       {% if not is_granted('ROLE_REGISTRADOR_CIERRES') %}
                         <li><a href="{{ path('nueva_carga_masiva') }}">Pagos en Carga Masiva</a></li>
-                        <li><a href="{{ path('pagos_proveedores_new') }}">Pagos a Proveedores</a></li>
-                        <li><a href="{{ path('pagos_proveedores') }}">Listado de Pagos a Proveedores</a></li>
+                        <li><a href="{{ path('pagos_proveedores_new') }}">Pagos a Clientes</a></li>
+                        <li><a href="{{ path('pagos_proveedores') }}">Listado de Pagos a Clientes</a></li>
                       {% endif %}
                     </ul>
                   </li>

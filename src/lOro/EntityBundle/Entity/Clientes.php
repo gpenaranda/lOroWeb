@@ -38,9 +38,9 @@ class Clientes
     /**
      * @var string
      *
-     * @ORM\Column(name="estatus", type="string", length=1, nullable=true)
+     * @ORM\Column(name="estatus", type="string", length=1, nullable=true, options={"default" : "A"})
      */
-    private $estatus = 'A';
+    private $estatus;
 
 
     /**

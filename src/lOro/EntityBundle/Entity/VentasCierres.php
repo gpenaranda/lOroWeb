@@ -23,9 +23,9 @@ class VentasCierres
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fe_venta", type="datetime", nullable=false)
+     * @ORM\Column(name="fe_venta", type="date", nullable=false)
      */
     private $feVenta;
 
@@ -53,13 +53,6 @@ class VentasCierres
     /**
      * @var string
      *
-     * @ORM\Column(name="monto_bs_formula", type="decimal", precision=14, scale=2, nullable=true)
-     */
-    private $montoBsFormula;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="monto_bs_cierre", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoBsCierre;
@@ -70,14 +63,7 @@ class VentasCierres
      * @ORM\Column(name="monto_bs_cierre_por_gramo", type="decimal", precision=14, scale=2, nullable=true)
      */
     private $montoBsCierrePorGramo;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="monto_bs_formula_por_gramo", type="decimal", precision=14, scale=2, nullable=true)
-     */
-    private $montoBsFormulaPorGramo;    
-    
+     
     /**
      * @var string
      *
@@ -98,36 +84,11 @@ class VentasCierres
      */
     private $proveedorCierre;
 
-    
     /**
-     * @var string
-     *
-     * @ORM\Column(name="estatus", type="string", length=2, nullable=false)
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Clientes", inversedBy="ventasCierres")
+     * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id") 
      */
-    private $estatus;
-    
- 
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="estatus_relacion", type="string", length=2, nullable=true)
-     */
-    private $estatusRelacion;   
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gramos_cerrados_restantes", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $gramosCerradosRestantes;    
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="gramos_cerrados_restantes_piezas", type="decimal", precision=10, scale=2, nullable=true)
-     */
-    private $gramosCerradosRestantesPiezas;
+    private $cliente;
     
     /**
      * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\MargenesGanancias", inversedBy="ventasCierres")
@@ -135,17 +96,10 @@ class VentasCierres
      */
     private $margenGanancia;
 
-    
    /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\VentasEntregas", mappedBy="ventasCierres", cascade={"remove"})
      */
     private $entregas;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Balances")
-     * @ORM\JoinColumn(name="balance_id", referencedColumnName="id") 
-     */
-    private $balance;
     
    /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\CierresHcEntregas", mappedBy="cierreHc", cascade={"remove"})
@@ -156,7 +110,6 @@ class VentasCierres
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\CierresProveedoresPiezas", mappedBy="cierreProveedor", cascade={"remove"})
      */
     private $piezasCierresProveedores;       
-    
     
    /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\CierresProveedoresEntregas", mappedBy="cierreProveedor", cascade={"remove"})
@@ -169,7 +122,6 @@ class VentasCierres
      * @ORM\Column(name="dolar_referencia_dia", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $dolarReferenciaDia;
-    
     
     /**
      * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\TiposMoneda")
@@ -308,29 +260,6 @@ class VentasCierres
     }
 
     /**
-     * Set montoBsFormula
-     *
-     * @param string $montoBsFormula
-     * @return VentasCierres
-     */
-    public function setMontoBsFormula($montoBsFormula)
-    {
-        $this->montoBsFormula = $montoBsFormula;
-
-        return $this;
-    }
-
-    /**
-     * Get montoBsFormula
-     *
-     * @return string 
-     */
-    public function getMontoBsFormula()
-    {
-        return $this->montoBsFormula;
-    }
-
-    /**
      * Set montoBsCierre
      *
      * @param string $montoBsCierre
@@ -374,29 +303,6 @@ class VentasCierres
     public function getDolarReferencia()
     {
         return $this->dolarReferencia;
-    }
-
-    /**
-     * Set estatus
-     *
-     * @param string $estatus
-     * @return VentasCierres
-     */
-    public function setEstatus($estatus)
-    {
-        $this->estatus = $estatus;
-
-        return $this;
-    }
-
-    /**
-     * Get estatus
-     *
-     * @return string 
-     */
-    public function getEstatus()
-    {
-        return $this->estatus;
     }
 
     /**
@@ -479,29 +385,6 @@ class VentasCierres
     }
 
     /**
-     * Set balance
-     *
-     * @param \lOro\EntityBundle\Entity\Balances $balance
-     * @return VentasCierres
-     */
-    public function setBalance(\lOro\EntityBundle\Entity\Balances $balance = null)
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
-    /**
-     * Get balance
-     *
-     * @return \lOro\EntityBundle\Entity\Balances 
-     */
-    public function getBalance()
-    {
-        return $this->balance;
-    }
-
-    /**
      * Set tipoCierre
      *
      * @param boolean $tipoCierre
@@ -525,31 +408,6 @@ class VentasCierres
     }
 
     /**
-     * Set estatusRelacion
-     *
-     * @param string $estatusRelacion
-     * @return VentasCierres
-     */
-    public function setEstatusRelacion($estatusRelacion)
-    {
-        $this->estatusRelacion = $estatusRelacion;
-
-        return $this;
-    }
-
-    /**
-     * Get estatusRelacion
-     *
-     * @return string 
-     */
-    public function getEstatusRelacion()
-    {
-        return $this->estatusRelacion;
-    }
-
-
-
-    /**
      * Set montoBsCierrePorGramo
      *
      * @param string $montoBsCierrePorGramo
@@ -571,32 +429,7 @@ class VentasCierres
     {
         return $this->montoBsCierrePorGramo;
     }
-
-    /**
-     * Set montoBsFormulaPorGramo
-     *
-     * @param string $montoBsFormulaPorGramo
-     * @return VentasCierres
-     */
-    public function setMontoBsFormulaPorGramo($montoBsFormulaPorGramo)
-    {
-        $this->montoBsFormulaPorGramo = $montoBsFormulaPorGramo;
-
-        return $this;
-    }
-
-    /**
-     * Get montoBsFormulaPorGramo
-     *
-     * @return string 
-     */
-    public function getMontoBsFormulaPorGramo()
-    {
-        return $this->montoBsFormulaPorGramo;
-    }
-
    
-
     /**
      * Add entregasCierresHc
      *
@@ -631,29 +464,6 @@ class VentasCierres
     }
 
     /**
-     * Set gramosCerradosRestantes
-     *
-     * @param string $gramosCerradosRestantes
-     * @return VentasCierres
-     */
-    public function setGramosCerradosRestantes($gramosCerradosRestantes)
-    {
-        $this->gramosCerradosRestantes = $gramosCerradosRestantes;
-
-        return $this;
-    }
-
-    /**
-     * Get gramosCerradosRestantes
-     *
-     * @return string 
-     */
-    public function getGramosCerradosRestantes()
-    {
-        return $this->gramosCerradosRestantes;
-    }
-
-    /**
      * Add entregasCierresProveedor
      *
      * @param \lOro\EntityBundle\Entity\CierresProveedoresEntregas $entregasCierresProveedor
@@ -684,29 +494,6 @@ class VentasCierres
     public function getEntregasCierresProveedor()
     {
         return $this->entregasCierresProveedor;
-    }
-
-    /**
-     * Set gramosCerradosRestantesPiezas
-     *
-     * @param string $gramosCerradosRestantesPiezas
-     * @return VentasCierres
-     */
-    public function setGramosCerradosRestantesPiezas($gramosCerradosRestantesPiezas)
-    {
-        $this->gramosCerradosRestantesPiezas = $gramosCerradosRestantesPiezas;
-
-        return $this;
-    }
-
-    /**
-     * Get gramosCerradosRestantesPiezas
-     *
-     * @return string 
-     */
-    public function getGramosCerradosRestantesPiezas()
-    {
-        return $this->gramosCerradosRestantesPiezas;
     }
 
     /**
@@ -859,5 +646,29 @@ class VentasCierres
     public function getDescuentoOnzaProveedor()
     {
         return $this->descuentoOnzaProveedor;
+    }
+
+    /**
+     * Set cliente
+     *
+     * @param \lOro\EntityBundle\Entity\Clientes $cliente
+     *
+     * @return VentasCierres
+     */
+    public function setCliente(\lOro\EntityBundle\Entity\Clientes $cliente = null)
+    {
+        $this->cliente = $cliente;
+
+        return $this;
+    }
+
+    /**
+     * Get cliente
+     *
+     * @return \lOro\EntityBundle\Entity\Clientes
+     */
+    public function getCliente()
+    {
+        return $this->cliente;
     }
 }

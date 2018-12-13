@@ -1,0 +1,111 @@
+{{ form_start(form, { 'attr': {'autocomplete': 'off'} }) }}
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.feVenta) }}
+            {{ form_widget(form.feVenta) }}
+            {{ form_errors(form.feVenta) }}
+        </div>
+    </div>
+      
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.descuentoOnzaProveedor) }}
+            {{ form_widget(form.descuentoOnzaProveedor) }}
+            {{ form_errors(form.descuentoOnzaProveedor) }} 
+        </div>
+    </div>
+
+    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.descuentoOnzaCliente) }}
+            {{ form_widget(form.descuentoOnzaCliente) }}
+            {{ form_errors(form.descuentoOnzaCliente) }}  
+        </div>
+    </div>
+    {% endif %}
+
+    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.proveedorCierre) }}
+            {{ form_widget(form.proveedorCierre) }}
+            {{ form_errors(form.proveedorCierre) }}  
+        </div>
+    </div>
+    {% endif %}
+
+    {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.cliente) }}
+            {{ form_widget(form.cliente) }}
+            {{ form_errors(form.cliente) }}  
+        </div>
+    </div>
+    {% endif %}
+
+    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.dolarReferenciaDia) }}
+            {{ form_widget(form.dolarReferenciaDia) }}
+            {{ form_errors(form.dolarReferenciaDia) }}
+        </div>
+    </div>
+    {% endif %}
+      
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.cantidadTotalVenta) }}
+            {{ form_widget(form.cantidadTotalVenta) }}
+            {{ form_errors(form.cantidadTotalVenta) }} 
+        </div>
+    </div>
+
+    {% if app.request.attributes.get('_route_params')['lugar']  == 'proveedores' %}
+    <div class="form-group">   
+        <div class="col-xs-9 col-md-9">        
+            <div class="col-xs-4 col-md-4">
+                {{ form_widget(form.tipoMonedaCierre) }}
+            </div>   
+            <div class="col-xs-8 col-md-8">
+                {{ form_label(form.montoBsCierrePorGramo) }}
+                {{ form_widget(form.montoBsCierrePorGramo) }}
+                {{ form_errors(form.montoBsCierrePorGramo) }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">        
+            <div class="col-xs-3 col-md-3">
+                {{ form_widget(form.tipoMonedaCierreHc) }}
+            </div>
+            <div class="col-xs-9 col-md-9">
+                {{ form_label(form.valorOnza) }}
+                {{ form_widget(form.valorOnza) }}
+                {{ form_errors(form.valorOnza) }}
+                <br>  
+            </div>
+        </div>
+    </div>
+     
+    {% if app.request.attributes.get('_route_params')['lugar']  == 'hc' %}
+    <div class="form-group">
+        <div class="col-xs-9 col-md-9">
+            {{ form_label(form.montoTotalDolar) }}
+            {{ form_widget(form.montoTotalDolar, { 'attr': { 'readonly': 'true' } }) }}
+            {{ form_errors(form.montoTotalDolar) }}  
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="form-group">
+        <div class="col-sm-offset-7 col-sm-3 col-xs-offset-5 col-xs-3 col-md-offset-8 col-md-3">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}       
+{{ form_end(form) }}

@@ -1,0 +1,63 @@
+#proveedores-form .form-control-feedback {
+    right: 14px;
+    top: 22px;
+  }
+
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierre]"],
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[proveedorCierre]"] {
+    right: 44px !important;
+  }
+
+  i[data-fv-icon-for="loro_entitybundle_cierres_hc[tipoMonedaCierreHc]"],
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierre]"],
+  i[data-fv-icon-for="loro_entitybundle_ventascierres[tipoMonedaCierreHc]"] {
+    display:none !important;
+  }
+
+  #ui-datepicker-div {
+    z-index: 100 !important;
+  }
+
+
+
+/* =============================================
+* RADIO BUTTONS
+=============================================== */
+.button-wrap {
+  margin-top: 1.5em;
+  margin-left: 2em;
+}
+
+.btn-default {
+  display: inline-block;
+  cursor: pointer;
+  color: #292929;
+  border-radius: 0.25em;
+  background: #eee;
+  transition: 0.3s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.btn-default.active {
+  background-color: #72e08c;
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), inset 0px -1px 0 rgba(0, 0, 0, 0.22);
+}
+@media (max-width: 40em) {
+  .button-label {
+    padding: 0em 1em 3px;
+    margin: 0.25em;
+  }
+}
+
+.radio-label {
+  border: none !important;
+  background-color: #eee;
+}
+/* =============================================
+* RADIO BUTTONS
+=============================================== */

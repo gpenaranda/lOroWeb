@@ -113,11 +113,9 @@ class VentasCierresController extends Controller
       $form->handleRequest($request);
         
 
-      var_dump($request->request->all());
-      die();
         if ($form->isValid()):
             
-          $tipoMonedaCierre = $form->get('tipoMonedaCierre')->getData();
+         
           
           $arregloFiltrosCierresPrevios['estatus'] = 'A';
           $arregloFiltrosCierresPrevios['tipoCierre'] = ($lugar == 'proveedores' ? 'proveedor' : 'hc');
@@ -126,6 +124,7 @@ class VentasCierresController extends Controller
           $pesoTotalVenta = $form->get('cantidadTotalVenta')->getData();
           
           if($lugar == 'proveedores'):
+            $tipoMonedaCierre = $form->get('tipoMonedaCierre')->getData();
             $descuentoOnzaCliente = $form->get('descuentoOnzaCliente')->getData();
 
             $arregloFiltrosCierresPrevios['proveedorCierre'] = $form->get('proveedorCierre')->getData();
@@ -140,20 +139,16 @@ class VentasCierresController extends Controller
             $entity->setDolarReferencia($dolarReferencia);
             $entity->setMontoTotalDolar($totalMontoDolar);
           else:         
-            $entity->setMontoBsFormula(0);
             $entity->setDolarReferencia(0);
           endif;
          
 
-          
-          $cierrePrevio = $em->getRepository('lOroEntityBundle:VentasCierres')->findOneBy($arregloFiltrosCierresPrevios);
+          $tipoMonedaCierreHc = $form->get('tipoMonedaCierreHc')->getData();
           
           $entity->setMontoBsCierre(($lugar == 'proveedores' ? ($montoBsCierrePorGramo * $pesoTotalVenta) : 0));
-          $entity->setGramosCerradosRestantes($pesoTotalVenta);
           $entity->setMargenGanancia($ganancia);
-          $entity->setEstatus(($cierrePrevio ? 'I' : 'A'));
           $entity->setTipoCierre(($lugar == 'proveedores' ? 'proveedor' : 'hc'));
-          $entity->setTipoMonedaCierre($tipoMonedaCierre);
+          $entity->setTipoMonedaCierreHc($tipoMonedaCierreHc);
           $em->persist($entity);
           $em->flush();
           
@@ -258,7 +253,7 @@ class VentasCierresController extends Controller
       
         
       $data['entity'] = $entity;
-      $data['edit_form'] = $editForm->createView();
+      $data['form'] = $editForm->createView();
       $data['ganancia'] = $em->getRepository('lOroEntityBundle:MargenesGanancias')->findOneBy($this->getEarningsArrayFilter($place));
       $data['onzaTroyGramos'] = $em->getRepository('lOroEntityBundle:Parametros')->find(1);
       return $this->render('lOroVentasCierreBundle:VentasCierres:edit.html.twig', $data);
@@ -315,7 +310,7 @@ class VentasCierresController extends Controller
         
 
       $data['entity'] = $entity;
-      $data['edit_form'] = $editForm->createView();
+      $data['form'] = $editForm->createView();
       $data['ganancia'] = $ganancia;
       $data['onzaTroyGramos'] = $onzaTroyGramos;        
         
@@ -337,23 +332,37 @@ class VentasCierresController extends Controller
       $entity = $em->getRepository('lOroEntityBundle:VentasCierres')->find($id);
 
 
-      if (!$entity):
-       $dataResponse = 'vacio';
-      else:
+      if (!$entity) {
+        $dataResponse = 'vacio';
+      } else {
         $dataResponse['id'] = $entity->getId();
         $date = $entity->getFeVenta();
         $dataResponse['date'] = $date->format('d-m-Y');
         $dataResponse['closedDealGrams'] = number_format($entity->getCantidadTotalVenta(),'2',',','.')." Grs.";
-        $dataResponse['closedDealFCurrencyHc'] = $entity->getTipoMonedaCierre()->getNbMoneda();
-        $dataResponse['ozValue'] = number_format($entity->getValorOnza(),'2',',','.');
-        $dataResponse['calcFCurrencyTotal'] = number_format($entity->getMontoTotalDolar(),'2',',','.');
+        $dataResponse['ozValue'] = number_format($entity->getValorOnza(),'2',',','.').' '.$entity->getTipoMonedaCierreHc()->getSimboloMoneda().'/Oz';
+        $dataResponse['descuentoOnzaProveedor'] = ($entity->getDescuentoOnzaProveedor()*100).' %';
+        
+        
 
-        if($place == 'proveedores'):
-          $dataResponse['fCurrencyDailyRef'] = number_format($entity->getDolarReferenciaDia(),'2',',','.')." Bs./$";
-          $dataResponse['closedDealBsPayed'] = number_format($entity->getMontoBsCierre(),'2',',','.')." Bs.";
+        if($place == 'hc') {
+          $dataResponse['calcFCurrencyTotal'] = number_format($entity->getMontoTotalDolar(),'2',',','.').' '.$entity->getTipoMonedaCierreHc()->getSimboloMoneda();
+          $dataResponse['cliente'] = $entity->getCliente()->getAlias ();
+          $dataResponse['closedDealFCurrencyHc'] = $entity->getTipoMonedaCierreHc()->getNbMoneda();
+        }
+
+        if($place == 'proveedores') {
+          $dataResponse['tipoMonedaClienteId'] = $entity->getTipoMonedaCierre()->getId();
+          $dataResponse['descuentoOnzaCliente'] = ($entity->getDescuentoOnzaCliente()*100).' %';
+          
+          /* Solo se coloca la Referencia Bs / Divisa cuando el cierre es en Bs */
+          if($entity->getTipoMonedaCierre()->getId() == 1) {
+            $dataResponse['fCurrencyDailyRef'] = number_format($entity->getDolarReferenciaDia(),'2',',','.')." Bs./$";
+          }
+          
+          $dataResponse['closedDealBsPayed'] = number_format($entity->getMontoBsCierre(),'2',',','.').' '.$entity->getTipoMonedaCierre()->getSimboloMoneda();
           $dataResponse['supplier'] = $entity->getProveedorCierre()->getNbProveedor();
-        endif;
-      endif;
+        }
+      }
 
 
       return new JsonResponse($dataResponse);

@@ -67,24 +67,35 @@ class CierresHCType extends AbstractType
                                                                           'read_only' => true
                                                                           )
                                                         ))
-            ->add('tipoMonedaCierre',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
-                                              'class' => 'lOroEntityBundle:TiposMoneda',
-                                              'query_builder' => function(EntityRepository $er) {
+            ->add('tipoMonedaCierreHc',EntityType::class,array('label' => 'Tipo de Moneda para el Cierre',
+                                                'class' => 'lOroEntityBundle:TiposMoneda',
+                                                'query_builder' => function(EntityRepository $er) {
                                                     return $er->createQueryBuilder('u')
                                                               ->where('u.id NOT IN (:monedaExcluida)')
                                                               ->setParameter('monedaExcluida',array(1));
-                                              },
-                                                'choice_label' => 'nbMoneda',
+                                                 },
+                                                'placeholder' => false,
+                                                'choice_label' => 'simboloMoneda',
                                                 'attr' => array('class' => '',
                                                 'style' => 'margin-bottom:10px;'),
                                                 'mapped'        => true,
                                                 'multiple'  => false,
                                                 'expanded' => true,
                                                 'required' => false))
+            ->add('cliente',EntityType::class,array('label' => 'Proveedor',
+                                                   'class' => 'lOroEntityBundle:Clientes',
+                                                   'query_builder' => function(EntityRepository $er) {
+                                                      return $er->createQueryBuilder('u');
+                                                   },
+                                                   'choice_label' => 'alias',
+                                                   'placeholder' => '',
+                                                   'attr' => array('class' => 'form-control',
+                                                   'style' => 'margin-bottom:10px;')))
         ;
     }
     
     /**
+     * 
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
