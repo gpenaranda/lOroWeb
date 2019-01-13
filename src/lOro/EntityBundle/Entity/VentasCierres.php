@@ -85,7 +85,7 @@ class VentasCierres
     private $proveedorCierre;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Clientes", inversedBy="ventasCierres")
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\Clientes")
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id") 
      */
     private $cliente;

@@ -16,6 +16,12 @@ use lOro\EntityBundle\Entity\EmpresasProveedores;
 use lOro\TransferenciasBundle\Form\UploadFileType;
 
 
+/* Serializadores */
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+
 /**
  * Pagos a Proveedores controller.
  *
@@ -433,16 +439,39 @@ class PagosProveedoresController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('lOroEntityBundle:PagosProveedores')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Transferencias entity.');
+          $jsonContent = 'Unable to find PagosProveedores entity.';
+        } else {
+          /* SERIALIZADORES  */
+          $normalizer = new ObjectNormalizer();
+          $normalizer->setIgnoredAttributes(array('pagosRealizadosCasaMinoristas',
+                                                  'pagosRealizadosMinoristas',
+                                                  'pagosVariosRealizadosCasa',
+                                                  'pagosRealizadosCasa',
+                                                  'pagosRealizados',
+                                                  'proveedor',
+                                                  'tipoDocumento',
+                                                  'esEmpresaCasa',
+                                                  'isWorker'));
+          $encoders = array(new JsonEncoder());
+          
+          /* Add Circular reference handler */
+          $normalizer->setCircularReferenceHandler(function ($object) {
+                  return $object->getId();
+          });
+          
+          $normalizers = array($normalizer); 
+          $serializer = new Serializer($normalizers, $encoders);
+          /* SERIALIZADORES  */
+          
+          $jsonContent = $serializer->serialize($entity, 'json');
         }
 
 
-        return $this->render('lOroTransferenciasBundle:PagosProveedores:show.html.twig', array(
-            'entity'      => $entity,      ));
+
+        return new Response($jsonContent);
     }
 
     /**

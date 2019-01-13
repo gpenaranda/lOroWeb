@@ -1,5 +1,6 @@
 {% extends '::gen_base.html.twig' %}
 {% block title %}Administraci&oacute;n - Empresas Por Proveedores{% endblock %}
+
 {% block stylesheets %}
   <style type="text/css">
     #empresa-proveedor-form .form-control-feedback {
@@ -13,6 +14,7 @@
     }
   </style>
 {% endblock %}
+
 {% block body -%}
 <div class="page-header">
   <h1>Empresa por Proveedores<small>Listado</small></h1>
@@ -28,7 +30,6 @@
 
   <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-xs-12">
     <a href="#" data-toggle="modal" data-target="#modalAgregar" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a>
-    <!--a href="{#{ path('empresas-proveedores_new') }#}" style="float:right;" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Agregar</a-->
   </div>  
 
   

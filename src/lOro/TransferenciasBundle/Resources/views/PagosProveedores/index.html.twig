@@ -28,7 +28,7 @@
   
 
   <div class="col-sm-12 col-md-12 col-lg-offset-1 col-lg-10">
-    <table id="listado-cierres" class="text-center table table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
+    <table id="listado-cierres" class="text-center table table-hover table-striped table-condensed dt-responsive nowrap" cellspacing="0" width="100%">
       <thead>
             <tr>
                 <th>ID</th>
@@ -44,7 +44,7 @@
       </thead>
         <tbody class="data-tabla">
         {% for entity in entities if entity.id != 9999 %}
-            <tr>
+            <tr class="clickable-row" data-toggle="modal" data-target="#modalVer" data-id="{{ entity.id }}">
                 <td>{{ entity.id }}</td>
                 <td>{% if entity.fePago %}{{ entity.fePago | date('Y-m-d') }}{% endif %}</td>
                 <td>{{ entity.nbTransaccion }}</td>
@@ -70,12 +70,18 @@
    </div>
 </div>
 
+<!-- LLamado del twig con el modal de Ver -->
+{% include 'lOroTransferenciasBundle:PagosProveedores/extensiones:show_modal.html.twig' %}
+
+
 {% endblock %}
 {% block javascripts %}
 <script>
 var _globales = {
       titulosNoFiltrados: '[0,1,2,4,7,8]',
+      idEntity: "",
       idListado: 'listado-cierres',
+      urlShowAction: "{{ path('pagos_proveedores_show', { 'id': ':idEntity' }) }}", 
       urlDatatableLang: '{{ asset('lang.txt') }}',
       montoSumatoria: 0.00
 };
@@ -157,4 +163,8 @@ function sumarMontos(montoPagado,idPagoProveedor) {
 
 $('#montoSumatoria').html($.number(_globales.montoSumatoria, 2,',','.' ));
 </script>   
+
+  {%  javascripts 'assets/self/js/transferencias/pagos_proveedores.js' %}
+    <script src="{{ asset_url }}"></script>
+  {% endjavascripts %} 
 {% endblock %}
