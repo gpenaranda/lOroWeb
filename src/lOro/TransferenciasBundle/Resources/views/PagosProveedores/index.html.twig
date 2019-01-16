@@ -38,7 +38,6 @@
                 <th>Monto del Pago</th>
                 <th>Proveedor</th>
                 <th>Empresa</th>
-                <th>Acciones</th>
                 <th>Sumar</th>
             </tr>
       </thead>
@@ -52,14 +51,7 @@
                 <td>{{ entity.montoPagado | number_format('2',',','.')}}  {% if entity.tipoPago == 'Bolivares' %}Bs.{% elseif entity.tipoPago == 'Dolares' %}${% else %}€{% endif%}</td>
                 <td>{{ entity.nbProveedor }}</td>
                 <td>{{ entity.nombreEmpresa }}</td>                
-                <td>
-                  <a title="Ver" style="text-decoration: none;" href="{{ path('pagos_proveedores_show', { 'id': entity.id }) }}">
-                    <i class="fa fa-eye fa-4" aria-hidden="true"></i>
-                  </a>
-                  <a title="Editar" style="text-decoration: none;" href="{{ path('pagos_proveedores_edit', { 'id': entity.id }) }}">
-                    <i class="fa fa-edit fa-4" aria-hidden="true"></i>
-                  </a>
-                </td>
+                
                 <td>
                  <input type="checkbox" name="rows[]" id="pago_proveedor_{{ entity.id }}" onclick="sumarMontos('{{ entity.montoPagado }}','{{ entity.id }}')" value="{{ entity.montoPagado }}"/>
                 </td>
@@ -78,10 +70,12 @@
 {% block javascripts %}
 <script>
 var _globales = {
-      titulosNoFiltrados: '[0,1,2,4,7,8]',
+      titulosNoFiltrados: '[0,1,2,4,7]',
       idEntity: "",
       idListado: 'listado-cierres',
       urlShowAction: "{{ path('pagos_proveedores_show', { 'id': ':idEntity' }) }}", 
+      urlEditAction: "{{ path('pagos_proveedores_edit', { 'id': ':idEntity' }) }}", 
+      urlDeleteAction: "{{ path('pagos_proveedores_delete', { 'id': ':idEntity' }) }}", 
       urlDatatableLang: '{{ asset('lang.txt') }}',
       montoSumatoria: 0.00
 };

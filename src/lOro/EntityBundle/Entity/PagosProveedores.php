@@ -108,6 +108,12 @@ class PagosProveedores
     private $conciliadoEnCaja = FALSE;     
 
     /**
+     * @ORM\ManyToOne(targetEntity="\lOro\EntityBundle\Entity\TiposMoneda")
+     * @ORM\JoinColumn(name="tipo_moneda", referencedColumnName="id", nullable=true) 
+     */
+    private $tipoMoneda; 
+
+    /**
      * Get id
      *
      * @return integer 
@@ -418,5 +424,29 @@ class PagosProveedores
     public function getConciliadoEnCaja()
     {
         return $this->conciliadoEnCaja;
+    }
+
+    /**
+     * Set tipoMoneda
+     *
+     * @param \lOro\EntityBundle\Entity\TiposMoneda $tipoMoneda
+     *
+     * @return PagosProveedores
+     */
+    public function setTipoMoneda(\lOro\EntityBundle\Entity\TiposMoneda $tipoMoneda = null)
+    {
+        $this->tipoMoneda = $tipoMoneda;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoMoneda
+     *
+     * @return \lOro\EntityBundle\Entity\TiposMoneda
+     */
+    public function getTipoMoneda()
+    {
+        return $this->tipoMoneda;
     }
 }

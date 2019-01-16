@@ -7,49 +7,54 @@
             </div>
             <div class="modal-body"> <!-- Body -->
 
-                <div class="panel-body">
+                <div class="panel-body" id="contenido">
                     <table width="100%" class="table-hover table-condensed table-bordered">
                         <tr>
                             <td style="text-align: right;">Fecha del Pago</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="fecha-pago"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Tipo de Transacci&oacute;n</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="tipo-transaccion"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Pagado Por</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="pagado-por"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Pagado al Banco</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="banco"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Nro de Referencia</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="nro-referencia"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Tipo de Pago</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="tipo-moneda"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Monto del Pago</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="monto-pagado"></td>
                         </tr>
                         <tr>
-                            <td style="text-align: right;">Proveedor</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: right;">Cliente</td>
+                            <td style="text-align: center;" id="cliente"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;">Empresa</td>
-                            <td style="text-align: center;"></td>
+                            <td style="text-align: center;" id="empresa-pago"></td>
                         </tr>
                     </table>
                 </div>
+                <div class="text-center" id="loading-icon">
+                    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                    <span class="sr-only">Loading...</span>
+                </div>                
 
             </div><!-- Body -->
             <div class="modal-footer">
+                <a  title="Editar" class="btn btn-lg btn-primary" id="edit-button" href="#"  >{% trans %}Update{% endtrans %}</a>
                 <a  title="Eliminar" class="btn btn-lg btn-danger" id="delete-button" href="#"  >{% trans %}Delete{% endtrans %}</a>
             </div>
         </div>

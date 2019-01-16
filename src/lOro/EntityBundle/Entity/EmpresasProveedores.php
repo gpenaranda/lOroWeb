@@ -52,19 +52,19 @@ class EmpresasProveedores
      * 
      * @ORM\Column(name="es_empresa_casa", type="boolean", nullable=true) 
      */
-    private $esEmpresaCasa;   
+    private $esEmpresaCasa;
 
     /**
      * @var boolean
      * 
      * @ORM\Column(name="is_worker", type="boolean", nullable=true) 
      */
-    private $isWorker;      
+    private $isWorker;
     
      /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\PagosProveedores", mappedBy="empresaPago")
      */
-    private $pagosRealizados; 
+    private $pagosRealizados;
     
      /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\PagosProveedores", mappedBy="empresaCasa")
@@ -74,24 +74,24 @@ class EmpresasProveedores
      /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\PagosVarios", mappedBy="empresaCasa")
      */
-    private $pagosVariosRealizadosCasa;    
+    private $pagosVariosRealizadosCasa;
     
      /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\PagosMinoristas", mappedBy="empresaPago")
      */
-    private $pagosRealizadosMinoristas; 
+    private $pagosRealizadosMinoristas;
     
      /**
      * @ORM\OneToMany(targetEntity="\lOro\EntityBundle\Entity\PagosMinoristas", mappedBy="empresaCasa")
      */
-    private $pagosRealizadosCasaMinoristas;    
+    private $pagosRealizadosCasaMinoristas;
     
     /**
      * @var string
      * 
      * @ORM\Column(name="estatus", type="string",length=1, nullable=true) 
      */
-    private $estatus;  
+    private $estatus;
     
     /**
      * @var string

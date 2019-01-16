@@ -19,7 +19,7 @@ use lOro\TransferenciasBundle\Form\UploadFileType;
 /* Serializadores */
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 
 
 /**
@@ -445,17 +445,55 @@ class PagosProveedoresController extends Controller
           $jsonContent = 'Unable to find PagosProveedores entity.';
         } else {
           /* SERIALIZADORES  */
-          $normalizer = new ObjectNormalizer();
-          $normalizer->setIgnoredAttributes(array('pagosRealizadosCasaMinoristas',
-                                                  'pagosRealizadosMinoristas',
+          $normalizer = new GetSetMethodNormalizer();
+          $normalizer->setIgnoredAttributes(array('balance',
+                                                  'usuarioRegistrador',
+                                                  'pagosProveedores',
+                                                  'pagosMinoristas',
+                                                  'pagosVarios',
+                                                  'transferencias',
                                                   'pagosVariosRealizadosCasa',
-                                                  'pagosRealizadosCasa',
-                                                  'pagosRealizados',
-                                                  'proveedor',
+                                                  'pagosRealizadosMinoristas',
+                                                  'pagosRealizadosCasaMinoristas',
+                                                  'estatus',
+                                                  'aliasEmpresa',
+                                                  'cuentasPorEmpresa',
                                                   'tipoDocumento',
+                                                  'rif',
                                                   'esEmpresaCasa',
-                                                  'isWorker'));
+                                                  'isWorker',
+                                                  'pagosRealizados',
+                                                  'pagosRealizadosCasa',
+                                                  'entregas',
+                                                  'ventasCierres',
+                                                  'entregasMinoristas',
+                                                  'empresas',
+                                                  'compraDolares',
+                                                  'tipoProveedor',
+                                                  'status',
+                                                  'email',
+                                                  'ventasDolares'
+            ));
+
+
+    
+
+
           $encoders = array(new JsonEncoder());
+
+          $dateCallback = function ($dateTime) {
+            return $dateTime instanceof \DateTime
+                ? $dateTime->format('d-m-Y')
+                : '';
+          };
+
+          $numberFormatCallback = function ($decimal) {
+            return number_format($decimal,'2',',','.');
+          };
+
+          $normalizer->setCallbacks(array('fePago' => $dateCallback,
+                                          'feRegistro' => $dateCallback,
+                                          'montoPagado' => $numberFormatCallback));
           
           /* Add Circular reference handler */
           $normalizer->setCircularReferenceHandler(function ($object) {
@@ -538,7 +576,7 @@ class PagosProveedoresController extends Controller
         if ($editForm->isValid()) {
          
           
-          $this->grabarMovimientoEnBanco($entity,'pago-proveedor',$editForm->get('montoPagado')->getData(),'editar',$montoBolivaresPagoViejo);
+         // $this->grabarMovimientoEnBanco($entity,'pago-proveedor',$editForm->get('montoPagado')->getData(),'editar',$montoBolivaresPagoViejo);
           
           $empresaProveedor = $editForm->get('empresaPago')->getData(); 
           $entity->setEmpresaPago($empresaProveedor);
@@ -562,6 +600,7 @@ class PagosProveedoresController extends Controller
     {
       $em = $this->getDoctrine()->getManager();
       $entity = $em->getRepository('lOroEntityBundle:PagosProveedores')->find($id);
+      $pagoId = $entity->getId();
 
       if (!$entity) {
         throw $this->createNotFoundException('Unable to find Transferencias entity.');
@@ -570,7 +609,9 @@ class PagosProveedoresController extends Controller
       
       $em->remove($entity);
       $em->flush();
-            
+      
+      $this->get('session')->getFlashBag()->set('error', 'El pago N° '.$pagoId.' ha sido eliminado exitosamente.');
+              
       return $this->redirect($this->generateUrl('pagos_proveedores'));
     }
 }
