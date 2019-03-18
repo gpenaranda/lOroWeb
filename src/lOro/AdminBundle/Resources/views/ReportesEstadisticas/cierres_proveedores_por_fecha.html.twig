@@ -28,6 +28,7 @@
           <th style="text-align:center;">Total Cerrado</th>
           <th style="text-align:center;">Monto Cerrado por Gramo</th>
           <th style="text-align:center;">Total</th>
+           <th style="text-align:center;">Editar</th>
         </tr>
       </thead>
       <tbody>
@@ -38,6 +39,11 @@
                   <td>{{ row.cantidadTotalVenta | number_format('2',',','.')  }} Grs.</td>
                   <td>{{ row.montoCierrePorGramo | number_format('2',',','.')}} Bs.</td>
                   <td>{{ row.montoCierre | number_format('2',',','.')}} Bs.</td>
+                  <td>
+                    <a title="Ver" href="{{ path('ventas_cierres_proveedores_edit', { 'id': row.id }) }}">
+                      <i class="fa fa-edit fa-4" aria-hidden="true"></i>
+                    </a>
+                  </td>
                 </tr>
             {% endfor %}
             </tbody>
