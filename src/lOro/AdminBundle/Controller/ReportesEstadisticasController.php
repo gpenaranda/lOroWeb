@@ -155,6 +155,7 @@ class ReportesEstadisticasController extends Controller
               
            foreach($pagosProveedoresEntity as $row):
               
+              $datosEntity['id'] = $row['id_cierre'];
               $datosEntity['feVenta'] = $row['fe_venta'];
               $datosEntity['nbProveedor'] = $row['nb_proveedor'];
               $datosEntity['cantidadTotalVenta'] = $row['cantidad_total_venta'];
