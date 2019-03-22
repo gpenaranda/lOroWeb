@@ -210,6 +210,7 @@ class PagosProveedoresController extends Controller
       $pagoProveedorEntity = new PagosProveedores();
       
       $tipoTransaccion = $em->getRepository('lOroEntityBundle:TipoTransaccion')->find(2);
+      $tipoMoneda = $em->getRepository('lOroEntityBundle:TiposMoneda')->find(1);
       
       $pagoProveedorEntity->setEmpresaPago($empresaInstruccion);
       $pagoProveedorEntity->setFePago($feEjecucion);
@@ -217,6 +218,7 @@ class PagosProveedoresController extends Controller
       $pagoProveedorEntity->setTipoTransaccion($tipoTransaccion);
       $pagoProveedorEntity->setNroReferencia($refPagoProveedor);
       $pagoProveedorEntity->setTipoPago('B');
+      $pagoProveedorEntity->setTipoMoneda($tipoMoneda);      
       $pagoProveedorEntity->setBanco($banco);
       $pagoProveedorEntity->setEmpresaCasa($empresaProveedor);
       $em->persist($pagoProveedorEntity);
